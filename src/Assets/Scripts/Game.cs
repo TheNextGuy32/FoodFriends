@@ -18,11 +18,11 @@ public class Game : MonoBehaviour {
 	List<Food> foods = new List<Food>();
 	
 	//Array of runners
-	Country[] countries = new Country[3];
+	public Country[] countries;
 	
 	public Game()
 	{
-		
+		countries = new Country[this.numberOfLanes];
 	}
 	
 	// Use this for initialization
