@@ -12,9 +12,22 @@ var player = {
 		this.timer = timer;
 	}
 	
+	setName : function(name)
+	{
+	this.name = name;
+	}
+	
+	getName : function()
+	{
+	return this.name;
+	}
+	
 	setScore : function(score)
 	{
 		this.score=score;
-
+	}
+	getScore : function()
+	{
+		return this.score;
 	}
 };
