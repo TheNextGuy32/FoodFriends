@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class player : MonoBehaviour {
+public class Player : MonoBehaviour {
 
 	//Score of current Player
 	private int _score;
