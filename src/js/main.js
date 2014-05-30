@@ -1,13 +1,11 @@
 /*
  * main.js
  *
- * @author  Freddy Garcia
  */
 "use strict";
 
 // namespace
 var app = app || {};
-
 // Globals -------------------------------------------
 app.canvas = undefined; // canvas element (HTML5)
 app.ctx    = undefined; // rendering context
@@ -18,8 +16,8 @@ app.dimensions = {
 	scale  : 1
 };                      // dimensions for the canvas
 app.offset = {
-    top : 0,
-	left: 0
+    top : 5,
+	left: 5
 };
 
 app.states = {
@@ -32,7 +30,16 @@ app.states = {
 app.main = {
 	DEFAULT_WIDTH  : 320, // starting width for game
 	DEFAULT_HEIGHT : 480, // starting height for game
-
+	Player1 : new player("Testplayer"),// Creates a new Player
+	
+	sideBufferX : 10,//The amount of space on the left and right of the lanes
+ 	lanePositions: new Array(),//The position of each lane
+ 
+ 	foodSpeed : 5,//How fast food moves towards player
+    foodSize : 64,
+ 	foods : new Array(),//List of all active food
+ 
+    foodTestImage : undefined,
 	/*
 	 * Initializes the main game
 	 *
@@ -52,11 +59,16 @@ app.main = {
 	    // tracking mobile browser agents (useful when resizing)
 	    this.ua      = navigator.userAgent.toLowerCase();
 	    this.android = this.ua.indexOf('android') > -1 ? true : false;
-	    this.ios     = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
+	    this.ios     = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || 
+	    		this.ua.indexOf('ipod') > -1) ? true : false;
 		
 	    // resize screen
 		this.resize();
-		
+		//set player
+		//Create our game countries, machines, etc
+ 		this.loadContent();
+ 		this.createGame();
+
 		// start game
 		this.loop();
 	},
@@ -99,6 +111,41 @@ app.main = {
 	},
 	
 	/*
+	 * Hey guys! Sorry for the lack of content- long story short, 
+     *                                            the charges were dropped
+ 	 *
+ 	 * @return  none
+ 	 */
+ 	loadContent:function()
+ 	{
+ 	    this.foodTestImage = new Image();
+ 	    this.foodTestImage.src = "sprites/pancakes_final_00-04.png";
+ 	},
+ 
+     /*
+ 	 * Creates everything that stays on the screen for the entire game
+ 	 *
+ 	 * @return  none
+ 	 */
+ 	createGame: function ()
+ 	{
+ 	    this.lanePositions[0] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
+ 	    this.lanePositions[1] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
+ 	    this.lanePositions[2] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
+ 
+ 	    //Temporary food spawning
+ 	    for (var i = 0; i < 10; i++) {
+ 	        this.foods.push(new Food("germany",
+                                      Math.floor((Math.random() * 3)),
+                                      this.lanePositions[0],
+                                      10,
+                                      this.foodTestImage)
+                            );
+ 	        
+ 	    }
+ 	},
+	
+	/*
 	 * main loop for the game
 	 *
 	 * @return  none
@@ -107,7 +154,7 @@ app.main = {
 	{
 		this.update();
 		this.render();
-		
+		this.showScore();
 		requestAnimationFrame(this.loop.bind(this));
 	},
 	
@@ -121,6 +168,11 @@ app.main = {
 	update : function(dt)
 	{
 		//console.log("update");
+		
+		for (var i = 0; i < 10; i++)
+ 	    {
+ 	        this.foods[i].y = this.foods[i].y + (this.foodSpeed * (1 / 60));
+ 	    }
 	},
 	
 	/*
@@ -137,6 +189,32 @@ app.main = {
 		app.ctx.fillStyle = "#FFC972";
 		app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
 		
+		for (var f = 0; f < this.foods.length; f++) {
+ 		    app.ctx.drawImage(this.foods[f].image,
+                               ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
+                               ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
+                               this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);
+ 		}
+	},
+		/**
+		  *function which displays the Score 
+		  *and the Playersname
+		  *in the upper Left Corner
+		  **/
+	showScore : function()
+	{
+		// calculate size of font based on screen dimension
+		var size;
+		 if (app.dimensions.width < 100)this.size = 5;
+		 else this.size = 8;
+		 this.font = this.size + 'px sans-serif';
+		app.ctx.fillStyle = "#000000";
+		app.ctx.font = this.font;
+		//app.ctx.textBaseline = 'bottom';
+		//app.ctx.lineWidth = 1;
+		app.ctx.fillText("Score: "+this.Player1.getScore()+
+				" "+this.Player1.getName(),app.dimensions.width/50,
+				app.dimensions.height/70);
 	}
 };
 
