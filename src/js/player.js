@@ -1,30 +1,34 @@
 "use strict";
 
-var player = function(name) {
-    this.score = 0;
-	//timer : undefined,
-	this.name = name;
-};
+var player = {
+    score : 0,
+	timer : undefined,
+	name : undefined,
+	
+	init : function(name, timer)
+	{
+		this.name = name;
+		this.timer = timer;
+	},
 	
 	//Setting Score during Game
-	player.prototype.setScore = function(score)
+	setScore : function(score)
 	{
 		this.score = score;
-	};
+	},
 	
-	player.prototype.setName = function(name)
+	setName : function(name)
 	{
 	    this.name = name;
-	};
+	},
 	
-	player.prototype.getName = function()
+	getName : function()
 	{
 	    return this.name;
-	};
-	
-	
+	},
 	//Returns Score
-	player.prototype.getScore = function()
+	getScore : function()
 	{
         return this.score;
-  	};
+  	},
+};
