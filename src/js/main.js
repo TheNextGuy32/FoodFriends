@@ -39,7 +39,7 @@ app.main = {
     sideBufferX: 10,//The amount of space on the left and right of the lanes
     lanePositions: new Array(),//The position of each lane
 
-    totalGameTime :0,
+    totalGameTime: 0,
 
     foodSpawnTimerMaximumSeconds: 7,
     foodSpawnTimerMinimumSeconds: 0.5,
@@ -74,9 +74,9 @@ app.main = {
 	 * @return  none
 	 */
     createGame: function () {
-        this.lanePositions[0] = app.main.DEFAULT_WIDTH / 6;
-        this.lanePositions[1] = app.main.DEFAULT_WIDTH / 6 * 3;
-        this.lanePositions[2] = app.main.DEFAULT_WIDTH / 6 * 5;
+        this.lanePositions[0] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
+        this.lanePositions[1] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
+        this.lanePositions[2] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
 
         this.foodSpawnCurrentTimeSeconds[0] = 0;
         this.foodSpawnCurrentTimeSeconds[1] = 0;
@@ -310,8 +310,7 @@ app.main = {
 
         //Calculate wave speed
         var currentFoodSpeed = this.foodSpeed + (this.totalGameTime / 10);
-        if (currentFoodSpeed > this.foodSpeedMax)
-        {
+        if (currentFoodSpeed > this.foodSpeedMax) {
             currentFoodSpeed = this.foodSpeedMax;
         }
         //Move food down
@@ -345,29 +344,20 @@ app.main = {
         }
 
         //draw countries
-		var Fort_Worth_TX = 0.76422;
-        var sizeOfCountry = app.dimensions.width / 10;
         //app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
-		app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.main.DEFAULT_WIDTH / 6, 100, 32, 32);
-		app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.main.DEFAULT_WIDTH / 6 * 3, 100, 32, 32);
-		app.ctx.drawImage(this.activeCountryArray[2].getImage(), app.main.DEFAULT_WIDTH / 6 * 5, 100, 32, 32);
+        app.ctx.drawImage(this.activeCountryArray[0].getImage(), this.lanePositions[0], 100, 32, 32);
+        app.ctx.drawImage(this.activeCountryArray[1].getImage(), this.lanePositions[1], 100, 32, 32);
+        app.ctx.drawImage(this.activeCountryArray[2].getImage(), this.lanePositions[2], 100, 32, 32);
         //app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
         //app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
 
         //Draw all the food
-        
+
         for (var f = 0; f < this.foods.length; f++) {
-            //Is it within screen bounds
-            /*app.ctx.drawImage(this.foods[f].image,
-                              ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
-                              ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
-                              this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);*/
-			app.ctx.drawImage(this.foods[f].image, this.foods[f].x, this.foods[f].y, this.foodSize, this.foodSize);
-            
-            
-            
-            this.showScore();
+            app.ctx.drawImage(this.foods[f].image, this.foods[f].x - (this.foodSize / 2), this.foods[f].y - (this.foodSize / 2), this.foodSize, this.foodSize);
         }
+        this.showScore();
+
     },
 
     /**
@@ -378,14 +368,14 @@ app.main = {
     showScore: function () {
         // calculate size of font based on screen dimension
         var size;
-       
+
         this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
         app.ctx.font = this.font;
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
         app.ctx.fillText("Score: " + app.player.getScore() +
-                " " + app.player.getName(), 20,40);
+                " " + app.player.getName(), 20, 40);
     },
 
     switchLane: function (button) {
@@ -407,10 +397,10 @@ app.main = {
         this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
         this.notActiveCountryArray[notActive] = tmpCountry;
     },
-    checkfood:function(food,country){
-    	
-    	if(food.country == country && food.y>(4/5)*app.dimensions.height)
-    		app.player.inkScore();
-    	
+    checkfood: function (food, country) {
+
+        if (food.country == country && food.y > (4 / 5) * app.dimensions.height)
+            app.player.inkScore();
+
     }
 };
