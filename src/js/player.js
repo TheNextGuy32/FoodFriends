@@ -33,4 +33,12 @@ app.player = {
 	{
         return this.score;
   	},
+  	inkScore : function()
+  	{
+  		this.score+=10;
+  	},
+  	decScore : function()
+  	{
+  		this.score-=10;
+  	}
 };
