@@ -144,7 +144,6 @@ app.main = {
         this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(schnitzelImage, brautwurstImage)),new SpriteKeyPair("USA", new Array(peanutbutterImage, pancakesImage)),
                                      new SpriteKeyPair("Italy", new Array(pizzaImage, spaghettiImage)),new SpriteKeyPair("France", new Array(baguetteImage, snailImage)),
                                      new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage)));
-        console.log(this.foodSprites);
 
         // Initializes countries
         this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image2), new Country(10, "France", this.image3));
@@ -203,7 +202,7 @@ app.main = {
     loop: function () {
         this.update();
         this.render();
-        console.log(this.foodSprites[0].country);
+        
         requestAnimationFrame(this.loop.bind(this));
     },
 
@@ -211,25 +210,57 @@ app.main = {
         var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
         //SPAWNING FOOD//
-        console.log(this.foodCurrentSpawnTimeSeconds.length);
         for (var t = 0; t < this.foodCurrentSpawnTimeSeconds.length; t++) {
             //Add dt to the timer
             this.foodCurrentSpawnTimeSeconds[t] += dtSeconds;
-
 
             //Should we spawn a burger?
             if (this.foodCurrentSpawnTimeSeconds[t] > this.foodSpawnTimerSeconds) {
                 //Reset timer
                 this.foodCurrentSpawnTimeSeconds[t] -= this.foodSpawnTimerSeconds;
 
-                //Create food
+                
+                //Chosing country
+                var chosenCountry = Math.floor((Math.random() * 5));
+                var chosenCountryString = undefined;
+                switch (chosenCountry) {
+                    case 0:
+                        chosenCountryString = "Germany";
+                        break;
+                    case 1:
+                        chosenCountryString = "USA";
+                        break;
+                    case 2:
+                        chosenCountryString = "France";
+                        break;
+                    case 3:
+                        chosenCountryString = "Italy";
+                        break;
+                    case 4:
+                        chosenCountryString = "Mexico";
+                        break;
+                    default:
+                }
+                //Choosing food
+                var chosenFood = Math.floor((Math.random() * 2));
+                var chosenFoodImage = undefined;
+                for (var q = 0; q < this.foodSprites.length; q++) {
+                    console.log(this.foodSprites[q].getCountry());
+                    if (this.foodSprites[q].getCountry() == chosenCountryString)
+                    {
+                        chosenFoodImage = this.foodSprites[q].getSprites()[chosenFood];
+                    }
+                    //debugger;
+                }
 
-                this.foods.push(new Food("germany",
+                //Create food
+                this.foods.push(new Food(chosenCountryString,
                                          t,
                                          this.lanePositions[t],
                                          10,
-                                         this.foodTestImage)
+                                         chosenFoodImage)
                );
+                
 
             }
         }
@@ -249,7 +280,7 @@ app.main = {
      * @return  none
      */
     render: function () {
-        //console.log("render");
+        
         app.ctx.clearRect(0, 0, app.dimensions.width, app.dimensions.height);
 
         // background color
@@ -279,6 +310,7 @@ app.main = {
                               ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
                               ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
                               this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);
+            debugger;
         }
 
         this.showScore();

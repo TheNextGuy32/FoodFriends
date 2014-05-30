@@ -11,9 +11,9 @@ var SpriteKeyPair = function (country, images)
 
 
 SpriteKeyPair.prototype.getCountry = function () {
-    this.country = country;
+    return this.country;
 };
 
 SpriteKeyPair.prototype.getSprites = function () {
-    this.sprites = sprites;
+    return this.sprites;
 };
