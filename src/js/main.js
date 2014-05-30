@@ -30,8 +30,8 @@ app.states = {
 
 app.main = {
     lastUpdate: Date.now(),
-	counrtyChangeTimerReset: 100,
-	countryChangeTimer: undefined,
+    counrtyChangeTimerReset: 100,
+    countryChangeTimer: undefined,
 
     DEFAULT_WIDTH: 320, // starting width for game
     DEFAULT_HEIGHT: 480, // starting height for game
@@ -46,19 +46,19 @@ app.main = {
     foodSize: 64,
     foods: new Array(),//List of all active food
 
-    foodSprites : new Array(),
+    foodSprites: new Array(),
 
     //Player1 : app.player,// Creates a new Player
 
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
     image3: undefined, // images of 3rd country
-	image4: undefined, // images of 4th country
+    image4: undefined, // images of 4th country
     image5: undefined, // images of 5th country
     image6: undefined, // images of 6th country
     activeCountryArray: undefined,
     notActiveCountryArray: undefined,
-	
+
 
 
     /*
@@ -99,7 +99,7 @@ app.main = {
 
         this.image3 = new Image();
         this.image3.src = "sprites/country3.png";
-		
+
         this.image4 = new Image();
         this.image4.src = "sprites/country4.png";
 
@@ -108,7 +108,7 @@ app.main = {
 
         this.image6 = new Image();
         this.image6.src = "sprites/country6.png";
-		
+
         //Loading all the food graphics
         //USA
         var peanutbutterImage = new Image();
@@ -141,17 +141,16 @@ app.main = {
         guacImage.src = "sprites/guac.png";
 
         //Creating the dictionary of sprites
-        this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(schnitzelImage, brautwurstImage)),new SpriteKeyPair("USA", new Array(peanutbutterImage, pancakesImage)),
-                                     new SpriteKeyPair("Italy", new Array(pizzaImage, spaghettiImage)),new SpriteKeyPair("France", new Array(baguetteImage, snailImage)),
+        this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(schnitzelImage, brautwurstImage)), new SpriteKeyPair("USA", new Array(peanutbutterImage, pancakesImage)),
+                                     new SpriteKeyPair("Italy", new Array(pizzaImage, spaghettiImage)), new SpriteKeyPair("France", new Array(baguetteImage, snailImage)),
                                      new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage)));
-        console.log(this.foodSprites);
 
         // Initializes countries
         this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image2), new Country(10, "France", this.image3));
         this.notActiveCountryArray = new Array(new Country(10, "Canada", this.image4), new Country(10, "Mexico", this.image5), new Country(10, "Italy", this.image6));
 
-		this.countryChangeTimer = this.counrtyChangeTimerReset;
-		
+        this.countryChangeTimer = this.counrtyChangeTimerReset;
+
         // resize screen
         this.resize();
 
@@ -174,7 +173,7 @@ app.main = {
 
         // resize height; width resizing is based on height & ratio
         app.dimensions.height = window.innerHeight;
-        app.dimensions.width  = app.dimensions.height * app.dimensions.ratio;
+        app.dimensions.width = app.dimensions.height * app.dimensions.ratio;
 
         // scale the actual canvas dimensions
         app.canvas.style.width = app.dimensions.width + 'px';
@@ -185,15 +184,15 @@ app.main = {
             // create extra space on page
             document.body.style.height = (window.innerHeight + 50) + 'px';
         }
-		
-		// resizing the canvas element on the browser
-		app.canvas.style.width  = app.dimensions.width + 'px';
-		app.canvas.style.height = app.dimensions.height + 'px';
+
+        // resizing the canvas element on the browser
+        app.canvas.style.width = app.dimensions.width + 'px';
+        app.canvas.style.height = app.dimensions.height + 'px';
 
         // set scale relative to default size
         app.dimensions.scale = app.dimensions.width / app.main.DEFAULT_WIDTH;
-		
-		console.log("scale: " + app.dimensions.scale);
+
+        console.log("scale: " + app.dimensions.scale);
 
         // set offsets
         app.offset.top = app.canvas.offsetTop;
@@ -213,7 +212,7 @@ app.main = {
     loop: function () {
         this.update();
         this.render();
-        //console.log(this.foodSprites[0].country);
+
         requestAnimationFrame(this.loop.bind(this));
     },
 
@@ -221,25 +220,56 @@ app.main = {
         var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
         //SPAWNING FOOD//
-        // console.log(this.foodCurrentSpawnTimeSeconds.length);
         for (var t = 0; t < this.foodCurrentSpawnTimeSeconds.length; t++) {
             //Add dt to the timer
             this.foodCurrentSpawnTimeSeconds[t] += dtSeconds;
-
 
             //Should we spawn a burger?
             if (this.foodCurrentSpawnTimeSeconds[t] > this.foodSpawnTimerSeconds) {
                 //Reset timer
                 this.foodCurrentSpawnTimeSeconds[t] -= this.foodSpawnTimerSeconds;
 
-                //Create food
 
-                this.foods.push(new Food("germany",
+                //Chosing country
+                var chosenCountry = Math.floor((Math.random() * 5));
+                var chosenCountryString = undefined;
+                switch (chosenCountry) {
+                    case 0:
+                        chosenCountryString = "Germany";
+                        break;
+                    case 1:
+                        chosenCountryString = "USA";
+                        break;
+                    case 2:
+                        chosenCountryString = "France";
+                        break;
+                    case 3:
+                        chosenCountryString = "Italy";
+                        break;
+                    case 4:
+                        chosenCountryString = "Mexico";
+                        break;
+                    default:
+                }
+                //Choosing food
+                var chosenFood = Math.floor((Math.random() * 2));
+                var chosenFoodImage = undefined;
+                for (var q = 0; q < this.foodSprites.length; q++) {
+                    console.log(this.foodSprites[q].getCountry());
+                    if (this.foodSprites[q].getCountry() == chosenCountryString) {
+                        chosenFoodImage = this.foodSprites[q].getSprites()[chosenFood];
+                    }
+                    //debugger;
+                }
+
+                //Create food
+                this.foods.push(new Food(chosenCountryString,
                                          t,
                                          this.lanePositions[t],
                                          10,
-                                         this.foodTestImage)
+                                         chosenFoodImage)
                );
+
 
             }
         }
@@ -259,40 +289,40 @@ app.main = {
      * @return  none
      */
     render: function () {
-        //console.log("render");
+
         app.ctx.clearRect(0, 0, app.dimensions.width, app.dimensions.height);
 
         // background color
         app.ctx.fillStyle = "#FFC972";
         app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
-		
-		this.countryChangeTimer -= 1;
-		if(this.countryChangeTimer <= 0)
-		{
-			this.countryChangeTimer = this.counrtyChangeTimerReset;
-			var active = Math.floor(Math.random()*3);
-			var notActive = Math.floor(Math.random()*3);
-			
-			this.changeCountry(active, notActive);
-		}
+
+        this.countryChangeTimer -= 1;
+        if (this.countryChangeTimer <= 0) {
+            this.countryChangeTimer = this.counrtyChangeTimerReset;
+            var active = Math.floor(Math.random() * 3);
+            var notActive = Math.floor(Math.random() * 3);
+
+            this.changeCountry(active, notActive);
+        }
 
         //draw countries
         var sizeOfCountry = app.dimensions.width / 10;
-        app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry*0.76422);
-        app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry*0.76422);
-        app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry*0.76422);
+        app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * 0.76422);
+        app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * 0.76422);
+        app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * 0.76422);
 
         //Draw all the food
-        /*for (var f = 0; f < this.foods.length; f++) {
+        for (var f = 0; f < this.foods.length; f++) {
             //Is it within screen bounds
             app.ctx.drawImage(this.foods[f].image,
                               ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
                               ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
                               this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);
-        }*/
 
-        this.showScore();
+            this.showScore();
+        }
     },
+
     /**
       *function which displays the Score 
       *and the Playersname
@@ -326,8 +356,8 @@ app.main = {
             this.activeCountryArray[2] = tmpCountry;
         }
     },
-	
-	changeCountry: function (active, notActive) {
+
+    changeCountry: function (active, notActive) {
         var tmpCountry = this.activeCountryArray[active];
         this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
         this.notActiveCountryArray[notActive] = tmpCountry;
