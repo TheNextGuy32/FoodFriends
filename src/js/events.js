@@ -6,6 +6,11 @@ var app = app || {};
 // when the elements on the window have finished loading
 //window.addEventListener('load', app.main.init);
 window.addEventListener('resize', app.main.resize);
+window.addEventListener('click', onClick);
+window.addEventListener('load', function () {
+    console.log("finished loading!");
+    app.main.init();
+});
 
 /*function onClick(e) {
     var rightclick;
@@ -22,12 +27,8 @@ window.addEventListener('resize', app.main.resize);
  * If you click on the right side of the Game, the right 2 Lanes Switch
  */
 function onClick(e){
-	
 	e.preventDefault();
-	if(e.clientX <app.dimensions.width/2)app.main.switchLane(1);
+	if(e.clientX < app.dimensions.width/2) app.main.switchLane(1);
 	else app.main.switchLane(2);
-	
-	
 };
 
-window.addEventListener('click', onClick);
