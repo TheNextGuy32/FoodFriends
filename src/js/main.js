@@ -366,7 +366,7 @@ app.main = {
     },
     checkfood:function(food,country){
     	
-    	if(this.food.country == country && this.food.y>4/5*app.dimensions.height)
+    	if(food.country == country && food.y>(4/5)*app.dimensions.height)
     		app.player.inkScore();
     	
     }
