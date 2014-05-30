@@ -30,7 +30,8 @@ app.states = {
 
 app.main = {
     lastUpdate: Date.now(),
-
+	counrtyChangeTimerReset: 1000,
+	countryChangeTimer: counrtyChangeTimerReset,
 
     DEFAULT_WIDTH: 320, // starting width for game
     DEFAULT_HEIGHT: 480, // starting height for game
@@ -49,10 +50,15 @@ app.main = {
 
     //Player1 : app.player,// Creates a new Player
 
-    image1: undefined,
-    image2: undefined,
-    image3: undefined,
-    countryArray: undefined,
+    image1: undefined, // images of 1st country
+    image2: undefined, // images of 2nd country
+    image3: undefined, // images of 3rd country
+	image4: undefined, // images of 4th country
+    image5: undefined, // images of 5th country
+    image6: undefined, // images of 6th country
+    activeCountryArray: undefined,
+    notActiveCountryArray: undefined,
+	
 
 
     /*
@@ -86,19 +92,29 @@ app.main = {
 
         //load images
         this.image1 = new Image();
-        this.image1.src = "sprites/pancakes_final_00-04_new1.png";
+        this.image1.src = "sprites/country1.png";
 
         this.image2 = new Image();
-        this.image2.src = "sprites/pancakes_final_00-04_new2.png";
+        this.image2.src = "sprites/country2.png";
 
         this.image3 = new Image();
-        this.image3.src = "sprites/pancakes_final_00-04_new3.png";
+        this.image3.src = "sprites/country3.png";
+		
+        this.image4 = new Image();
+        this.image4.src = "sprites/country4.png";
+
+        this.image5 = new Image();
+        this.image5.src = "sprites/country5.png";
+
+        this.image6 = new Image();
+        this.image6.src = "sprites/country6.png";
 
         this.foodTestImage = new Image();
         this.foodTestImage.src = "sprites/pancakes_final_00-04.png";
 
         // Initializes countries
-        this.countryArray = new Array(new Country(10, 1, "USA", this.image1), new Country(10, 2, "Germany", this.image2), new Country(10, 3, "France", this.image3));
+        this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image2), new Country(10, "France", this.image3));
+        this.notActiveCountryArray = new Array(new Country(10, "Canada", this.image4), new Country(10, "Mexico", this.image5), new Country(10, "Italy", this.image6));
 
         // resize screen
         this.resize();
@@ -205,12 +221,22 @@ app.main = {
         // background color
         app.ctx.fillStyle = "#FFC972";
         app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
+		
+		this.countryChangeTimer -= 1;
+		if(this.countryChangeTimer <= 0)
+		{
+			this.countryChangeTimer = counrtyChangeTimerReset;
+			var active = Math.floor(Math.random()*3);
+			var notActive = Math.floor(Math.random()*3);
+			
+			this.changeCountry(active, notActive);
+		}
 
         //draw countries
         var sizeOfCountry = app.dimensions.width / 10;
-        app.ctx.drawImage(this.countryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry);
-        app.ctx.drawImage(this.countryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry);
-        app.ctx.drawImage(this.countryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry);
+        app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry*0.76422);
+        app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry*0.76422);
+        app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry*0.76422);
 
         //Draw all the food
         for (var f = 0; f < this.foods.length; f++) {
@@ -245,18 +271,23 @@ app.main = {
 
     switchLane: function (button) {
         if (button == 1) {
-            var tmpCountry = this.countryArray[0];
-            this.countryArray[0] = this.countryArray[1];
-            this.countryArray[1] = tmpCountry;
+            var tmpCountry = this.activeCountryArray[0];
+            this.activeCountryArray[0] = this.activeCountryArray[1];
+            this.activeCountryArray[1] = tmpCountry;
         }
 
         if (button == 2) {
-            var tmpCountry = this.countryArray[1];
-            this.countryArray[1] = this.countryArray[2];
-            this.countryArray[2] = tmpCountry;
+            var tmpCountry = this.activeCountryArray[1];
+            this.activeCountryArray[1] = this.activeCountryArray[2];
+            this.activeCountryArray[2] = tmpCountry;
         }
+    },
+	
+	changeCountry: function (active, notActive) {
+        var tmpCountry = this.activeCountryArray[active];
+        this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
+        this.notActiveCountryArray[notActive] = tmpCountry;
     }
-
 };
 
 window.onload = function () {
