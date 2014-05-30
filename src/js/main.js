@@ -7,7 +7,6 @@
 
 // namespace
 var app = app || {};
-
 // Globals -------------------------------------------
 app.canvas = undefined; // canvas element (HTML5)
 app.ctx    = undefined; // rendering context
@@ -25,7 +24,7 @@ app.offset = {
 app.main = {
 	DEFAULT_WIDTH  : 320, // starting width for game
 	DEFAULT_HEIGHT : 480, // starting height for game
-
+	Player1 : new player("Testplayer"),// Creates a new Player
 	/*
 	 * Initializes the main game
 	 *
@@ -45,11 +44,13 @@ app.main = {
 	    // tracking mobile browser agents (useful when resizing)
 	    this.ua      = navigator.userAgent.toLowerCase();
 	    this.android = this.ua.indexOf('android') > -1 ? true : false;
-	    this.ios     = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
+	    this.ios     = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || 
+	    		this.ua.indexOf('ipod') > -1) ? true : false;
 		
 	    // resize screen
 		this.resize();
-		
+		//set player
+
 		// start game
 		this.loop();
 	},
@@ -95,7 +96,7 @@ app.main = {
 	{
 		this.update();
 		this.render();
-		
+		this.showScore();
 		requestAnimationFrame(this.loop.bind(this));
 	},
 	
@@ -113,6 +114,26 @@ app.main = {
 		app.ctx.fillStyle = "#FFC972";
 		app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
 		
+	},
+		/**
+		  *function which displays the Score 
+		  *and the Playersname
+		  *in the upper Left Corner
+		  **/
+	showScore : function()
+	{
+		// calculate size of font based on screen dimension
+		var size;
+		 if (app.dimensions.width < 100)this.size = 5;
+		 else this.size = 8;
+		 this.font = this.size + 'px sans-serif';
+		app.ctx.fillStyle = "#000000";
+		app.ctx.font = this.font;
+		//app.ctx.textBaseline = 'bottom';
+		//app.ctx.lineWidth = 1;
+		app.ctx.fillText("Score: "+this.Player1.getScore()+
+				" "+this.Player1.getName(),app.dimensions.width/50,
+				app.dimensions.height/70);
 	}
 };
 
