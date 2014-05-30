@@ -31,7 +31,7 @@ app.states = {
 app.main = {
     lastUpdate: Date.now(),
 	counrtyChangeTimerReset: 1000,
-	countryChangeTimer: counrtyChangeTimerReset,
+	countryChangeTimer: this.counrtyChangeTimerReset,
 
     DEFAULT_WIDTH: 320, // starting width for game
     DEFAULT_HEIGHT: 480, // starting height for game
