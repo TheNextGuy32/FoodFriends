@@ -1,5 +1,5 @@
 //vector.js
-//Elvis Pérez
+//Elvis Perez
 "use strict"
 
 //A 2-dimensional vector

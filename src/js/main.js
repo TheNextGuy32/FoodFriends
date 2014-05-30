@@ -39,10 +39,17 @@ app.main = {
     sideBufferX: 10,//The amount of space on the left and right of the lanes
     lanePositions: new Array(),//The position of each lane
 
-    foodSpawnTimerSeconds: 3,
-    foodCurrentSpawnTimeSeconds: new Array(),
+    totalGameTime: 0,
 
-    foodSpeed: 5,//How fast food moves towards player
+    foodSpawnTimerMaximumSeconds: 7,
+    foodSpawnTimerMinimumSeconds: 0.5,
+    foodSpawnTimerStartingSeconds: 5,
+    foodSpawnTimerMaxSeconds: new Array(),
+    foodSpawnCurrentTimeSeconds: new Array(),
+
+    foodSpeed: 100,//How fast food moves towards player
+    foodSpeedMax: 100,
+
     foodSize: 32,
     foods: new Array(),//List of all active food
 
@@ -67,15 +74,26 @@ app.main = {
 	 * @return  none
 	 */
     createGame: function () {
-        //this.lanePositions[0] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
-        //this.lanePositions[1] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
-        //this.lanePositions[2] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
-		this.lanePositions[0] = app.main.DEFAULT_WIDTH / 6;
-		this.lanePositions[1] = app.main.DEFAULT_WIDTH / 6 * 3;
-		this.lanePositions[2] = app.main.DEFAULT_WIDTH / 6 * 5;
-        this.foodCurrentSpawnTimeSeconds[0] = 0;
-        this.foodCurrentSpawnTimeSeconds[1] = 0;
-        this.foodCurrentSpawnTimeSeconds[2] = 0;
+        this.lanePositions[0] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
+        this.lanePositions[1] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
+        this.lanePositions[2] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
+
+        this.foodSpawnCurrentTimeSeconds[0] = 0;
+        this.foodSpawnCurrentTimeSeconds[1] = 0;
+        this.foodSpawnCurrentTimeSeconds[2] = 0;
+
+
+        //Make sure its within reasonable bounds
+        for (var t = 0; t < 3; t++) {
+            this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerStartingSeconds - 1 + (Math.random() * 2);
+
+            if (this.foodSpawnTimerMaxSeconds[t] > this.foodSpawnTimerMaximumSeconds) {
+                this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerMaximumSeconds;
+            }
+            if (this.foodSpawnTimerMaxSeconds[t] < this.foodSpawnTimerMinimumSeconds) {
+                this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerMinimumSeconds;
+            }
+        }
     },
 
     init: function () {
@@ -196,8 +214,8 @@ app.main = {
         // set offsets
         app.offset.top = app.canvas.offsetTop;
         app.offset.left = app.canvas.offsetLeft;
-		
-		//console.log("width: " + 
+
+        //console.log("width: " + 
 
 
         // timeout needed for mobile browsers in order to keep firing function
@@ -218,19 +236,33 @@ app.main = {
     update: function () {
         var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
+        this.totalGameTime += dtSeconds;
+
+
         //SPAWNING FOOD//
-        for (var t = 0; t < this.foodCurrentSpawnTimeSeconds.length; t++) {
+        for (var t = 0; t < this.foodSpawnCurrentTimeSeconds.length; t++) {
             //Add dt to the timer
-            this.foodCurrentSpawnTimeSeconds[t] += dtSeconds;
+            this.foodSpawnCurrentTimeSeconds[t] += dtSeconds;
 
             //Should we spawn a burger?
-            if (this.foodCurrentSpawnTimeSeconds[t] > this.foodSpawnTimerSeconds) {
-                //Reset timer
-                this.foodCurrentSpawnTimeSeconds[t] -= this.foodSpawnTimerSeconds;
+            if (this.foodSpawnCurrentTimeSeconds[t] > this.foodSpawnTimerMaxSeconds[t]) {
 
+                //Reset current timer
+                this.foodSpawnCurrentTimeSeconds[t] -= this.foodSpawnTimerMaxSeconds[t];
+
+                //Get a new max timer
+                this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerStartingSeconds - 2 + (Math.random() * 4);
+
+                //Check if its within bounds
+                if (this.foodSpawnTimerMaxSeconds[t] > this.foodSpawnTimerMaximumSeconds) {
+                    this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerMaximumSeconds;
+                }
+                if (this.foodSpawnTimerMaxSeconds[t] < this.foodSpawnTimerMinimumSeconds) {
+                    this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerMinimumSeconds;
+                }
 
                 //Chosing country
-                var chosenCountry = Math.floor((Math.random() * 5));
+                var chosenCountry = Math.floor((Math.random() * 6));
                 var chosenCountryString = undefined;
                 switch (chosenCountry) {
                     case 0:
@@ -247,6 +279,10 @@ app.main = {
                         break;
                     case 4:
                         chosenCountryString = "Mexico";
+                        break;
+                    case 5:
+                        //Its the country in the lane
+                        chosenCountryString = this.activeCountryArray[t].countryName;
                         break;
                     default:
                 }
@@ -266,17 +302,20 @@ app.main = {
                                          t,
                                          this.lanePositions[t],
                                          10,
-                                         chosenFoodImage)
-               );
+                                         chosenFoodImage));
 
 
             }
         }
 
+        //Calculate wave speed
+        var currentFoodSpeed = this.foodSpeed + (this.totalGameTime / 10);
+        if (currentFoodSpeed > this.foodSpeedMax) {
+            currentFoodSpeed = this.foodSpeedMax;
+        }
         //Move food down
         for (var i = 0; i < this.foods.length; i++)
-            this.foods[i].y = this.foods[i].y + (this.foodSpeed * (dtSeconds));
-
+            this.foods[i].y = this.foods[i].y + (currentFoodSpeed * (dtSeconds));
 
         this.lastUpdate = Date.now();
     },
@@ -307,16 +346,21 @@ app.main = {
         this.showScore();
 
         //draw countries
+<<<<<<< HEAD
 		
+=======
+>>>>>>> FETCH_HEAD
         //app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
-		app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.main.DEFAULT_WIDTH / 6, 100, 32, 32);
-		app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.main.DEFAULT_WIDTH / 6 * 3, 100, 32, 32);
-		app.ctx.drawImage(this.activeCountryArray[2].getImage(), app.main.DEFAULT_WIDTH / 6 * 5, 100, 32, 32);
+        app.ctx.drawImage(this.activeCountryArray[0].getImage(), this.lanePositions[0], 100, 32, 32);
+        app.ctx.drawImage(this.activeCountryArray[1].getImage(), this.lanePositions[1], 100, 32, 32);
+        app.ctx.drawImage(this.activeCountryArray[2].getImage(), this.lanePositions[2], 100, 32, 32);
         //app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
         //app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
 
         //Draw all the food
+
         for (var f = 0; f < this.foods.length; f++) {
+<<<<<<< HEAD
             //Is it within screen bounds
             /*app.ctx.drawImage(this.foods[f].image,
                               ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
@@ -327,7 +371,12 @@ app.main = {
             this.checkfood(this.foods[f], this.activeCountryArray[0]);
             
             
+=======
+            app.ctx.drawImage(this.foods[f].image, this.foods[f].x - (this.foodSize / 2), this.foods[f].y - (this.foodSize / 2), this.foodSize, this.foodSize);
+>>>>>>> FETCH_HEAD
         }
+        this.showScore();
+
     },
 
     /**
@@ -337,14 +386,23 @@ app.main = {
       **/
     showScore: function () {
         // calculate size of font based on screen dimension
+<<<<<<< HEAD
        
+=======
+        var size;
+
+>>>>>>> FETCH_HEAD
         this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
         app.ctx.font = this.font;
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
         app.ctx.fillText("Score: " + app.player.getScore() +
+<<<<<<< HEAD
                 " " + app.player.getName(), 10,10);
+=======
+                " " + app.player.getName(), 20, 40);
+>>>>>>> FETCH_HEAD
     },
 
     switchLane: function (button) {
@@ -366,6 +424,7 @@ app.main = {
         this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
         this.notActiveCountryArray[notActive] = tmpCountry;
     },
+<<<<<<< HEAD
   
     checkfood:function(food,country){
     	
@@ -374,5 +433,12 @@ app.main = {
     	if(food.country == country.countryName && food.y>100 && food.y<102)
     		{app.player.decScore();
     		console.log("DECREASE");}
+=======
+    checkfood: function (food, country) {
+
+        if (food.country == country && food.y > (4 / 5) * app.dimensions.height)
+            app.player.inkScore();
+
+>>>>>>> FETCH_HEAD
     }
 };

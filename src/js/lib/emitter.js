@@ -1,5 +1,5 @@
 //emitter.js
-//Dependencies: particle.js, vector.js?
+//Dependencies: particle.js, vector.js, utilities.js
 //Elvis Pérez
 
 "use strict"
@@ -7,9 +7,9 @@
 //position, color, speed, maxAge, [shape]
 var Emitter = function(pos, minVel, maxVel, minAccel, maxAccel, minLife, maxLife, minSize, maxSize, colorPalette, colorPaletteRange, toFade)
 {
-	this.debug = true;
+	this.debug = false;
 
-	this.particles = [];
+	this.particles = []; //Array of particles belonging to the emitter
 
 	this.position = pos; //Position of the emitter
 	
@@ -39,26 +39,26 @@ var Emitter = function(pos, minVel, maxVel, minAccel, maxAccel, minLife, maxLife
 
 Emitter.prototype.emit = function()
 {
-	var arc = Math.PI * 2 * Math.random();
-	var velocity = (this.maxVelocity - this.minVelocity) * Math.random() + this.minVelocity;
-	var acceleration = (this.maxAcceleration - this.minAcceleration) * Math.random() + this.minAcceleration;
+	var arc = Math.PI * 2 * Math.random(); //Fire in a random polar direction
+	var velocity = (this.maxVelocity - this.minVelocity) * Math.random() + this.minVelocity; ///Velocity magnitude
+	var acceleration = (this.maxAcceleration - this.minAcceleration) * Math.random() + this.minAcceleration; ///Acceleration magnitude
 	var age = (this.maxAge - this.minAge) * Math.random() + this.minAge;
 	var radius = (this.maxRadius - this.minRadius) * Math.random() + this.minRadius;
 	
 	///Begin Disgusting
 	var arr = this.color.split(",");
-	var differential = Math.random() * (this.colorRange * 2 + 1) - this.colorRange; 
+	
 	
 	arr[0] = arr[0].substr(5); //Get rid of "rgba("
 	
+	var differential = Math.random() * (this.colorRange * 2 + 1) - this.colorRange; 
 	arr[0] = Math.floor(clamp(parseFloat(arr[0]) + differential, 0, 255));
-	differential = Math.random() * (this.colorRange * 2 + 1) - this.colorRange; 
 	
+	differential = Math.random() * (this.colorRange * 2 + 1) - this.colorRange; 
 	arr[1] = Math.floor(clamp(parseFloat(arr[1]) + differential, 0, 255));
-	differential = Math.random() * (this.colorRange * 2 + 1) - this.colorRange; 
 	
-	arr[2] = Math.floor(clamp(parseFloat(arr[2]) + differential, 0, 255));
 	differential = Math.random() * (this.colorRange * 2 + 1) - this.colorRange; 
+	arr[2] = Math.floor(clamp(parseFloat(arr[2]) + differential, 0, 255));
 	
 	var color = "rgba(" + arr[0] + "," + arr[1] + "," + arr[2] + "," + arr[3];
 	///End Disgusting
@@ -80,7 +80,7 @@ Emitter.prototype.update = function()
 		});
 		
 	//Emit new particle
-	///Do I really want to emit a particle every frame?
+	///As is this emits a particle every frame
 	this.emit();
 };
 
@@ -99,6 +99,7 @@ Emitter.prototype.draw = function(ctx)
 	//Draw Particles
 	for(var i = 0; i < this.particles.length; i++)
 	{
+		//Emitter handles drawing of its particles
 		this.particles[i].draw(ctx);
 	}
 	
