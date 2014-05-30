@@ -43,6 +43,11 @@ app.main = {
  
     foodTestImage : undefined,
 	
+	image1 : undefined,
+	image2 : undefined,
+	image3 : undefined,
+	countryArray : undefined,
+	
 	/*
 	 * Initializes the main game
 	 *
@@ -63,6 +68,19 @@ app.main = {
 	    this.ua      = navigator.userAgent.toLowerCase();
 	    this.android = this.ua.indexOf('android') > -1 ? true : false;
 	    this.ios     = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
+		
+		//load images
+		this.image1 = new Image();
+		this.image1.src = "sprites/pancakes_final_00-04_new1.png";
+		
+		this.image2 = new Image();
+		this.image2.src = "sprites/pancakes_final_00-04_new2.png";
+		
+		this.image3 = new Image();
+		this.image3.src = "sprites/pancakes_final_00-04_new3.png";
+		
+		// Initializes countries
+		this.countryArray = new Array(new Country(10, 1, "USA", this.image1), new Country(10, 2, "Germany", this.image2), new Country(10, 3, "France", this.image3));
 		
 	    // resize screen
 		this.resize();
@@ -196,6 +214,12 @@ app.main = {
 		app.ctx.fillStyle = "#FFC972";
 		app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
 		
+		//draw countries
+		var sizeOfCountry = app.dimensions.width/10;
+		app.ctx.drawImage(this.countryArray[0].getImage(), app.dimensions.width/4 - sizeOfCountry/2, app.dimensions.height/10, sizeOfCountry, sizeOfCountry);
+		app.ctx.drawImage(this.countryArray[1].getImage(), app.dimensions.width/2 - sizeOfCountry/2, app.dimensions.height/10, sizeOfCountry, sizeOfCountry);
+		app.ctx.drawImage(this.countryArray[2].getImage(), 3*app.dimensions.width/4 - sizeOfCountry/2, app.dimensions.height/10, sizeOfCountry, sizeOfCountry);
+		
 		for (var f = 0; f < this.foods.length; f++) {
  		    app.ctx.drawImage(this.foods[f].image,
                                ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
@@ -224,5 +248,20 @@ app.main = {
 		app.ctx.fillText("Score: "+app.player.getScore()+
 				" "+app.player.getName(),app.dimensions.width/50,
 				app.dimensions.height/70);
+	},
+	
+	switchLane : function(button)
+	{
+		if(button == 1){
+			var tmpCountry = this.countryArray[0];
+			this.countryArray[0] = this.countryArray[1];
+			this.countryArray[1] = tmpCountry;
+		}
+		
+		if(button == 2){
+			var tmpCountry = this.countryArray[1];
+			this.countryArray[1] = this.countryArray[2];
+			this.countryArray[2] = tmpCountry;
+		}
 	}
 };

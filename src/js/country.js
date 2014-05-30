@@ -1,11 +1,12 @@
 "use strict";
 
-var Country = function(fatPoint, lane, countryName)
+var Country = function(fatPoint, lane, countryName, image)
 {
 	// variables
 	this.fatPoint = fatPoint;
 	this.lane = lane;
 	this.countryName = countryName;
+	this.image = image;
 };
 
 Country.prototype.setFatPoint = function(fatPoint)
@@ -38,4 +39,15 @@ Country.prototype.setCountryName = function(countryName)
 Country.prototype.getCountryName = function()
 {
 	return this.countryName;
+};
+
+
+Country.prototype.setImage = function(image)
+{
+	this.image = image;
+};
+	
+Country.prototype.getImage = function()
+{
+	return this.image;
 };
