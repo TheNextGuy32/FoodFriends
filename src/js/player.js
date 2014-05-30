@@ -1,6 +1,8 @@
 "use strict";
 
-var player = {
+var app = app || {};
+
+app.player = {
     score : 0,
 	timer : undefined,
 	name : undefined,
