@@ -30,8 +30,8 @@ app.states = {
 
 app.main = {
     lastUpdate: Date.now(),
-	counrtyChangeTimerReset: 1000,
-	countryChangeTimer: this.counrtyChangeTimerReset,
+	counrtyChangeTimerReset: 100,
+	countryChangeTimer: undefined,
 
     DEFAULT_WIDTH: 320, // starting width for game
     DEFAULT_HEIGHT: 480, // starting height for game
@@ -108,7 +108,7 @@ app.main = {
 
         this.image6 = new Image();
         this.image6.src = "sprites/country6.png";
-
+		
         //Loading all the food graphics
         //USA
         var peanutbutterImage = new Image();
@@ -150,6 +150,8 @@ app.main = {
         this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image2), new Country(10, "France", this.image3));
         this.notActiveCountryArray = new Array(new Country(10, "Canada", this.image4), new Country(10, "Mexico", this.image5), new Country(10, "Italy", this.image6));
 
+		this.countryChangeTimer = this.counrtyChangeTimerReset;
+		
         // resize screen
         this.resize();
 
@@ -259,7 +261,7 @@ app.main = {
 		this.countryChangeTimer -= 1;
 		if(this.countryChangeTimer <= 0)
 		{
-			this.countryChangeTimer = counrtyChangeTimerReset;
+			this.countryChangeTimer = this.counrtyChangeTimerReset;
 			var active = Math.floor(Math.random()*3);
 			var notActive = Math.floor(Math.random()*3);
 			
