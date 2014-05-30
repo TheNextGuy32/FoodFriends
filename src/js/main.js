@@ -1,7 +1,7 @@
 /*
  * main.js
  *
- * @author  Freddy Garcia and friends
+ * @author  Freddy Garcia
  */
 "use strict";
 
@@ -17,27 +17,14 @@ app.dimensions = {
 	scale  : 1
 };                      // dimensions for the canvas
 app.offset = {
-    top : 5,
-	left: 5
+    top : 0,
+	left: 0
 };
 
 app.main = {
 	DEFAULT_WIDTH  : 320, // starting width for game
 	DEFAULT_HEIGHT : 480, // starting height for game
-<<<<<<< HEAD
 	Player1 : new player("Testplayer"),// Creates a new Player
-=======
-
-	sideBufferX : 10,//The amount of space on the left and right of the lanes
-	lanePositions: new Array(),//The position of each lane
-
-	foodSpeed : 5,//How fast food moves towards player
-    foodSize : 64,
-	foods : new Array(),//List of all active food
-
-    foodTestImage : undefined,
-
->>>>>>> FETCH_HEAD
 	/*
 	 * Initializes the main game
 	 *
@@ -62,54 +49,12 @@ app.main = {
 		
 	    // resize screen
 		this.resize();
-<<<<<<< HEAD
 		//set player
-=======
-		
-	    //Create our game countries, machines, etc
-		this.loadContent();
-		this.createGame();
->>>>>>> FETCH_HEAD
 
 		// start game
 		this.loop();
 	},
 	
-    /*
-	 * Hey guys! Sorry for the lack of content- long story short, 
-     *                                            the charges were dropped
-	 *
-	 * @return  none
-	 */
-	loadContent:function()
-	{
-	    this.foodTestImage = new Image();
-	    this.foodTestImage.src = "sprites/pancakes_final_00-04.png";
-	},
-
-    /*
-	 * Creates everything that stays on the screen for the entire game
-	 *
-	 * @return  none
-	 */
-	createGame: function ()
-	{
-	    this.lanePositions[0] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
-	    this.lanePositions[1] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
-	    this.lanePositions[2] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
-
-	    //Temporary food spawning
-	    for (var i = 0; i < 10; i++) {
-	        this.foods.push(new Food("germany",
-                                     Math.floor((Math.random() * 3)),
-                                     this.lanePositions[0],
-                                     10,
-                                     this.foodTestImage)
-                           );
-	        
-	    }
-	},
-
 	/*
 	 * Resizes the screen of the game
 	 *
@@ -146,8 +91,6 @@ app.main = {
 			window.scrollTo(0, 1);
 		}, 10);
 	},
-
-
 	
 	loop : function()
 	{
@@ -159,10 +102,7 @@ app.main = {
 	
 	update : function()
 	{
-	    for (var i = 0; i < 10; i++)
-	    {
-	        this.foods[i].y = this.foods[i].y + (this.foodSpeed * (1 / 60));
-	    }
+		//console.log("update");
 	},
 	
 	render : function()
@@ -174,7 +114,6 @@ app.main = {
 		app.ctx.fillStyle = "#FFC972";
 		app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
 		
-<<<<<<< HEAD
 	},
 		/**
 		  *function which displays the Score 
@@ -195,19 +134,6 @@ app.main = {
 		app.ctx.fillText("Score: "+this.Player1.getScore()+
 				" "+this.Player1.getName(),app.dimensions.width/50,
 				app.dimensions.height/70);
-=======
-	
-		
-		
-		for (var f = 0; f < this.foods.length; f++) {
-		    app.ctx.drawImage(this.foods[f].image,
-                              ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
-                              ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
-                              this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);
-		}
-        
-        
->>>>>>> FETCH_HEAD
 	}
 };
 
