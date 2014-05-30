@@ -1,6 +1,6 @@
 //emitter.js
 //Dependencies: particle.js, vector.js, utilities.js
-//Elvis Pérez
+//Elvis Perez
 
 "use strict"
 
@@ -47,7 +47,6 @@ Emitter.prototype.emit = function()
 	
 	///Begin Disgusting
 	var arr = this.color.split(",");
-	
 	
 	arr[0] = arr[0].substr(5); //Get rid of "rgba("
 	
