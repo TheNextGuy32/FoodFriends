@@ -7,7 +7,7 @@ var app = app || {};
 //window.addEventListener('load', app.main.init);
 window.addEventListener('resize', app.main.resize);
 
-function onClick(e) {
+/*function onClick(e) {
     var rightclick;
 	e.preventDefault();
     if (e.which) rightclick = (e.which == 3);
@@ -16,6 +16,18 @@ function onClick(e) {
 		app.main.switchLane(2);
 	}else
 		app.main.switchLane(1);
+};*/
+/*
+ * If you click on the left side of the Game, the left 2 Lanes Switch
+ * If you click on the right side of the Game, the right 2 Lanes Switch
+ */
+function onClick(e){
+	
+	e.preventDefault();
+	if(e.clientX <app.dimensions.width/2)app.main.switchLane(1);
+	else app.main.switchLane(2);
+	
+	
 };
 
 window.addEventListener('click', onClick);
