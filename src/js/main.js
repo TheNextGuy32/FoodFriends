@@ -318,7 +318,9 @@ app.main = {
                               ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
                               ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
                               this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);
-
+            
+            
+            
             this.showScore();
         }
     },
@@ -361,5 +363,11 @@ app.main = {
         var tmpCountry = this.activeCountryArray[active];
         this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
         this.notActiveCountryArray[notActive] = tmpCountry;
+    },
+    checkfood:function(food,country){
+    	
+    	if(this.food.country == country && this.foodCurrentSpawnTimeSeconds.y>4/5*app.dimensions.height)
+    		app.player.inkScore();
+    	
     }
 };
