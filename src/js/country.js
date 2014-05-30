@@ -8,9 +8,12 @@ var Country = function(fatPoint, countryName, image)
 	this.image = image;
 };
 
-Country.prototype.setFatPoint = function(fatPoint)
+
+
+Country.prototype.setFatPoint = function()
 {
-	this.fatPoint = fatPoint;
+	this.fatPoint +=1;
+	app.player.decScore();
 };
 	
 Country.prototype.getFatPoint = function()
