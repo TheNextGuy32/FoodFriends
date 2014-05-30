@@ -93,6 +93,10 @@ app.main = {
         app.canvas.style.width  = app.dimensions.width + 'px';
         app.canvas.style.height = app.dimensions.height + 'px';
 		
+		// offsets if necessary
+		app.offset.left = app.canvas.offsetLeft;
+		app.offset.top  = app.canvas.offsetTop;
+		
         // work-around for address bar on mobile devices
 		if(this.android || this.ios)
         {
@@ -221,10 +225,4 @@ app.main = {
 				" "+app.player.getName(),app.dimensions.width/50,
 				app.dimensions.height/70);
 	}
-};
-
-window.onload = function()
-{
-	console.log("finished loading!");
-	app.main.init();
 };
