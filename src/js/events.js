@@ -28,7 +28,12 @@ window.addEventListener('load', function () {
  */
 function onClick(e){
 	e.preventDefault();
-	if(e.clientX < app.dimensions.width/2) app.main.switchLane(1);
+	
+	// proper x/y value
+	var x = (e.clientX - app.offset.left) / app.dimensions.scale;
+	var y = (e.clientY - app.offset.top) / app.dimensions.scale;
+
+	if(x < app.main.DEFAULT_WIDTH/2) app.main.switchLane(1);
 	else app.main.switchLane(2);
 };
 

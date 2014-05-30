@@ -198,6 +198,8 @@ app.main = {
         // set offsets
         app.offset.top = app.canvas.offsetTop;
         app.offset.left = app.canvas.offsetLeft;
+		
+		//console.log("width: " + 
 
 
         // timeout needed for mobile browsers in order to keep firing function
