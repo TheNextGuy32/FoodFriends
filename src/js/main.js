@@ -343,8 +343,7 @@ app.main = {
         app.ctx.font = this.font;
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
-        app.ctx.fillText("Score: " + app.player.getScore() +
-                " " + app.player.getName(), 10,10);
+        app.ctx.fillText("Score: " + app.player.getScore(), 10,10);
     },
 
     switchLane: function (button) {
