@@ -189,7 +189,9 @@ app.main = {
 		app.canvas.style.height = app.dimensions.height + 'px';
 
         // set scale relative to default size
-        app.dimensions.scale = app.dimensions.width / this.DEFAULT_WIDTH;
+        app.dimensions.scale = app.dimensions.width / app.main.DEFAULT_WIDTH;
+		
+		console.log("scale: " + app.dimensions.scale);
 
         // set offsets
         app.offset.top = app.canvas.offsetTop;
@@ -207,7 +209,7 @@ app.main = {
     loop: function () {
         this.update();
         this.render();
-        console.log(this.foodSprites[0].country);
+        //console.log(this.foodSprites[0].country);
         requestAnimationFrame(this.loop.bind(this));
     },
 
@@ -215,7 +217,7 @@ app.main = {
         var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
         //SPAWNING FOOD//
-        console.log(this.foodCurrentSpawnTimeSeconds.length);
+        // console.log(this.foodCurrentSpawnTimeSeconds.length);
         for (var t = 0; t < this.foodCurrentSpawnTimeSeconds.length; t++) {
             //Add dt to the timer
             this.foodCurrentSpawnTimeSeconds[t] += dtSeconds;
@@ -277,13 +279,13 @@ app.main = {
         app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry*0.76422);
 
         //Draw all the food
-        for (var f = 0; f < this.foods.length; f++) {
+        /*for (var f = 0; f < this.foods.length; f++) {
             //Is it within screen bounds
             app.ctx.drawImage(this.foods[f].image,
                               ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
                               ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
                               this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);
-        }
+        }*/
 
         this.showScore();
     },
