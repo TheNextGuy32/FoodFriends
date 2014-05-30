@@ -64,7 +64,7 @@ app.main = {
 	    console.log("resize window!");
 		
 	    // resize height; width resizing is based on height & ratio
-	    app.dimensions.height = window.height;
+	    app.dimensions.height = window.innerHeight;
 	    app.dimensions.width  = app.dimensions.height * app.dimensions.ratio;
 		
         // scale the actual canvas dimensions
@@ -107,6 +107,12 @@ app.main = {
 	render : function()
 	{
 		//console.log("render");
+		app.ctx.clearRect(0, 0, app.dimensions.width, app.dimensions.height);
+		
+		// background color
+		app.ctx.fillStyle = "#FFC972";
+		app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
+		
 	}
 };
 
