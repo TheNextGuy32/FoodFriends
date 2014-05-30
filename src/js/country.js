@@ -6,6 +6,7 @@ var Country = function(fatPoint, lane, countryName)
 	this.fatPoint = fatPoint;
 	this.lane = lane;
 	this.countryName = countryName;
+	this.isAlive = true; 
 };
 
 Country.prototype.setFatPoint = function(fatPoint)
@@ -38,4 +39,13 @@ Country.prototype.setCountryName = function(countryName)
 Country.prototype.getCountryName = function()
 {
 	return this.countryName;
+};
+
+Country.prototype.checkifAlive = function(){
+	return this.isAlive;
+};
+
+Country.prototype.refreshisAlive = function(){
+	if(this.getFatPoint()>9)this.isAlive = false;
+	else this.isAlive = true;
 };
