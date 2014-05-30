@@ -38,6 +38,7 @@ app.main = {
 
     sideBufferX: 10,//The amount of space on the left and right of the lanes
     lanePositions: new Array(),//The position of each lane
+    collisionYCoordinate: 100,
 
     totalGameTime: 0,
 
@@ -50,13 +51,16 @@ app.main = {
     foodSpeed: 100,//How fast food moves towards player
     foodSpeedMax: 100,
 
+    countryFatPointsDeathValue : 10,
+
     foodSize: 32,
-    foods: new Array(),//List of all active food
+
+    lanesOfFood : new Array,//The food on each lane, its an array of arrays
 
     foodSprites: new Array(),
 
-    //Player1 : app.player,// Creates a new Player
 
+    
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
     image3: undefined, // images of 3rd country
@@ -82,6 +86,9 @@ app.main = {
         this.foodSpawnCurrentTimeSeconds[1] = 0;
         this.foodSpawnCurrentTimeSeconds[2] = 0;
 
+        this.lanesOfFood[0] = new Array();
+        this.lanesOfFood[1] = new Array();
+        this.lanesOfFood[2] = new Array();
 
         //Make sure its within reasonable bounds
         for (var t = 0; t < 3; t++) {
@@ -289,21 +296,22 @@ app.main = {
                 //Choosing food
                 var chosenFood = Math.floor((Math.random() * 2));
                 var chosenFoodImage = undefined;
-                for (var q = 0; q < this.foodSprites.length; q++) {
-                    console.log(this.foodSprites[q].getCountry());
-                    if (this.foodSprites[q].getCountry() == chosenCountryString) {
+
+                for (var q = 0; q < this.foodSprites.length; q++)
+                {
+                    if (this.foodSprites[q].getCountry() == chosenCountryString)
+                    {
                         chosenFoodImage = this.foodSprites[q].getSprites()[chosenFood];
                     }
-                    //debugger;
                 }
 
                 //Create food
-                this.foods.push(new Food(chosenCountryString,
+                var food = new Food(chosenCountryString,
                                          t,
                                          this.lanePositions[t],
                                          10,
-                                         chosenFoodImage));
-
+                                         chosenFoodImage);
+                this.lanesOfFood[t].push(food);
 
             }
         }
@@ -313,9 +321,44 @@ app.main = {
         if (currentFoodSpeed > this.foodSpeedMax) {
             currentFoodSpeed = this.foodSpeedMax;
         }
-        //Move food down
-        for (var i = 0; i < this.foods.length; i++)
-            this.foods[i].y = this.foods[i].y + (currentFoodSpeed * (dtSeconds));
+        
+        //Check collisions
+        for (var c = 0; c < 3; c++)
+        {
+            if (this.activeCountryArray[c].fatPoint >0)
+            {
+                //Every food in the lane
+                for (var f = 0; f < this.lanesOfFood[c].length; f++)
+                {
+                    //Move the food down
+                    this.lanesOfFood[c][f].y = this.lanesOfFood[c][f].y + (currentFoodSpeed * (dtSeconds));
+
+                    //If it goes off screen delete it
+                    if (this.lanesOfFood[c][f].y + (this.foodSize / 2) > app.main.DEFAULT_HEIGHT) {
+                        this.lanesOfFood[c].splice(f, 1);
+                    }
+
+                    //If its across teh food eat line
+                    else if (this.lanesOfFood[c][f].y > this.collisionYCoordinate)
+                    {
+                        if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName)
+                        {
+                            //You ate food from your country! ur getting fat!
+                            this.activeCountryArray[c].fatPoints++;
+                        }
+                        else
+                        {
+                            //You ate food from another country, get points!
+                            app.player.setScore(app.player.getScore() + 10);
+                        }
+                        //We remove it once weve eaten it
+                        this.lanesOfFood[c].splice(f, 1);
+                    }
+
+                    
+                }
+            }
+        }
 
         this.lastUpdate = Date.now();
     },
@@ -343,19 +386,26 @@ app.main = {
             this.changeCountry(active, notActive);
         }
 
-        //draw countries
-        //app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
-        app.ctx.drawImage(this.activeCountryArray[0].getImage(), this.lanePositions[0], 100, 32, 32);
-        app.ctx.drawImage(this.activeCountryArray[1].getImage(), this.lanePositions[1], 100, 32, 32);
-        app.ctx.drawImage(this.activeCountryArray[2].getImage(), this.lanePositions[2], 100, 32, 32);
-        //app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
-        //app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
-
-        //Draw all the food
-
-        for (var f = 0; f < this.foods.length; f++) {
-            app.ctx.drawImage(this.foods[f].image, this.foods[f].x - (this.foodSize / 2), this.foods[f].y - (this.foodSize / 2), this.foodSize, this.foodSize);
+        //Draw countries
+        for (var c = 0; c < 3; c++)
+        {
+            //Are they alive?
+            if (this.activeCountryArray[c].fatPoint > 0)
+            {
+                app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c], this.collisionYCoordinate, 32, 32);
+            }
         }
+     
+        //Draw all the food
+        for (var c = 0; c < 3; c++) {
+
+            //Every food in the lane
+            for (var f = 0; f < this.lanesOfFood[c].length; f++) {
+                app.ctx.drawImage(this.lanesOfFood[c][f].image, this.lanesOfFood[c][f].x - (this.foodSize / 2), this.lanesOfFood[c][f].y - (this.foodSize / 2), this.foodSize, this.foodSize);
+
+            }
+        }
+        
         this.showScore();
 
     },
