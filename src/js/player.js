@@ -1,7 +1,7 @@
 "use strict";
 
 var player = {
-    score : undefined,
+    score : 0,
 	timer : undefined,
 	name : undefined,
 	
@@ -11,6 +11,7 @@ var player = {
 		this.timer = timer;
 	},
 	
+	//Setting Score during Game
 	setScore : function(score)
 	{
 		this.score = score;
@@ -19,15 +20,15 @@ var player = {
 	setName : function(name)
 	{
 	    this.name = name;
-	}
+	},
 	
 	getName : function()
 	{
 	    return this.name;
-	}
-	
+	},
+	//Returns Score
 	getScore : function()
 	{
         return this.score;
-  	}
+  	},
 };

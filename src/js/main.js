@@ -3,7 +3,7 @@
  *
  * @author  Freddy Garcia
  */
-"use strict"
+"use strict";
 
 // namespace
 var app = app || {};
