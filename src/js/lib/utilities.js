@@ -1,5 +1,5 @@
 //utilities.js
-//Elvis Pérez
+//Elvis Perez
 //For general methods that don't fit elsewhere
 "use strict"
 
@@ -104,7 +104,7 @@ function nameToHex(color)
         "mintcream": "#f5fffa",
         "mistyrose": "#ffe4e1",
         "moccasin": "#ffe4b5",
-        "navajowhite": "#ffdead",
+        "navajowhite": "#ffdead", //Racist according to Steven - The hex value has me inclined to agree
         "navy": "#000080",
         "oldlace": "#fdf5e6",
         "olive": "#808000",
