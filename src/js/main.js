@@ -46,7 +46,7 @@ app.main = {
     foodSize: 64,
     foods: new Array(),//List of all active food
 
-    foodTestImage: undefined,
+    foodSprites : new Array(),
 
     //Player1 : app.player,// Creates a new Player
 
@@ -109,8 +109,42 @@ app.main = {
         this.image6 = new Image();
         this.image6.src = "sprites/country6.png";
 
-        this.foodTestImage = new Image();
-        this.foodTestImage.src = "sprites/pancakes_final_00-04.png";
+        //Loading all the food graphics
+        //USA
+        var peanutbutterImage = new Image();
+        peanutbutterImage.src = "sprites/peanutbutter.png";
+        var pancakesImage = new Image();
+        pancakesImage.src = "sprites/pancakes_final_00-04.png";
+
+        //Germany
+        var schnitzelImage = new Image();
+        schnitzelImage.src = "sprites/schnitzel.png";
+        var brautwurstImage = new Image();
+        brautwurstImage.src = "sprites/brautwurst.png";
+
+        //Italy
+        var pizzaImage = new Image();
+        pizzaImage.src = "sprites/pizza.png";
+        var spaghettiImage = new Image();
+        spaghettiImage.src = "sprites/spaghetti.png";
+
+        //France
+        var baguetteImage = new Image();
+        baguetteImage.src = "sprites/baguette.png";
+        var snailImage = new Image();
+        snailImage.src = "sprites/snail.png";
+
+        //Mexico
+        var burritoImage = new Image();
+        burritoImage.src = "sprites/burrito.png";
+        var guacImage = new Image();
+        guacImage.src = "sprites/guac.png";
+
+        //Creating the dictionary of sprites
+        this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(schnitzelImage, brautwurstImage)),new SpriteKeyPair("USA", new Array(peanutbutterImage, pancakesImage)),
+                                     new SpriteKeyPair("Italy", new Array(pizzaImage, spaghettiImage)),new SpriteKeyPair("France", new Array(baguetteImage, snailImage)),
+                                     new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage)));
+        console.log(this.foodSprites);
 
         // Initializes countries
         this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image2), new Country(10, "France", this.image3));
@@ -169,7 +203,7 @@ app.main = {
     loop: function () {
         this.update();
         this.render();
-
+        console.log(this.foodSprites[0].country);
         requestAnimationFrame(this.loop.bind(this));
     },
 
