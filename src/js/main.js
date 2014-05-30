@@ -49,6 +49,7 @@ app.main = {
 
     foodSpeed: 100,//How fast food moves towards player
     foodSpeedMax: 100,
+
     foodSize: 32,
     foods: new Array(),//List of all active food
 
@@ -73,9 +74,9 @@ app.main = {
 	 * @return  none
 	 */
     createGame: function () {
-        this.lanePositions[0] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
-        this.lanePositions[1] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
-        this.lanePositions[2] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
+        this.lanePositions[0] = app.main.DEFAULT_WIDTH / 6;
+        this.lanePositions[1] = app.main.DEFAULT_WIDTH / 6 * 3;
+        this.lanePositions[2] = app.main.DEFAULT_WIDTH / 6 * 5;
 
         this.foodSpawnCurrentTimeSeconds[0] = 0;
         this.foodSpawnCurrentTimeSeconds[1] = 0;
@@ -194,10 +195,6 @@ app.main = {
         // resize height; width resizing is based on height & ratio
         app.dimensions.height = window.innerHeight;
         app.dimensions.width = app.dimensions.height * app.dimensions.ratio;
-
-        // scale the actual canvas dimensions
-        app.canvas.style.width = app.dimensions.width + 'px';
-        app.canvas.style.height = app.dimensions.height + 'px';
 
         // work-around for address bar on mobile devices
         if (this.android || this.ios) {
@@ -332,11 +329,11 @@ app.main = {
      */
     render: function () {
 
-        app.ctx.clearRect(0, 0, app.dimensions.width, app.dimensions.height);
+        app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 
         // background color
         app.ctx.fillStyle = "#FFC972";
-        app.ctx.fillRect(0, 0, app.dimensions.width, app.dimensions.height);
+        app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 
         this.countryChangeTimer -= 1;
         if (this.countryChangeTimer <= 0) {
@@ -348,20 +345,27 @@ app.main = {
         }
 
         //draw countries
+		var Fort_Worth_TX = 0.76422;
         var sizeOfCountry = app.dimensions.width / 10;
-        app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * 0.76422);
-        app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * 0.76422);
-        app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * 0.76422);
+        //app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
+		app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.main.DEFAULT_WIDTH / 6, 100, 32, 32);
+		app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.main.DEFAULT_WIDTH / 6 * 3, 100, 32, 32);
+		app.ctx.drawImage(this.activeCountryArray[2].getImage(), app.main.DEFAULT_WIDTH / 6 * 5, 100, 32, 32);
+        //app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.dimensions.width / 2 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
+        //app.ctx.drawImage(this.activeCountryArray[2].getImage(), 3 * app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
 
         //Draw all the food
         
         for (var f = 0; f < this.foods.length; f++) {
             //Is it within screen bounds
-            app.ctx.drawImage(this.foods[f].image,
+            /*app.ctx.drawImage(this.foods[f].image,
                               ((this.foods[f].x / this.DEFAULT_WIDTH) * app.dimensions.width) - (this.foodSize * app.dimensions.scale / 2),
                               ((this.foods[f].y / this.DEFAULT_HEIGHT) * app.dimensions.height) - (this.foodSize * app.dimensions.scale / 2),
-                              this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);
-
+                              this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);*/
+			app.ctx.drawImage(this.foods[f].image, this.foods[f].x, this.foods[f].y, this.foodSize, this.foodSize);
+            
+            
+            
             this.showScore();
         }
     },
@@ -374,16 +378,14 @@ app.main = {
     showScore: function () {
         // calculate size of font based on screen dimension
         var size;
-        if (app.dimensions.width < 400) this.size = 8;
-        else this.size = 10;
-        this.font = this.size + 'px sans-serif';
+       
+        this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
         app.ctx.font = this.font;
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
         app.ctx.fillText("Score: " + app.player.getScore() +
-                " " + app.player.getName(), app.dimensions.width / 50,
-                app.dimensions.height / 70);
+                " " + app.player.getName(), 20,40);
     },
 
     switchLane: function (button) {
@@ -404,5 +406,11 @@ app.main = {
         var tmpCountry = this.activeCountryArray[active];
         this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
         this.notActiveCountryArray[notActive] = tmpCountry;
+    },
+    checkfood:function(food,country){
+    	
+    	if(food.country == country && food.y>(4/5)*app.dimensions.height)
+    		app.player.inkScore();
+    	
     }
 };
