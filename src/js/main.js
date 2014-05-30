@@ -22,6 +22,13 @@ app.offset = {
 	left: 0
 };
 
+app.states = {
+    TITLE        : 0,
+    INSTRUCTIONS : 1,
+    GAME         : 2,
+	HIGH_SCORE   : 3
+};                      // states for the game
+
 app.main = {
 	DEFAULT_WIDTH  : 320, // starting width for game
 	DEFAULT_HEIGHT : 480, // starting height for game
@@ -91,6 +98,11 @@ app.main = {
 		}, 10);
 	},
 	
+	/*
+	 * main loop for the game
+	 *
+	 * @return  none
+	 */
 	loop : function()
 	{
 		this.update();
@@ -99,11 +111,23 @@ app.main = {
 		requestAnimationFrame(this.loop.bind(this));
 	},
 	
-	update : function()
+	/*
+	 * Updates the objects in the game
+	 *
+	 * @param   {Number} dt the amount of time that has elapsed since the previous frame
+	 *
+	 * @return  none
+	 */
+	update : function(dt)
 	{
 		//console.log("update");
 	},
 	
+	/*
+	 * Renders our objects onto the canvas rendering context
+	 *
+	 * @return  none
+	 */
 	render : function()
 	{
 		//console.log("render");
