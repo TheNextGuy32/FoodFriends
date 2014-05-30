@@ -337,16 +337,14 @@ app.main = {
     showScore: function () {
         // calculate size of font based on screen dimension
         var size;
-        if (app.dimensions.width < 400) this.size = 8;
-        else this.size = 10;
-        this.font = this.size + 'px sans-serif';
+       
+        this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
         app.ctx.font = this.font;
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
         app.ctx.fillText("Score: " + app.player.getScore() +
-                " " + app.player.getName(), app.dimensions.width / 50,
-                app.dimensions.height / 70);
+                " " + app.player.getName(), 20,40);
     },
 
     switchLane: function (button) {
