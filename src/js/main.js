@@ -122,7 +122,7 @@ app.main = {
 
         // resize height; width resizing is based on height & ratio
         app.dimensions.height = window.innerHeight;
-        app.dimensions.width = app.dimensions.height * app.dimensions.ratio;
+        app.dimensions.width  = app.dimensions.height * app.dimensions.ratio;
 
         // scale the actual canvas dimensions
         app.canvas.style.width = app.dimensions.width + 'px';
@@ -133,6 +133,10 @@ app.main = {
             // create extra space on page
             document.body.style.height = (window.innerHeight + 50) + 'px';
         }
+		
+		// resizing the canvas element on the browser
+		app.canvas.style.width  = app.dimensions.width + 'px';
+		app.canvas.style.height = app.dimensions.height + 'px';
 
         // set scale relative to default size
         app.dimensions.scale = app.dimensions.width / this.DEFAULT_WIDTH;
@@ -145,7 +149,7 @@ app.main = {
         // timeout needed for mobile browsers in order to keep firing function
         window.setTimeout(function () {
             window.scrollTo(0, 1);
-        }, 10);
+        }, 1);
     },
 
 
@@ -257,9 +261,4 @@ app.main = {
         }
     }
 
-};
-
-window.onload = function () {
-    console.log("finished loading!");
-    app.main.init();
 };
