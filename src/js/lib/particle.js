@@ -1,6 +1,6 @@
 //particle.js
 //Dependencies: vector.js
-//Elvis Perez
+//Elvis Pérez
 "use strict"
 
 var Particle = function(pos, vel, accel, lifetime, size, colour, toFade)
@@ -47,7 +47,6 @@ Particle.prototype.decay = function()
 //Update the properties of the particle
 Particle.prototype.update = function()
 {
-	//Only act on the particle if it is active
 	if(this.active)
 	{
 		this.move();
@@ -55,7 +54,6 @@ Particle.prototype.update = function()
 		
 		if(this.fade)
 		{
-			//Linear fade
 			var arr = this.color.split(",");
 			this.color = arr[0] + "," + arr[1] + ", " + arr[2] + "," + this.age / this.lifespan + ")";
 		}
@@ -68,8 +66,6 @@ Particle.prototype.draw = function(ctx)
 
 	ctx.fillStyle = this.color;
 	
-	//Circular particles
-	///Possible upgrade: Allow shape customization
 	ctx.beginPath();
 	ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
 	ctx.fill();
