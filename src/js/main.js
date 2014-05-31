@@ -228,8 +228,8 @@ app.main = {
                                      new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage, picoDGImage)));
 
         // Initializes countries
-        this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image3), new Country(10, "France", this.image2));
-        this.notActiveCountryArray = new Array(new Country(10, "Mexico", this.image5), new Country(10, "Italy", this.image4));
+        this.activeCountryArray = new Array(new Country(5, "USA", this.image1), new Country(5, "Germany", this.image3), new Country(5, "France", this.image2));
+        this.notActiveCountryArray = new Array(new Country(5, "Mexico", this.image5), new Country(5, "Italy", this.image4));
 
 
         this.countryChangeTimer = this.counrtyChangeTimerReset;
@@ -405,7 +405,6 @@ app.main = {
                 }
 
                 //If its across teh food eat line
-                console.log(c + " " + this.activeCountryArray[c].getFatPoint());
                 if (this.activeCountryArray[c].getFatPoint() > 0) {
                     
                     if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
@@ -423,8 +422,9 @@ app.main = {
                         else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
 
                             //You ate food from your country! ur getting fat!
-                            this.activeCountryArray[c].DecFatPoint;
-
+                            console.log(c + " " + this.activeCountryArray[c].getFatPoint());
+                            this.activeCountryArray[c].DecFatPoint();
+                            console.log(c + " " + this.activeCountryArray[c].getFatPoint());
                             for (var i = 0; i < 100000; i++) {
                                 app.player.decScore();
                             }
