@@ -410,9 +410,13 @@ app.main = {
 
         app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 
-        // background color
+        // background 
+        
+        var background = new Image();
+        background.src = "images/Background.png";
+        
         app.ctx.fillStyle = "#FFC972";
-        app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+        app.ctx.drawImage(background,0,0,540,480);
 
         this.countryChangeTimer -= 1;
         if (this.countryChangeTimer <= 0) {
