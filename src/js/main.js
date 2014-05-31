@@ -38,17 +38,22 @@ app.main = {
 
     sideBufferX: 10,//The amount of space on the left and right of the lanes
     lanePositions: new Array(),//The position of each lane
+    collisionYCoordinate: 100,
 
     foodSpawnTimerSeconds: 3,
     foodCurrentSpawnTimeSeconds: new Array(),
 
+<<<<<<< HEAD
     foodSpeed: 5,//How fast food moves towards player
+=======
+    countryFatPointsDeathValue : 10,
+
+>>>>>>> FETCH_HEAD
     foodSize: 32,
-    foods: new Array(),//List of all active food
+
+    lanesOfFood : new Array,//The food on each lane, its an array of arrays
 
     foodSprites: new Array(),
-
-    //Player1 : app.player,// Creates a new Player
 
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
@@ -67,6 +72,7 @@ app.main = {
 	 * @return  none
 	 */
     createGame: function () {
+<<<<<<< HEAD
         //this.lanePositions[0] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
         //this.lanePositions[1] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
         //this.lanePositions[2] = this.sideBufferX + (((this.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
@@ -76,6 +82,31 @@ app.main = {
         this.foodCurrentSpawnTimeSeconds[0] = 0;
         this.foodCurrentSpawnTimeSeconds[1] = 0;
         this.foodCurrentSpawnTimeSeconds[2] = 0;
+=======
+        this.lanePositions[0] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
+        this.lanePositions[1] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
+        this.lanePositions[2] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
+
+        this.foodSpawnCurrentTimeSeconds[0] = 0;
+        this.foodSpawnCurrentTimeSeconds[1] = 0;
+        this.foodSpawnCurrentTimeSeconds[2] = 0;
+
+        this.lanesOfFood[0] = new Array();
+        this.lanesOfFood[1] = new Array();
+        this.lanesOfFood[2] = new Array();
+
+        //Make sure its within reasonable bounds
+        for (var t = 0; t < 3; t++) {
+            this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerStartingSeconds - 1 + (Math.random() * 2);
+
+            if (this.foodSpawnTimerMaxSeconds[t] > this.foodSpawnTimerMaximumSeconds) {
+                this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerMaximumSeconds;
+            }
+            if (this.foodSpawnTimerMaxSeconds[t] < this.foodSpawnTimerMinimumSeconds) {
+                this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerMinimumSeconds;
+            }
+        }
+>>>>>>> FETCH_HEAD
     },
 
     init: function () {
@@ -115,13 +146,17 @@ app.main = {
         //Loading all the food graphics
         //USA
         var peanutbutterImage = new Image();
-        peanutbutterImage.src = "sprites/peanutbutter.png";
+        peanutbutterImage.src = "images/hamburger.png";
+		
         var pancakesImage = new Image();
-        pancakesImage.src = "sprites/pancakes_final_00-04.png";
+        pancakesImage.src = "images/pancakes.png";
+		
+		var friesImage = new Image();
+		friesImage.src = "images/fries.png";
 
         //Germany
         var schnitzelImage = new Image();
-        schnitzelImage.src = "sprites/schnitzel.png";
+        schnitzelImage.src = "images/beer.png";
         var brautwurstImage = new Image();
         brautwurstImage.src = "sprites/brautwurst.png";
 
@@ -133,20 +168,22 @@ app.main = {
 
         //France
         var baguetteImage = new Image();
-        baguetteImage.src = "sprites/baguette.png";
+        baguetteImage.src = "images/baguette.png";
         var snailImage = new Image();
-        snailImage.src = "sprites/snail.png";
+        snailImage.src = "images/snail.png";
 
         //Mexico
         var burritoImage = new Image();
-        burritoImage.src = "sprites/burrito.png";
+        burritoImage.src = "images/burrito.png";
         var guacImage = new Image();
-        guacImage.src = "sprites/guac.png";
+        guacImage.src = "images/guacamole.png";
+		var picoDGImage = new Image();
+		picoDGImage.src = "images/picoDeGallo.png";
 
         //Creating the dictionary of sprites
         this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(schnitzelImage, brautwurstImage)), new SpriteKeyPair("USA", new Array(peanutbutterImage, pancakesImage)),
                                      new SpriteKeyPair("Italy", new Array(pizzaImage, spaghettiImage)), new SpriteKeyPair("France", new Array(baguetteImage, snailImage)),
-                                     new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage)));
+                                     new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage, picoDGImage)));
 
         // Initializes countries
         this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image2), new Country(10, "France", this.image3));
@@ -253,30 +290,82 @@ app.main = {
                 //Choosing food
                 var chosenFood = Math.floor((Math.random() * 2));
                 var chosenFoodImage = undefined;
-                for (var q = 0; q < this.foodSprites.length; q++) {
-                    console.log(this.foodSprites[q].getCountry());
-                    if (this.foodSprites[q].getCountry() == chosenCountryString) {
+
+                for (var q = 0; q < this.foodSprites.length; q++)
+                {
+                    if (this.foodSprites[q].getCountry() == chosenCountryString)
+                    {
                         chosenFoodImage = this.foodSprites[q].getSprites()[chosenFood];
                     }
-                    //debugger;
                 }
 
                 //Create food
-                this.foods.push(new Food(chosenCountryString,
+                var food = new Food(chosenCountryString,
                                          t,
                                          this.lanePositions[t],
                                          10,
+<<<<<<< HEAD
                                          chosenFoodImage)
                );
 
+=======
+                                         chosenFoodImage);
+                this.lanesOfFood[t].push(food);
+>>>>>>> FETCH_HEAD
 
             }
         }
 
+<<<<<<< HEAD
         //Move food down
         for (var i = 0; i < this.foods.length; i++)
             this.foods[i].y = this.foods[i].y + (this.foodSpeed * (dtSeconds));
 
+=======
+        //Calculate wave speed
+        var currentFoodSpeed = this.foodSpeed + (this.totalGameTime / 10);
+        if (currentFoodSpeed > this.foodSpeedMax) {
+            currentFoodSpeed = this.foodSpeedMax;
+        }
+        
+        //Check collisions
+        for (var c = 0; c < 3; c++)
+        {
+            if (this.activeCountryArray[c].fatPoint >0)
+            {
+                //Every food in the lane
+                for (var f = 0; f < this.lanesOfFood[c].length; f++)
+                {
+                    //Move the food down
+                    this.lanesOfFood[c][f].y = this.lanesOfFood[c][f].y + (currentFoodSpeed * (dtSeconds));
+
+                    //If it goes off screen delete it
+                    if (this.lanesOfFood[c][f].y + (this.foodSize / 2) > app.main.DEFAULT_HEIGHT) {
+                        this.lanesOfFood[c].splice(f, 1);
+                    }
+
+                    //If its across teh food eat line
+                    else if (this.lanesOfFood[c][f].y > this.collisionYCoordinate)
+                    {
+                        if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName)
+                        {
+                            //You ate food from your country! ur getting fat!
+                            this.activeCountryArray[c].fatPoints++;
+                        }
+                        else
+                        {
+                            //You ate food from another country, get points!
+                            app.player.setScore(app.player.getScore() + 10);
+                        }
+                        //We remove it once weve eaten it
+                        this.lanesOfFood[c].splice(f, 1);
+                    }
+
+                    
+                }
+            }
+        }
+>>>>>>> FETCH_HEAD
 
         this.lastUpdate = Date.now();
     },
@@ -306,6 +395,7 @@ app.main = {
         
         this.showScore();
 
+<<<<<<< HEAD
         //draw countries
 		
         //app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
@@ -328,6 +418,30 @@ app.main = {
             
             
         }
+=======
+        //Draw countries
+        for (var c = 0; c < 3; c++)
+        {
+            //Are they alive?
+            if (this.activeCountryArray[c].fatPoint > 0)
+            {
+                app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c], this.collisionYCoordinate, 32, 32);
+            }
+        }
+     
+        //Draw all the food
+        for (var c = 0; c < 3; c++) {
+
+            //Every food in the lane
+            for (var f = 0; f < this.lanesOfFood[c].length; f++) {
+                app.ctx.drawImage(this.lanesOfFood[c][f].image, this.lanesOfFood[c][f].x - (this.foodSize / 2), this.lanesOfFood[c][f].y - (this.foodSize / 2), this.foodSize, this.foodSize);
+
+            }
+        }
+        
+        this.showScore();
+
+>>>>>>> FETCH_HEAD
     },
 
     /**

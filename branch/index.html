@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Food Friends</title>
+	
 	<meta charset="UTF-8" />
 	<!-- disable scaling - render at full size -->
 	<meta name="viewport" content="width=device-width, 
@@ -14,14 +15,16 @@
 		canvas { display: block; margin: 0 auto; background: #000; }
 	</style>
 </head>
+
 <body>
-	<canvas id="canvas"></canvas>	
-	<script src="js/lib/resources.js"></script>
-	<script src="js/food.js"></script>
-	<script src="js/spriteKeyPair.js"></script>
-	<script src="js/country.js"></script>
-	<script src="js/player.js"></script>
+	<canvas id="canvas"></canvas>
+	<script src="js/core/country.js"></script>
+	<script src="js/core/food.js"></script>
+	<script src="js/utils/resources.js"></script>
+	<script src="js/title.js"></script>
+	<script src="js/game.js"></script>
 	<script src="js/main.js"></script>
-	<script src="js/events.js"></script>
+	<script src="js/utils/events.js"></script>
 </body>
+
 </html>
