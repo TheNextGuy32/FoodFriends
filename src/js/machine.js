@@ -12,7 +12,7 @@ var Machine = function(image, xPos, yPos, width, height)
 	this.height = height;
 };
 
-Machine.prototype.drawMachineFloor = function(ctx)
+Machine.prototype.drawBottom = function(ctx)
 {
 	ctx.save();
 	
@@ -22,7 +22,7 @@ Machine.prototype.drawMachineFloor = function(ctx)
 	ctx.restore();
 }
 
-Machine.prototype.drawMachine = function(ctx)
+Machine.prototype.draw = function(ctx)
 {
 	//ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 	ctx.save();

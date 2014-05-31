@@ -64,6 +64,11 @@ app.main = {
     machines: [],
     machineSprite: undefined,
 
+	planeSprites: new Array(),
+	
+	foodFlags: [],
+
+
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
     image3: undefined, // images of 3rd country
@@ -105,14 +110,26 @@ app.main = {
             }
         }
 
-        this.machines[0] = new Machine(this.machineSprite, this.lanePositions[0], 10, 100, 80);
-        this.machines[1] = new Machine(this.machineSprite, this.lanePositions[1], 10, 100, 80);
-        this.machines[2] = new Machine(this.machineSprite, this.lanePositions[2], 10, 100, 80);
+		
+		for(var i = 0; i < 3; i++)
+		{
+			this.machines[i] = new Machine(this.machineSprite, this.lanePositions[i], 10, 32, 24);
+		}
+			
+		for(var i = 0; i < 3; i++)
+		{
+			this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
+		}
+
     },
 
     init: function () {
         // rendering context -------------------------------------------
         app.canvas = document.querySelector("canvas");
+		
+		app.canvas.width = this.DEFAULT_WIDTH;
+		app.canvas.height = this.DEFAULT_HEIGHT;
+		
         app.ctx = canvas.getContext("2d");
 
         // dimensions --------------------------------------------------
@@ -139,10 +156,31 @@ app.main = {
         this.image4.src = "sprites/FatGuy_Italy.png";
 
         this.image5 = new Image();
+
         this.image5.src = "sprites/FatGuy_Mexico.png";
 
         this.machineSprite = new Image();
         //this.machinesprite.src = "images/machine.jpg
+		
+		//load flaggs
+		var americanImage = new Image();
+		americanImage.src = "images/flag_american_final.png";
+		
+		var frenchImage = new Image();
+		frenchImage.src = "images/flag_french_final.png";
+		
+		var germanImage = new Image();
+		germanImage.src = "images/flag_german_final.png";
+		
+		var italyImage = new Image();
+		italyImage.src = "images/flag_italy_final.png";
+		
+		var mexcioImage = new Image();
+		mexcioImage.src = "images/flag_mexico_final.png";
+		
+		this.planeSprites = new Array(new SpriteKeyPair("Germany", new Array(germanImage)), new SpriteKeyPair("USA", new Array(americanImage)),
+                                     new SpriteKeyPair("Italy", new Array(italyImage)), new SpriteKeyPair("France", new Array(frenchImage)),
+                                     new SpriteKeyPair("Mexico", new Array(mexcioImage)));
 
         //Loading all the food graphics
         //USA
@@ -190,6 +228,7 @@ app.main = {
         this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image3), new Country(10, "France", this.image2));
         this.notActiveCountryArray = new Array(new Country(10, "Mexico", this.image5), new Country(10, "Italy", this.image4));
 
+
         this.countryChangeTimer = this.counrtyChangeTimerReset;
 
         // resize screen
@@ -228,8 +267,6 @@ app.main = {
 
         // set scale relative to default size
         app.dimensions.scale = app.dimensions.width / app.main.DEFAULT_WIDTH;
-
-        console.log("scale: " + app.dimensions.scale);
 
         // set offsets
         app.offset.top = app.canvas.offsetTop;
@@ -305,23 +342,41 @@ app.main = {
                         break;
                     default:
                 }
-                //Choosing food
-                var chosenFood = Math.floor((Math.random() * 2));
-                var chosenFoodImage = undefined;
+				var countryID = 0;
+				for (var q = 0; q < this.foodSprites.length; q++)
+				{
+					if (this.foodSprites[q].getCountry() == chosenCountryString)
+					{
+						countryID = q;
+					}
+				}
+				
+				var choosePlane = Math.floor((Math.random() * 2));
+				if(choosePlane == 0 &&  ( chosenCountryString == this.notActiveCountryArray[0][0] || chosenCountryString == this.notActiveCountryArray[1][0]))
+				{
+					var plane = new Plane(chosenCountryString,
+											t,
+											this.lanePositions[t],
+											10,
+											this.planeSprites[countryID].getSprites()[0]);
+					this.lanesOfFood[t].push(plane);
+				}
+				else
+				{
+					//Choosing food
+					var chosenFood = Math.floor((Math.random() * 2));
+					var chosenFoodImage = undefined;
+					
+					chosenFoodImage = this.foodSprites[countryID].getSprites()[chosenFood];
 
-                for (var q = 0; q < this.foodSprites.length; q++) {
-                    if (this.foodSprites[q].getCountry() == chosenCountryString) {
-                        chosenFoodImage = this.foodSprites[q].getSprites()[chosenFood];
-                    }
-                }
-
-                //Create food
-                var food = new Food(chosenCountryString,
-                                         t,
-                                         this.lanePositions[t] + 15,
-                                         10,
-                                         chosenFoodImage);
-                this.lanesOfFood[t].push(food);
+					//Create food
+					var food = new Food(chosenCountryString,
+											 t,
+											 this.lanePositions[t]+15,
+											 10,
+											 chosenFoodImage);
+					this.lanesOfFood[t].push(food);
+				}
             }
         }
 
@@ -352,7 +407,17 @@ app.main = {
                     
                     if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
 
-                        if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
+                        if (this.lanesOfFood[c][f] instanceof Plane) {
+
+                            var positionInNotActive = undefined;
+                            if (this.notActiveCountryArray[0][0] == this.lanesOfFood[c][f].country) {
+                                this.changeCountry(c, 0);
+                            }
+                            if (this.notActiveCountryArray[1][0] == this.lanesOfFood[c][f].country) {
+                                this.changeCountry(c, 1);
+                            }
+                        }
+                        else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint;
@@ -362,8 +427,10 @@ app.main = {
                             }
                         }
                         else {
+
                             //You ate food from another country, get points!
                             app.player.inkScore();
+
                         }
                         //We remove it once weve eaten it
                         this.lanesOfFood[c].splice(f, 1);
@@ -408,15 +475,19 @@ app.main = {
 
         app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 
-        // background color
+        // background 
+        
+        var background = new Image();
+        background.src = "images/Background.png";
+        
         app.ctx.fillStyle = "#FFC972";
-        app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+        app.ctx.drawImage(background,0,0,540,480);
 
         this.countryChangeTimer -= 1;
         if (this.countryChangeTimer <= 0) {
             this.countryChangeTimer = this.counrtyChangeTimerReset;
             var active = Math.floor(Math.random() * 3);
-            var notActive = Math.floor(Math.random() * 3);
+            var notActive = Math.floor(Math.random() * 2);
 
             this.changeCountry(active, notActive);
         }
@@ -428,6 +499,12 @@ app.main = {
                 app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c], this.collisionYCoordinate, 32, 32);
             }
         }
+		
+		//Draw machine bottoms
+		for(var i = 0; i < this.machines.length; i++)
+		{
+			this.machines[i].drawBottom(app.ctx);
+		}
 
         //Draw all the food
         for (var c = 0; c < 3; c++) {
@@ -438,6 +515,12 @@ app.main = {
 
             }
         }
+		
+		//Draw machines
+		for(var i = 0; i < this.machines.length; i++)
+		{
+			this.machines[i].draw(app.ctx);
+		}
 
         this.showScore();
 
@@ -460,9 +543,12 @@ app.main = {
 
     showScore: function () {
         // calculate size of font based on screen dimension
-        this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
-        app.ctx.font = this.font;
+        app.ctx.font = "10px Helvetica";
+        
+    	app.ctx.textAlign = "left";
+    	app.ctx.textBaseline = "top";
+        
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
 
@@ -485,9 +571,12 @@ app.main = {
     },
 
     changeCountry: function (active, notActive) {
-        var tmpCountry = this.activeCountryArray[active];
-        this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
-        this.notActiveCountryArray[notActive] = tmpCountry;
+        var tmpCountryName = this.activeCountryArray[active].getCountryName();
+        var tmpCountryImg = this.activeCountryArray[active].getImage();
+        this.activeCountryArray[active].setCountryName(this.notActiveCountryArray[notActive][0]);
+        this.activeCountryArray[active].setImage(this.notActiveCountryArray[notActive][1]);
+        this.notActiveCountryArray[notActive][0] = tmpCountryName;
+        this.notActiveCountryArray[notActive][1] = tmpCountryImg;
     },
 
 };
