@@ -417,6 +417,10 @@ app.main = {
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
+                            if (this.activeCountryArray[c].getFatPoint() == 0)
+                            {
+                                //YOU HAVE DIED! spawn emitter
+                            }
 
                         }
                         else {
