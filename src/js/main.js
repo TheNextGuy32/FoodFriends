@@ -42,6 +42,8 @@ app.main = {
 
     totalGameTime: 0,
 
+    numberScoresStored: 5,
+
     foodSpawnTimerMaximumSeconds: 7,
     foodSpawnTimerMinimumSeconds: 0.5,
     foodSpawnTimerStartingSeconds: 5,
@@ -360,7 +362,29 @@ app.main = {
 
         //WE'VE LOST
         if (numberDeadPeople >= 3) {
-            localStorage.setItem(app.player.getName(), app.player.getScore());
+
+            //Add and sort the storage
+            for (var i = 0; i < this.numberScoresStored; i++) {
+
+                if (localStorage[i] == undefined) {
+
+                    localStorage.setItem(i, app.player.getScore());
+                    i = 3;
+                }
+                else {
+                    if (app.player.getScore() > localStorage[i]) {
+                        for (var q = this.numberScoresStored - 1; q > i; q--) {
+                            if (localStorage[q - 1] != undefined) {
+
+                                localStorage[q] = localStorage[q - 1];
+                            }
+                        }
+                        localStorage.setItem(i, app.player.getScore());
+                    }
+                }
+
+            }
+
         }
 
         this.lastUpdate = Date.now();
@@ -409,6 +433,21 @@ app.main = {
 
         this.showScore();
 
+        //Highscore
+        //app.ctx.fillText("HIGHSCORES", 110, 40);
+
+        //for (var i = 0; i < this.numberScoresStored; i++) {
+        //    if (localStorage[i] != undefined) {
+        //        app.ctx.fillText(localStorage[i], 110, 50 + (i * 10));
+        //    }
+        //    else
+        //    {
+        //        app.ctx.fillText("-No Score-", 110, 50 + (i * 10));
+        //    }
+        //}
+
+
+
     },
 
     /**
@@ -426,7 +465,7 @@ app.main = {
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
         app.ctx.fillText("Score: " + app.player.getScore() +
-                " " + app.player.getName(), 20, 40);
+                " " + app.player.getName(), 110, 10);
     },
 
     switchLane: function (button) {
