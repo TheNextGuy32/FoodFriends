@@ -29,67 +29,7 @@ Core2D.Button = (function()
 	 */
 	var Button = function(properties)
 	{
-		// covering bases
-		var properties       = properties           || {};
-		properties.center    = properties.center    || {};
-		properties.size      = properties.size      || {};
-		properties.color     = properties.color     || {};
-		properties.hover     = properties.hover     || {};
-		properties.text      = properties.text      || {};
-		properties.callbacks = properties.callbacks || {};
-	
-		// Settings -----------------------------------------------------
-		this.center = {
-		    x : properties.center.x === undefined ? window.innerWidth / 2 
-		        : properties.center.x,
-		    y : properties.center.y === undefined ? window.innerHeight / 2
-		        : properties.center.y
-		};
-		
-		this.size	= {
-		    width  : properties.size.width  === undefined ? 30
-			    : properties.size.width,
-			height : properties.size.height === undefined ? 10
-			    : properties.size.height,
-			stroke : properties.size.stroke === undefined ? 2
-			    : properties.size.stroke
-		};
-		
-		this.color  = {
-			fill   : properties.color.fill   === undefined ? "#4C6B88"
-			    : properties.color.fill,
-			stroke : properties.color.stroke === undefined ? "#4C6B88"
-			    : properties.color.stroke
-		};
-		
-		this.hover  = {
-			fill   : properties.hover.fill   === undefined ? this.color.fill
-			    : properties.hover.fill,
-			stroke : properties.hover.stroke === undefined ? this.color.stroke
-			    : properties.hover.stroke
-		};
-		
-		this.text   = {
-			string    : properties.text.string === undefined ? "Default"
-			    : properties.text.string,
-			color     : properties.text.color  === undefined ? "#EFECDE"
-			    : properties.text.color,
-			size      : properties.text.size   === undefined ? 12
-			    : properties.text.size,
-			font      : properties.text.font   === undefined ? "Helvetica"
-			    : properties.text.font,
-			alignment : properties.text.align  === undefined ? "center"
-			    : properties.text.align
-		};
-		
-		this.callbacks = {
-			onHover  : properties.callbacks.hover === undefined ? function(){console.log("default hover");}
-			    : properties.callbacks.hover,
-			onClick  : properties.callbacks.click === undefined ? function(){console.log("default click");}
-			    : properties.callbacks.click,
-			onMain   : properties.callbacks.main  === undefined ? function(){console.log("default main");}
-			    : properties.callbacks.main
-		};
+		this.modify(properties);
 		
 		this.currentState  = Core2D.BUTTON_STATE.MAIN;
 		this.previousState = Core2D.BUTTON_STATE.MAIN;
@@ -143,6 +83,75 @@ Core2D.Button = (function()
 	};
 	
 	/*
+	 * Modifies the button based on properties passed in
+	 *
+	 * @return  none
+	 */
+	Button.prototype.modify = function(properties)
+	{
+		// covering bases
+		var properties       = properties           || {};
+		properties.center    = properties.center    || {};
+		properties.size      = properties.size      || {};
+		properties.color     = properties.color     || {};
+		properties.hover     = properties.hover     || {};
+		properties.text      = properties.text      || {};
+		properties.callbacks = properties.callbacks || {};
+	
+		this.center = {
+		    x : properties.center.x === undefined ? window.innerWidth / 2 
+		        : properties.center.x,
+		    y : properties.center.y === undefined ? window.innerHeight / 2
+		        : properties.center.y
+		};
+		
+		this.size	= {
+		    width  : properties.size.width  === undefined ? 30
+			    : properties.size.width,
+			height : properties.size.height === undefined ? 10
+			    : properties.size.height,
+			stroke : properties.size.stroke === undefined ? 2
+			    : properties.size.stroke
+		};
+		
+		this.color  = {
+			fill   : properties.color.fill   === undefined ? "#4C6B88"
+			    : properties.color.fill,
+			stroke : properties.color.stroke === undefined ? "#4C6B88"
+			    : properties.color.stroke
+		};
+		
+		this.hover  = {
+			fill   : properties.hover.fill   === undefined ? this.color.fill
+			    : properties.hover.fill,
+			stroke : properties.hover.stroke === undefined ? this.color.stroke
+			    : properties.hover.stroke
+		};
+		
+		this.text   = {
+			string    : properties.text.string === undefined ? "Default"
+			    : properties.text.string,
+			color     : properties.text.color  === undefined ? "#EFECDE"
+			    : properties.text.color,
+			size      : properties.text.size   === undefined ? 12
+			    : properties.text.size,
+			font      : properties.text.font   === undefined ? "Helvetica"
+			    : properties.text.font,
+			alignment : properties.text.align  === undefined ? "center"
+			    : properties.text.align
+		};
+		
+		this.callbacks = {
+			onHover  : properties.callbacks.hover === undefined ? function(){console.log("default hover");}
+			    : properties.callbacks.hover,
+			onClick  : properties.callbacks.click === undefined ? function(){console.log("default click");}
+			    : properties.callbacks.click,
+			onMain   : properties.callbacks.main  === undefined ? function(){console.log("default main");}
+			    : properties.callbacks.main
+		};
+	};
+	
+	/*
 	 * Draw the button in the given drawing context
 	 *
 	 * @param	ctx     the context that the button is being drawn to
@@ -180,10 +189,10 @@ Core2D.Button = (function()
 			ctx.strokeRect(this.center.x - this.size.width/2, this.center.y - this.size.height/2, this.size.width, this.size.height);
 		
 		// revert changes - post rectangle
-		ctx.restore();
+		//ctx.restore();
 		
 		// restore point - pre text
-		ctx.save();
+		//ctx.save();
 		
 			// text settings
 			//ctx.font = "12px Arial";

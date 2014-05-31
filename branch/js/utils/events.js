@@ -10,6 +10,9 @@
 // namespace
 var app = app || {};
 
+// sparse array of the keys currently being pressed
+app.keydown = [];
+
 /*
  * Callback for resizing the screen
  */
@@ -60,4 +63,14 @@ window.addEventListener('focus', function(){
 	
 	// start animation again
 	app.main.loop();
+});
+
+window.addEventListener('keydown', function(event){
+	app.keydown[event.keyCode] = true;
+	console.log(event.keyCode + " was pressed");
+});
+
+window.addEventListener('keyup', function(event){
+	app.keydown[event.keyCode] = false;
+	console.log(event.keyCode + " is no longer pressed");
 });
