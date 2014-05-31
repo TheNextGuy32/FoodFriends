@@ -44,6 +44,7 @@ app.main = {
 
     crunchSound0: undefined,
     crunchSound1: undefined,
+    flybySound : undefined,
 
     numberScoresStored: 5,
 
@@ -147,6 +148,7 @@ app.main = {
 
         this.crunchSound0 = new Audio("sound/crunch0.wav");
         this.crunchSound1 = new Audio("sound/crunch1.wav");
+        this.flybySound = new Audio("sound/flyby.wav");
 
         //load images
         this.background = new Image();
@@ -176,19 +178,19 @@ app.main = {
 
         //load flaggs
         var americanImage = new Image();
-        americanImage.src = "images/flag_american_final.png";
+        americanImage.src = "images/plane_america.png";
 
         var frenchImage = new Image();
-        frenchImage.src = "images/flag_french_final.png";
+        frenchImage.src = "images/plane_france.png";
 
         var germanImage = new Image();
-        germanImage.src = "images/flag_german_final.png";
+        germanImage.src = "images/plane_german.png";
 
         var italyImage = new Image();
-        italyImage.src = "images/flag_italy_final.png";
+        italyImage.src = "images/plane_italy.png";
 
         var mexcioImage = new Image();
-        mexcioImage.src = "images/flag_mexico_final.png";
+        mexcioImage.src = "images/plane_mexico.png";
 
         this.planeSprites = new Array(new SpriteKeyPair("Germany", new Array(germanImage)), new SpriteKeyPair("USA", new Array(americanImage)),
                                      new SpriteKeyPair("Italy", new Array(italyImage)), new SpriteKeyPair("France", new Array(frenchImage)),
@@ -422,18 +424,10 @@ app.main = {
                     //Cross the collisionline
                     if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
 
-                        //Playing sounds
-                        var randomSound = Math.floor(Math.random() * 2);
-                        if (randomSound == 0) {
-                            this.crunchSound0.play();
-                        }
-                        else {
-                            this.crunchSound1.play();
-                        }
-
-
                         //Spawning planes
                         if (this.lanesOfFood[c][f] instanceof Plane) {
+
+                            this.flybySound.play();
 
                             var positionInNotActive = undefined;
                             if (this.notActiveCountryArray[0][0] == this.lanesOfFood[c][f].country) {
@@ -444,6 +438,15 @@ app.main = {
                             }
                         }
                         else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
+
+                            //Playing crunch sounds
+                            var randomSound = Math.floor(Math.random() * 2);
+                            if (randomSound == 0) {
+                                this.crunchSound0.play();
+                            }
+                            else {
+                                this.crunchSound1.play();
+                            }
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
@@ -460,6 +463,14 @@ app.main = {
                         else {
 
                             //You ate food from another country, get points!
+                            //Playing crunch sounds
+                            var randomSound = Math.floor(Math.random() * 2);
+                            if (randomSound == 0) {
+                                this.crunchSound0.play();
+                            }
+                            else {
+                                this.crunchSound1.play();
+                            }
                             app.player.inkScore();
 
                         }
