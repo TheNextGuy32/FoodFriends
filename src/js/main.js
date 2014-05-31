@@ -60,6 +60,9 @@ app.main = {
     lanesOfFood: new Array,//The food on each lane, its an array of arrays
 
     foodSprites: new Array(),
+	
+	machines: [],
+	machineSprite: undefined,
 
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
@@ -101,6 +104,10 @@ app.main = {
                 this.foodSpawnTimerMaxSeconds[t] = this.foodSpawnTimerMinimumSeconds;
             }
         }
+		
+		this.machines[0] = new Machine(this.machineSprite, this.lanePositions[0], 10, 100, 80);
+		this.machines[1] = new Machine(this.machineSprite, this.lanePositions[1], 10, 100, 80);
+		this.machines[2] = new Machine(this.machineSprite, this.lanePositions[2], 10, 100, 80);
     },
 
     init: function () {
@@ -136,6 +143,9 @@ app.main = {
 
         this.image6 = new Image();
         this.image6.src = "sprites/country6.png";
+		
+		this.machineSprite = new Image();
+		//this.machinesprite.src = "images/machine.jpg
 
         //Loading all the food graphics
         //USA
@@ -315,7 +325,6 @@ app.main = {
                                          10,
                                          chosenFoodImage);
                 this.lanesOfFood[t].push(food);
-
             }
         }
 
