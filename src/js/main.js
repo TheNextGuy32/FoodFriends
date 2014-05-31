@@ -38,7 +38,7 @@ app.main = {
 
     sideBufferX: 10,//The amount of space on the left and right of the lanes
     lanePositions: new Array(),//The position of each lane
-    collisionYCoordinate: 100,
+    collisionYCoordinate: 400,
 
     totalGameTime: 0,
 
@@ -55,7 +55,7 @@ app.main = {
 
     countryFatPointsDeathValue: 10,
 
-    foodSize: 32,
+    foodSize: 50,
 
     lanesOfFood: new Array,//The food on each lane, its an array of arrays
 
@@ -64,11 +64,11 @@ app.main = {
     machines: [],
     machineSprite: undefined,
 
-	planeSprites: new Array(),
-	
-	foodFlags: [],
+    planeSprites: new Array(),
 
-	background: undefined,
+    foodFlags: [],
+
+    background: undefined,
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
     image3: undefined, // images of 3rd country
@@ -86,9 +86,9 @@ app.main = {
 	 * @return  none
 	 */
     createGame: function () {
-        this.lanePositions[0] = (app.main.DEFAULT_WIDTH * (1 / 4) - 30);
-        this.lanePositions[1] = (app.main.DEFAULT_WIDTH * (2 / 4) - 30);
-        this.lanePositions[2] = (app.main.DEFAULT_WIDTH * (3 / 4) - 30);
+        this.lanePositions[0] = this.sideBufferX + ((app.main.DEFAULT_WIDTH-(this.sideBufferX*2)) /4 *1);
+        this.lanePositions[1] = this.sideBufferX + ((app.main.DEFAULT_WIDTH-(this.sideBufferX*2)) /4 *2);
+        this.lanePositions[2] = this.sideBufferX + ((app.main.DEFAULT_WIDTH-(this.sideBufferX*2)) /4 *3);
 
         this.foodSpawnCurrentTimeSeconds[0] = 0;
         this.foodSpawnCurrentTimeSeconds[1] = 0;
@@ -110,26 +110,24 @@ app.main = {
             }
         }
 
-		
-		for(var i = 0; i < 3; i++)
-		{
-			this.machines[i] = new Machine(this.machineSprite, this.lanePositions[i], 10, 32, 24);
-		}
-			
-		for(var i = 0; i < 3; i++)
-		{
-			this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
-		}
+
+        for (var i = 0; i < 3; i++) {
+            this.machines[i] = new Machine(this.machineSprite, this.lanePositions[i]-(27.5), 10, 55, 40);
+        }
+
+        for (var i = 0; i < 3; i++) {
+            this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
+        }
 
     },
 
     init: function () {
         // rendering context -------------------------------------------
         app.canvas = document.querySelector("canvas");
-		
-		app.canvas.width = this.DEFAULT_WIDTH;
-		app.canvas.height = this.DEFAULT_HEIGHT;
-		
+
+        app.canvas.width = this.DEFAULT_WIDTH;
+        app.canvas.height = this.DEFAULT_HEIGHT;
+
         app.ctx = canvas.getContext("2d");
 
         // dimensions --------------------------------------------------
@@ -143,9 +141,9 @@ app.main = {
         this.ios = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
 
         //load images
-		this.background = new Image();
+        this.background = new Image();
         this.background.src = "images/Background.png";
-		
+
         this.image1 = new Image();
         this.image1.src = "sprites/FatGuy_American.png";
 
@@ -164,24 +162,24 @@ app.main = {
 
         this.machineSprite = new Image();
         //this.machinesprite.src = "images/machine.jpg
-		
-		//load flaggs
-		var americanImage = new Image();
-		americanImage.src = "images/flag_american_final.png";
-		
-		var frenchImage = new Image();
-		frenchImage.src = "images/flag_french_final.png";
-		
-		var germanImage = new Image();
-		germanImage.src = "images/flag_german_final.png";
-		
-		var italyImage = new Image();
-		italyImage.src = "images/flag_italy_final.png";
-		
-		var mexcioImage = new Image();
-		mexcioImage.src = "images/flag_mexico_final.png";
-		
-		this.planeSprites = new Array(new SpriteKeyPair("Germany", new Array(germanImage)), new SpriteKeyPair("USA", new Array(americanImage)),
+
+        //load flaggs
+        var americanImage = new Image();
+        americanImage.src = "images/flag_american_final.png";
+
+        var frenchImage = new Image();
+        frenchImage.src = "images/flag_french_final.png";
+
+        var germanImage = new Image();
+        germanImage.src = "images/flag_german_final.png";
+
+        var italyImage = new Image();
+        italyImage.src = "images/flag_italy_final.png";
+
+        var mexcioImage = new Image();
+        mexcioImage.src = "images/flag_mexico_final.png";
+
+        this.planeSprites = new Array(new SpriteKeyPair("Germany", new Array(germanImage)), new SpriteKeyPair("USA", new Array(americanImage)),
                                      new SpriteKeyPair("Italy", new Array(italyImage)), new SpriteKeyPair("France", new Array(frenchImage)),
                                      new SpriteKeyPair("Mexico", new Array(mexcioImage)));
 
@@ -228,8 +226,8 @@ app.main = {
                                      new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage, picoDGImage)));
 
         // Initializes countries
-        this.activeCountryArray = new Array(new Country(5, "USA", this.image1), new Country(5, "Germany", this.image3), new Country(5, "France", this.image2));
-        this.notActiveCountryArray = new Array(new Country(5, "Mexico", this.image5), new Country(5, "Italy", this.image4));
+        this.activeCountryArray = new Array(new Country(1, "USA", this.image1), new Country(1, "Germany", this.image3), new Country(1, "France", this.image2));
+        this.notActiveCountryArray = new Array(new Country(1, "Mexico", this.image5), new Country(1, "Italy", this.image4));
 
 
         this.countryChangeTimer = this.counrtyChangeTimerReset;
@@ -345,41 +343,37 @@ app.main = {
                         break;
                     default:
                 }
-				var countryID = 0;
-				for (var q = 0; q < this.foodSprites.length; q++)
-				{
-					if (this.foodSprites[q].getCountry() == chosenCountryString)
-					{
-						countryID = q;
-					}
-				}
-				
-				var choosePlane = Math.floor((Math.random() * 2));
-				if(choosePlane == 0 &&  ( chosenCountryString == this.notActiveCountryArray[0][0] || chosenCountryString == this.notActiveCountryArray[1][0]))
-				{
-					var plane = new Plane(chosenCountryString,
+                var countryID = 0;
+                for (var q = 0; q < this.foodSprites.length; q++) {
+                    if (this.foodSprites[q].getCountry() == chosenCountryString) {
+                        countryID = q;
+                    }
+                }
+
+                var choosePlane = Math.floor((Math.random() * 2));
+                if (choosePlane == 0 && (chosenCountryString == this.notActiveCountryArray[0][0] || chosenCountryString == this.notActiveCountryArray[1][0])) {
+                    var plane = new Plane(chosenCountryString,
 											t,
 											this.lanePositions[t],
 											10,
 											this.planeSprites[countryID].getSprites()[0]);
-					this.lanesOfFood[t].push(plane);
-				}
-				else
-				{
-					//Choosing food
-					var chosenFood = Math.floor((Math.random() * 2));
-					var chosenFoodImage = undefined;
-					
-					chosenFoodImage = this.foodSprites[countryID].getSprites()[chosenFood];
+                    this.lanesOfFood[t].push(plane);
+                }
+                else {
+                    //Choosing food
+                    var chosenFood = Math.floor((Math.random() * 2));
+                    var chosenFoodImage = undefined;
 
-					//Create food
-					var food = new Food(chosenCountryString,
+                    chosenFoodImage = this.foodSprites[countryID].getSprites()[chosenFood];
+
+                    //Create food
+                    var food = new Food(chosenCountryString,
 											 t,
-											 this.lanePositions[t]+15,
-											 10,
+											 this.lanePositions[t],
+											 20,
 											 chosenFoodImage);
-					this.lanesOfFood[t].push(food);
-				}
+                    this.lanesOfFood[t].push(food);
+                }
             }
         }
 
@@ -406,7 +400,7 @@ app.main = {
 
                 //If its across teh food eat line
                 if (this.activeCountryArray[c].getFatPoint() > 0) {
-                    
+
                     if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
 
                         if (this.lanesOfFood[c][f] instanceof Plane) {
@@ -422,12 +416,8 @@ app.main = {
                         else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
 
                             //You ate food from your country! ur getting fat!
-                            console.log(c + " " + this.activeCountryArray[c].getFatPoint());
                             this.activeCountryArray[c].DecFatPoint();
-                            console.log(c + " " + this.activeCountryArray[c].getFatPoint());
-                            for (var i = 0; i < 100000; i++) {
-                                app.player.decScore();
-                            }
+
                         }
                         else {
 
@@ -480,9 +470,9 @@ app.main = {
 
         // background 
 
-        
+
         app.ctx.fillStyle = "#FFC972";
-        app.ctx.drawImage(this.background,0,0,540,480);
+        app.ctx.drawImage(this.background, 0, 0, 540, 480);
 
         this.countryChangeTimer -= 1;
         if (this.countryChangeTimer <= 0) {
@@ -497,15 +487,14 @@ app.main = {
         for (var c = 0; c < 3; c++) {
             //Are they alive?
             if (this.activeCountryArray[c].getFatPoint() > 0) {
-                app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c], this.collisionYCoordinate, 32, 32);
+                app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c]- (50/2), this.collisionYCoordinate, 50, 80);
             }
         }
-		
-		//Draw machine bottoms
-		for(var i = 0; i < this.machines.length; i++)
-		{
-			this.machines[i].drawBottom(app.ctx);
-		}
+
+        //Draw machine bottoms
+        for (var i = 0; i < this.machines.length; i++) {
+            this.machines[i].drawBottom(app.ctx);
+        }
 
         //Draw all the food
         for (var c = 0; c < 3; c++) {
@@ -516,12 +505,11 @@ app.main = {
 
             }
         }
-		
-		//Draw machines
-		for(var i = 0; i < this.machines.length; i++)
-		{
-			this.machines[i].draw(app.ctx);
-		}
+
+        //Draw machines
+        for (var i = 0; i < this.machines.length; i++) {
+            this.machines[i].draw(app.ctx);
+        }
 
         this.showScore();
 
@@ -546,14 +534,14 @@ app.main = {
         // calculate size of font based on screen dimension
         app.ctx.fillStyle = "#000000";
         app.ctx.font = "10px Helvetica";
-        
-    	app.ctx.textAlign = "left";
-    	app.ctx.textBaseline = "top";
-        
+
+        app.ctx.textAlign = "center";
+        app.ctx.textBaseline = "top";
+
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
 
-        app.ctx.fillText("Score: " + app.player.getScore(), 110, 10);
+        app.ctx.fillText("Score: " + app.player.getScore(), 160, 50);
 
     },
 
