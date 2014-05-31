@@ -85,6 +85,8 @@ app.game = {
         this.crunchSound1 = new Audio("sound/crunch1.wav");
 		this.flybySound = new Audio("sound/flyby.wav");
 		
+		this.flybySound.volume = 1;
+		
 		//load images
         this.background = new Image();
         this.background.src = "images/Background.png";
@@ -388,6 +390,31 @@ app.game = {
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
+                            /*
+                            var tempCountry = this.activeCountryArray[c].getCountryName();
+                            var index = this.activeCountryArray[c].getImageIndex();
+                            var nextIndex = index + 1;
+                            this.activeCountryArray[c].setImageIndex(nextIndex);
+                            console.log(this.activeCountryArray[c]);
+                            console.log(tempCountry);
+                            if (tempCountry == "USA" && nextIndex < 4) {
+                                    console.log("hello");
+                                    this.activeCountryArray[c].setImage = this.americaImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "Germany" && nextIndex < 4) {
+                                    console.log("hello");
+                                    this.activeCountryArray[c].setImage = this.germanyImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "France" && nextIndex < 4) {
+                                console.log("hello");
+                                    this.activeCountryArray[c].setImage = this.franceImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "Italy" && nextIndex < 4) {
+                                    this.activeCountryArray[c].setImage = this.italyImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "Mexico" && nextIndex < 4) {
+                                    this.activeCountryArray[c].setImage = this.mexicoImages[this.activeCountryArray[c].imageIndex];
+                            }*/
 
                             if (this.activeCountryArray[c].getFatPoint() == 0) {
                                 //YOU HAVE DIED! spawn emitter

@@ -18,7 +18,7 @@ app.title = {
 	ready              : false,     // if the screen is ready to be used
 	instructionsButton : undefined, // button leading to instruction screen
 	gameButton         : undefined, // button leading to game screen
-	//testLabel          : undefined,
+	titleImage         : undefined,
 	
 	/*
 	 * Initializes the title screen with any necessary values
@@ -42,6 +42,9 @@ app.title = {
 	 */
 	createAssets : function()
 	{
+		this.titleImage = new Image();
+		this.titleImage.src = "images/title.png";
+	
 		var gameButton_properties = {
 			center : {
 				x : 150,
@@ -54,7 +57,7 @@ app.title = {
 			},
 			
 			text : {
-				string: "Game"
+				string: "Start"
 			},
 			
 			callbacks : {
@@ -117,10 +120,12 @@ app.title = {
 		app.ctx.fillStyle = "#FFC972";
 		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 		
+		app.ctx.drawImage(this.titleImage, 0, 50, app.main.DEFAULT_WIDTH, 100);
+		
 		// text
-		app.ctx.fillStyle = "#000000";
-		app.ctx.font = "20px Helvetica";
-		app.ctx.fillText("Food Friends", app.main.DEFAULT_WIDTH/5, 50);
+		//app.ctx.fillStyle = "#000000";
+		//app.ctx.font = "20px Helvetica";
+		//app.ctx.fillText("Food Friends", app.main.DEFAULT_WIDTH/5, 50);
 		
 		// buttons
 		this.gameButton.render(app.ctx);
