@@ -440,6 +440,8 @@ app.game = {
                     }
                 }
             }
+			
+			app.main.changeState(app.GAME_STATE.HIGH_SCORE);
         }
 
         this.lastUpdate = Date.now();
