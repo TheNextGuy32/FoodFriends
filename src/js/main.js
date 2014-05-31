@@ -30,7 +30,7 @@ app.states = {
 
 app.main = {
     lastUpdate: Date.now(),
-    counrtyChangeTimerReset: 100,
+    counrtyChangeTimerReset: 10000,
     countryChangeTimer: undefined,
 
     DEFAULT_WIDTH: 320, // starting width for game
@@ -76,9 +76,9 @@ app.main = {
 	 * @return  none
 	 */
     createGame: function () {
-        this.lanePositions[0] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
-        this.lanePositions[1] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
-        this.lanePositions[2] = (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
+        this.lanePositions[0] = (app.main.DEFAULT_WIDTH*(1/4)-30);
+        this.lanePositions[1] = (app.main.DEFAULT_WIDTH*(2/4)-30);
+        this.lanePositions[2] = (app.main.DEFAULT_WIDTH*(3/4)-30);
 
         this.foodSpawnCurrentTimeSeconds[0] = 0;
         this.foodSpawnCurrentTimeSeconds[1] = 0;
@@ -309,7 +309,7 @@ app.main = {
                 //Create food
                 var food = new Food(chosenCountryString,
                                          t,
-                                         this.lanePositions[t],
+                                         this.lanePositions[t]+15,
                                          10,
                                          chosenFoodImage);
                 this.lanesOfFood[t].push(food);
@@ -418,15 +418,12 @@ app.main = {
       **/
     showScore: function () {
         // calculate size of font based on screen dimension
-        var size;
-
         this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
         app.ctx.font = this.font;
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
-        app.ctx.fillText("Score: " + app.player.getScore() +
-                " " + app.player.getName(), 20, 40);
+        app.ctx.fillText("Score: " + app.player.getScore(), 10, 10);
     },
 
     switchLane: function (button) {
