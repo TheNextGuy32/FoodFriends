@@ -29,6 +29,24 @@ window.addEventListener('click', function(e){
 	
 	console.log("clicked on screen @ " + x + ", " + y);
 	
+	// actions based on game state
+	switch(app.main.currentGameState)
+	{
+	case app.GAME_STATE.TITLE:
+		app.title.checkCollisions(x, y);
+	
+		break;
+		
+	case app.GAME_STATE.INSTRUCTIONS:
+	
+		break;
+		
+	case app.GAME_STATE.GAME:
+	
+		break;
+		
+	}
+	
 }, false);
 
 /*

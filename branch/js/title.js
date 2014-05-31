@@ -53,7 +53,9 @@ app.title = {
 				height: 20
 			},
 			
-			callbacks : {onClick : function(){app.main.changeState(app.GAME_STATE.GAME)} }
+			callbacks : {
+				click : function(){app.main.changeState(app.GAME_STATE.GAME)} 
+			}
 		};
 		
 		this.gameButton = new Core2D.Button(gameButton_properties);
@@ -63,7 +65,7 @@ app.title = {
 	update : function()
 	{
 		this.pollKeyboard();
-		this.checkCollisions();
+		//this.checkCollisions();
 	},
 	
 	/*
@@ -82,9 +84,23 @@ app.title = {
 	 *
 	 * @return  none
 	 */
-	checkCollisions : function()
+	checkCollisions : function(mouseX, mouseY)
 	{
+		console.log("test");
 		
+		// check collision against our button
+		var collision = pointInRect({x: mouseX, y: mouseY}, 
+		{x: this.gameButton.center.x - this.gameButton.size.width/2,
+		 y: this.gameButton.center.y - this.gameButton.size.height/2,
+		 width: this.gameButton.size.width,
+		 height: this.gameButton.size.height});
+		 
+		console.log(collision);
+		
+		if(collision)
+		{
+			this.gameButton.changeState(Core2D.BUTTON_STATE.CLICK);
+		}
 	},
 	
 	render : function()
