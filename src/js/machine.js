@@ -20,7 +20,7 @@ Machine.prototype.drawBottom = function(ctx)
 	ctx.fillStyle = "rgb(233, 234, 235)";
 	ctx.fillRect(this.x - 26, this.y + 18, 53, 13);
 	
-	ctx.drawImage(this.conveyorImage, this.x - this.width / 2, this.y + this.height / 2 - 2, this.width, 355);
+	ctx.drawImage(this.conveyorImage, this.x - this.width / 2, this.y + this.height / 2-5, this.width, 355);
 	
 	ctx.restore();
 }
