@@ -42,6 +42,9 @@ app.main = {
 
     totalGameTime: 0,
 
+    crunchSound0: undefined,
+    crunchSound1: undefined,
+
     numberScoresStored: 5,
 
     foodSpawnTimerMaximumSeconds: 7,
@@ -87,9 +90,9 @@ app.main = {
 	 * @return  none
 	 */
     createGame: function () {
-        this.lanePositions[0] = this.sideBufferX + ((app.main.DEFAULT_WIDTH-(this.sideBufferX*2)) /4 *1);
-        this.lanePositions[1] = this.sideBufferX + ((app.main.DEFAULT_WIDTH-(this.sideBufferX*2)) /4 *2);
-        this.lanePositions[2] = this.sideBufferX + ((app.main.DEFAULT_WIDTH-(this.sideBufferX*2)) /4 *3);
+        this.lanePositions[0] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 1);
+        this.lanePositions[1] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 2);
+        this.lanePositions[2] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 3);
 
         this.foodSpawnCurrentTimeSeconds[0] = 0;
         this.foodSpawnCurrentTimeSeconds[1] = 0;
@@ -140,6 +143,9 @@ app.main = {
         this.ua = navigator.userAgent.toLowerCase();
         this.android = this.ua.indexOf('android') > -1 ? true : false;
         this.ios = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
+
+        this.crunchSound0 = new Audio("sound/crunch0.wav");
+        this.crunchSound1 = new Audio("sound/crunch1.wav");
 
         //load images
         this.background = new Image();
@@ -405,8 +411,19 @@ app.main = {
                 //If its across teh food eat line
                 if (this.activeCountryArray[c].getFatPoint() > 0) {
 
+                    //Cross the collisionline
                     if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
 
+                        //Playing sounds
+                        var randomSound = Math.floor(Math.random() * 2);
+                        if (randomSound == 0) {
+                            this.crunchSound0.play();
+                        }
+                        else {
+                            this.crunchSound1.play();
+                        }
+
+                        //Spawning planes
                         if (this.lanesOfFood[c][f] instanceof Plane) {
 
                             var positionInNotActive = undefined;
@@ -421,8 +438,7 @@ app.main = {
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
-                            if (this.activeCountryArray[c].getFatPoint() == 0)
-                            {
+                            if (this.activeCountryArray[c].getFatPoint() == 0) {
                                 //YOU HAVE DIED! spawn emitter
                             }
 
@@ -495,7 +511,7 @@ app.main = {
         for (var c = 0; c < 3; c++) {
             //Are they alive?
             if (this.activeCountryArray[c].getFatPoint() > 0) {
-                app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c]- (50/2), this.collisionYCoordinate, 50, 80);
+                app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c] - (50 / 2), this.collisionYCoordinate, 50, 80);
             }
         }
 
