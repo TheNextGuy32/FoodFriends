@@ -66,6 +66,9 @@ app.main = {
 		// ready to resize
 		this.resize();
 		
+		// "change" into title
+		this.changeState(app.GAME_STATE.TITLE);
+		
 		// begin main loop
 		this.loop();
 	},

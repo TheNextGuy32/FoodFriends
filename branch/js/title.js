@@ -15,7 +15,9 @@ app.title = {
 	// Constants -----------------------------------------------------
 	
 	// Variables -----------------------------------------------------
-	ready : true,
+	ready              : false,     // if the screen is ready to be used
+	instructionsButton : undefined, // button leading to instruction screen
+	gameButton         : undefined, // button leading to game screen
 	
 	/*
 	 * Initializes the title screen with any necessary values
