@@ -68,7 +68,7 @@ app.main = {
 	
 	foodFlags: [],
 
-
+	background: undefined,
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
     image3: undefined, // images of 3rd country
@@ -143,6 +143,9 @@ app.main = {
         this.ios = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
 
         //load images
+		this.background = new Image();
+        this.background.src = "images/Background.png";
+		
         this.image1 = new Image();
         this.image1.src = "sprites/FatGuy_American.png";
 
@@ -476,12 +479,10 @@ app.main = {
         app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 
         // background 
-        
-        var background = new Image();
-        background.src = "images/Background.png";
+
         
         app.ctx.fillStyle = "#FFC972";
-        app.ctx.drawImage(background,0,0,540,480);
+        app.ctx.drawImage(this.background,0,0,540,480);
 
         this.countryChangeTimer -= 1;
         if (this.countryChangeTimer <= 0) {
