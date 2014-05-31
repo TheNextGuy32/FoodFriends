@@ -26,8 +26,7 @@ app.dimensions = {
 	width  : undefined,
 	height : undefined,
 	ratio  : undefined,
-	scaleX : 1,
-	scaleY : 1
+	scale : 1
 };                      // available dimension properties for the game
 
 app.offset = {
@@ -61,6 +60,10 @@ app.main = {
 		
 		// canvas variables ----------------------------------------
 		app.canvas = document.querySelector("#canvas");
+		
+		app.canvas.width = this.DEFAULT_WIDTH;
+		app.canvas.height = this.DEFAULT_HEIGHT;
+		
 		app.ctx = canvas.getContext("2d");
 		
 		// dimensions ----------------------------------------------
@@ -162,8 +165,8 @@ app.main = {
         app.canvas.style.height = app.dimensions.height + 'px';
 
         // set scale relative to default size
-        app.dimensions.scaleX = app.dimensions.width / app.main.DEFAULT_WIDTH;
-		app.dimensions.scaleY = app.dimensions.height / app.main.DEFAULT_HEIGHT;
+        app.dimensions.scale = app.dimensions.width / app.main.DEFAULT_WIDTH;
+
 
         // console.log("scale: " + app.dimensions.scale);
 

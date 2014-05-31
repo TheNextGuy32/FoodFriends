@@ -18,7 +18,7 @@ app.title = {
 	ready              : false,     // if the screen is ready to be used
 	instructionsButton : undefined, // button leading to instruction screen
 	gameButton         : undefined, // button leading to game screen
-	testLabel          : undefined,
+	//testLabel          : undefined,
 	
 	/*
 	 * Initializes the title screen with any necessary values
@@ -44,36 +44,47 @@ app.title = {
 	{
 		var gameButton_properties = {
 			center : {
-				x : 100,
-				y : 200
+				x : 150,
+				y : 400
 			},
+			
+			size : {
+				width: 80,
+				height: 20
+			},
+			
 			callbacks : {onClick : function(){app.main.changeState(app.GAME_STATE.GAME)} }
 		};
 		
-		var testLabel_properties = {
-			center: {
-				x: 50,
-				y: 300
-			}
-		};
-		
-		//this.gameButton = new Core2D.Button(gameButton_properties);
+		this.gameButton = new Core2D.Button(gameButton_properties);
 		//this.testLabel  = new Core2D.Label(testLabel_properties);
 	},
 	
 	update : function()
 	{
 		this.pollKeyboard();
+		this.checkCollisions();
 	},
 	
 	/*
 	 * polls the keyboard to check if certain keys are being pressed
 	 *
+	 * @return  none
 	 */
 	pollKeyboard : function()
 	{
 		if(app.keydown[app.keys.ENTER])
 			app.main.changeState(app.GAME_STATE.GAME);
+	},
+	
+	/*
+	 * checks for collisions against the buttons on the screen
+	 *
+	 * @return  none
+	 */
+	checkCollisions : function()
+	{
+		
 	},
 	
 	render : function()
@@ -86,20 +97,13 @@ app.title = {
 		app.ctx.fillStyle = "#FFC972";
 		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 		
-		// test
-		app.ctx.fillStyle = "red";
-		//app.ctx.fillRect(app.main.DEFAULT_WIDTH/4, app.main.DEFAULT_HEIGHT/3, app.main.DEFAULT_WIDTH/10, app.main.DEFAULT_HEIGHT/10);
-		app.ctx.fillRect(80 / app.dimensions.scaleX, 160 / app.dimensions.scaleY, 32 / app.dimensions.scaleX, 2 / app.dimensions.scaleY);
-		
-		// 320 / 4 = 80
-		// 480 / 3 = 160
-		// 320 / 10 = 32
-		// 480 / 10 = 48
-		
+		// text
+		app.ctx.fillStyle = "#000000";
+		app.ctx.font = "20px Helvetica";
+		app.ctx.fillText("Press enter to begin!", app.main.DEFAULT_WIDTH/5, 50);
 		
 		// buttons
-		//this.gameButton.render(app.ctx);
-		//this.testLabel.render(app.ctx);
+		this.gameButton.render(app.ctx);
 		
 		// restore at end
 		app.ctx.restore();
