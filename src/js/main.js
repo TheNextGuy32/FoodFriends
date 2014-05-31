@@ -238,7 +238,7 @@ app.main = {
 
         // Initializes countries
         this.activeCountryArray = new Array(new Country(1, "USA", this.image1), new Country(1, "Germany", this.image3), new Country(1, "France", this.image2));
-        this.notActiveCountryArray = new Array(new Country(1, "Mexico", this.image5), new Country(1, "Italy", this.image4));
+        this.notActiveCountryArray = new Array(new Array("Mexico", this.image5), new Array("Italy", this.image4));
 
 
         this.countryChangeTimer = this.counrtyChangeTimerReset;
@@ -368,7 +368,7 @@ app.main = {
 
                 var choosePlane = Math.floor((Math.random() * 2));
                 if (choosePlane == 0) {
-                    if (chosenCountryString == this.notActiveCountryArray[0].countryName || chosenCountryString == this.notActiveCountryArray[1].countryName) {
+                    if (chosenCountryString == this.notActiveCountryArray[0][0] || chosenCountryString == this.notActiveCountryArray[1][0]) {
                         var plane = new Plane(chosenCountryString,
                                                 t,
                                                 this.lanePositions[t],
