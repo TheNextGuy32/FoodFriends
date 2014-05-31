@@ -67,7 +67,7 @@ app.title = {
 	},
 	
 	/*
-	 * polls the keyboard to check if certain keys are being pres
+	 * polls the keyboard to check if certain keys are being pressed
 	 *
 	 */
 	pollKeyboard : function()
@@ -88,7 +88,13 @@ app.title = {
 		
 		// test
 		app.ctx.fillStyle = "red";
-		app.ctx.fillRect(app.main.DEFAULT_WIDTH/4, app.main.DEFAULT_HEIGHT/3, app.main.DEFAULT_WIDTH/10, app.main.DEFAULT_HEIGHT/10);
+		//app.ctx.fillRect(app.main.DEFAULT_WIDTH/4, app.main.DEFAULT_HEIGHT/3, app.main.DEFAULT_WIDTH/10, app.main.DEFAULT_HEIGHT/10);
+		app.ctx.fillRect(80 / app.dimensions.scaleX, 160 / app.dimensions.scaleY, 32 / app.dimensions.scaleX, 2 / app.dimensions.scaleY);
+		
+		// 320 / 4 = 80
+		// 480 / 3 = 160
+		// 320 / 10 = 32
+		// 480 / 10 = 48
 		
 		
 		// buttons
