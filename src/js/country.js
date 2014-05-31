@@ -11,10 +11,9 @@ var Country = function(fatPoint, countryName, image)
 
 
 
-Country.prototype.setFatPoint = function()
+Country.prototype.DecFatPoint = function()
 {
-	this.fatPoint +=1;
-	app.player.decScore();
+	this.fatPoint--;
 };
 	
 Country.prototype.getFatPoint = function()
