@@ -63,6 +63,8 @@ app.main = {
 	
 	machines: [],
 	machineSprite: undefined,
+	
+	foodFlags: [],
 
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
@@ -105,9 +107,15 @@ app.main = {
             }
         }
 		
-		this.machines[0] = new Machine(this.machineSprite, this.lanePositions[0], 10, 100, 80);
-		this.machines[1] = new Machine(this.machineSprite, this.lanePositions[1], 10, 100, 80);
-		this.machines[2] = new Machine(this.machineSprite, this.lanePositions[2], 10, 100, 80);
+		for(var i = 0; i < 3; i++)
+		{
+			this.machines[i] = new Machine(this.machineSprite, this.lanePositions[i], 10, 32, 24);
+		}
+			
+		for(var i = 0; i < 3; i++)
+		{
+			this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
+		}
     },
 
     init: function () {
@@ -434,6 +442,12 @@ app.main = {
                 app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c], this.collisionYCoordinate, 32, 32);
             }
         }
+		
+		//Draw machine bottoms
+		for(var i = 0; i < this.machines.length; i++)
+		{
+			this.machines[i].drawBottom(app.ctx);
+		}
 
         //Draw all the food
         for (var c = 0; c < 3; c++) {
@@ -444,6 +458,12 @@ app.main = {
 
             }
         }
+		
+		//Draw machines
+		for(var i = 0; i < this.machines.length; i++)
+		{
+			this.machines[i].draw(app.ctx);
+		}
 
         this.showScore();
 
