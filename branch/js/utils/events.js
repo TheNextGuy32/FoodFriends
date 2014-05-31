@@ -39,3 +39,25 @@ window.addEventListener('load', function(){
 	
 	app.main.init();
 });
+
+/*
+ * Callback for when the window goes out of focus
+ */
+window.addEventListener('blur', function(){
+	console.log("page blur");
+	
+	cancelAnimationFrame(app.animationID);
+	app.main.changeState(app.GAME_STATE.PAUSED);
+});
+
+/*
+ * Callback for when the window goes back into focus
+ */
+window.addEventListener('focus', function(){
+	console.log("page focus");
+	
+	app.main.changeState();
+	
+	// start animation again
+	app.main.loop();
+});

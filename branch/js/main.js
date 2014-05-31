@@ -9,11 +9,14 @@
 var app = app || {};
 
 // Globals ----------------------------------------------------
+app.animationID = undefined;
+
 app.GAME_STATE = {
 	TITLE        : 0,
 	INSTRUCTIONS : 1,
 	GAME         : 2,
-	HIGH_SCORE   : 3
+	HIGH_SCORE   : 3,
+	PAUSED       : 4
 };                      // available states for the game
 
 app.canvas = undefined; // canvas element (which will be resized)
@@ -90,6 +93,33 @@ app.main = {
 			this.previousState = this.currentState;
 			this.currentState = newState;
 		}
+		
+		// begin loading of a state if necessary
+		switch(this.currentState)
+		{
+		case app.GAME_STATE.TITLE:
+			if(!app.title.ready)
+				app.title.init();
+			
+			break;
+			
+		case app.GAME_STATE.INSTRUCTIONS:
+			if(!app.instructions.ready)
+				app.instructions.init();
+				
+			break;
+			
+		case app.GAME_STATE.GAME:
+			if(!app.game.ready)
+				app.game.init();
+				
+			break;
+			
+		case app.GAME_STATE.PAUSED:
+			// nothing here atm
+			
+			break;
+		}
 	},
 	
 	/*
@@ -143,7 +173,7 @@ app.main = {
 		// ToDo: gamestate logic here
 		
 		// bind to prevent scope-loss
-		requestAnimationFrame(this.loop.bind(this));
+		app.animationID = requestAnimationFrame(this.loop.bind(this));
 	},
 	
 	/*
@@ -166,8 +196,16 @@ app.main = {
 				app.title.update();
 			
 			break;
+			
+		case app.GAME_STATE.INSTRUCTIONS:
+			if(app.instructions.ready)
+				app.instructions.update();
+		
+			break;
 		
 		case app.GAME_STATE.GAME:
+			if(app.game.ready)
+				app.game.update();
 			break;
 		}
 	},
@@ -181,13 +219,26 @@ app.main = {
 	{
 		// clear screen
 		app.ctx.clearRect(0, 0, this.DEFAULT_WIDTH, this.DEFAULT_HEIGHT);
+			
+		switch(this.currentGameState)
+		{
+		case app.GAME_STATE.TITLE:
+			if(app.title.ready)
+				app.title.render();
+				
+			break;
+				
+		case app.GAME_STATE.INSTRUCTIONS:
+			if(app.instructions.ready)
+				app.instructions.render();
 		
-		// background color
-		app.ctx.fillStyle = "#FFCC94";
-		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
-	
-		//console.log("main render");
-		if(this.currentState == app.GAME_STATE.TITLE && app.title.ready)
-			app.title.render();
+			break;
+			
+		case app.GAME_STATE.GAME:
+			if(app.game.ready)
+				app.game.render();
+				
+			break;
+		}
 	}
 };

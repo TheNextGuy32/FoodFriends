@@ -20,13 +20,21 @@ app.title = {
 	/*
 	 * Initializes the title screen with any necessary values
 	 *
+	 * @return  none
 	 */
 	init : function()
 	{
 		console.log("title init!");
 		
+		this.createAssets();
+		
 		// ready to begin
 		this.ready = true;
+	},
+	
+	createAssets : function()
+	{
+		
 	},
 	
 	update : function()
