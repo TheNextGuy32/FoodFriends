@@ -30,11 +30,7 @@ app.states = {
 
 app.main = {
     lastUpdate: Date.now(),
-<<<<<<< HEAD
-    counrtyChangeTimerReset: 1000,
-=======
     counrtyChangeTimerReset: 10000,
->>>>>>> a49792a411dba335e4df49aa378f13fa8dccf1a8
     countryChangeTimer: undefined,
 
     DEFAULT_WIDTH: 320, // starting width for game
@@ -64,15 +60,12 @@ app.main = {
     lanesOfFood: new Array,//The food on each lane, its an array of arrays
 
     foodSprites: new Array(),
-<<<<<<< HEAD
 	planeSprites: new Array(),
-=======
 	
 	machines: [],
 	machineSprite: undefined,
 	
 	foodFlags: [],
->>>>>>> a49792a411dba335e4df49aa378f13fa8dccf1a8
 
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
@@ -160,7 +153,6 @@ app.main = {
 
         this.image5 = new Image();
         this.image5.src = "sprites/country5.png";
-<<<<<<< HEAD
 		
 		//load flaggs
 		var americanImage = new Image();
@@ -182,15 +174,9 @@ app.main = {
                                      new SpriteKeyPair("Italy", new Array(italyImage)), new SpriteKeyPair("France", new Array(frenchImage)),
                                      new SpriteKeyPair("Mexico", new Array(mexcioImage)));
 		
-=======
-
-        this.image6 = new Image();
-        this.image6.src = "sprites/country6.png";
-		
 		this.machineSprite = new Image();
 		//this.machinesprite.src = "images/machine.jpg
 
->>>>>>> a49792a411dba335e4df49aa378f13fa8dccf1a8
         //Loading all the food graphics
         //USA
         var peanutbutterImage = new Image();
@@ -350,7 +336,6 @@ app.main = {
                         break;
                     default:
                 }
-<<<<<<< HEAD
 			
 				var countryID = 0;
 				for (var q = 0; q < this.foodSprites.length; q++)
@@ -382,30 +367,11 @@ app.main = {
 					//Create food
 					var food = new Food(chosenCountryString,
 											 t,
-											 this.lanePositions[t],
+											 this.lanePositions[t]+15,
 											 10,
 											 chosenFoodImage);
 					this.lanesOfFood[t].push(food);
 				}
-=======
-                //Choosing food
-                var chosenFood = Math.floor((Math.random() * 2));
-                var chosenFoodImage = undefined;
-
-                for (var q = 0; q < this.foodSprites.length; q++) {
-                    if (this.foodSprites[q].getCountry() == chosenCountryString) {
-                        chosenFoodImage = this.foodSprites[q].getSprites()[chosenFood];
-                    }
-                }
-
-                //Create food
-                var food = new Food(chosenCountryString,
-                                         t,
-                                         this.lanePositions[t]+15,
-                                         10,
-                                         chosenFoodImage);
-                this.lanesOfFood[t].push(food);
->>>>>>> a49792a411dba335e4df49aa378f13fa8dccf1a8
             }
         }
 
@@ -430,7 +396,6 @@ app.main = {
                         this.lanesOfFood[c].splice(f, 1);
                     }
 
-<<<<<<< HEAD
                     //If its across teh food eat line
                     else if (this.lanesOfFood[c][f].y > this.collisionYCoordinate)
                     {
@@ -452,26 +417,14 @@ app.main = {
 							{
 								//You ate food from your country! ur getting fat!
 								this.activeCountryArray[c].fatPoints++;
+								app.player.decScore();
 							}
 							else
 							{
 								//You ate food from another country, get points!
-								app.player.setScore(app.player.getScore() + 10);
+								app.player.inkScore();
 							}
 						}
-=======
-                        //If its across teh food eat line
-                    else if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
-                        if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
-                            //You ate food from your country! ur getting fat!
-                            this.activeCountryArray[c].fatPoints++;
-                            app.player.decScore();
-                        }
-                        else {
-                            //You ate food from another country, get points!
-                            app.player.inkScore();
-                        }
->>>>>>> a49792a411dba335e4df49aa378f13fa8dccf1a8
                         //We remove it once weve eaten it
                         this.lanesOfFood[c].splice(f, 1);
                     }
