@@ -16,12 +16,14 @@
 var app = app || {};
 
 app.ResourceManager = {
-	foodImages        : new Array(),
-	activeCountries   : new Array(),
-	inactiveCountries : new Array(),
+	foodSprites       : new Array(), // contains the food sprites that will be available for food items
+	activeCountries   : new Array(), // contains the currently active countries in the game
+	inactiveCountries : new Array(), // contains the currently inactive countries in the game
+	buttons           : new Array(), // contains all available buttons in the game
+	labels            : new Array(), // contains all available labels
 	
 	/*
-	 * Loads necessary images that will be used in the game
+	 * Loads and creates necessary images that will be used in the game
 	 *
 	 * @return  none
 	 */
@@ -60,7 +62,7 @@ app.ResourceManager = {
 		var image_food_sausage   = new Image();
 		
 		image_food_beer.src      = "sprites/food_beer.png";
-		image_food_saurkraut.src = "sprites/food_saurkraut.png";
+		image_food_saurkraut.src = "sprites/food_saurkruat.png";
 		image_food_sausage.src   = "sprites/food_sausage.png";
 		
 		// Italy
@@ -85,16 +87,37 @@ app.ResourceManager = {
 		var image_food_snail    = new Image();
 		var image_food_wine     = new Image();
 		
-		image_food_baugette.src = "sprites/food_baugette.png";
+		image_food_baugette.src = "sprites/food_baguette.png";
 		image_food_cheese.src   = "sprites/food_cheese.png";
 		image_food_snail.src    = "sprites/food_snail.png";
 		image_food_wine.src     = "sprites/food_wine.png";
 		
 		// Asset Creation -------------------------------------------
 		// Countries
-		/*this.activeCountries.push( {key: "USA", 
-			value:
+		this.activeCountries.push( {key: "USA", 
+			value: new app.country(image_country_USA)} );
 		this.activeCountries.push( {key: "Germany",
-			value: [image_food_*/
+			value: new app.country(image_country_Germany)} );
+		this.activeCountries.push( {key: "France",
+			value: new app.country(image_country_France)} );
+			
+		this.inactiveCountries.push( {key: "Canada",
+			value: new app.country(image_country_Canada)} );
+		this.inactiveCountries.push( {key: "Mexico",
+			value: new app.country(image_country_Mexico)} );
+		this.inactiveCountries.push( {key: "Italy",
+			value: new app.country(image_country_Italy)} );
+			
+		// Food images
+		this.foodSprites.push( {key: "USA", value: [image_food_applePie,
+			image_food_fries, image_food_hamburger, image_food_pancakes]} );
+		this.foodSprites.push( {key: "Germany", value: [image_food_saurkraut,
+			image_food_sausage, image_food_beer]} );
+		this.foodSprites.push( {key: "Italy", value: [image_food_spaghetti,
+			image_food_pizza, image_food_tiramisu]} );
+		this.foodSprites.push( {key: "France", value: [image_food_baugette,
+			image_food_cheese, image_food_snail, image_food_wine]} );
+		this.foodSprites.push( {key: "Mexico", value: [image_food_burrito,
+			image_food_guacamole, image_food_picoDeGallo]} );
 	}
 };

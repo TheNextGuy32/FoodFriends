@@ -1,8 +1,6 @@
 /*
  * country.js
- *
- * @author  
- * @edits   Freddy Garcia
+ * 
  *
  * Represents one of the countries that will be on the playing field
  */
@@ -40,6 +38,4 @@ app.country.prototype.addFat = function()
  * @return  none
  */
 app.country.prototype.IsAlive = function()
-{
-	return this._isAlive;
-};
+{ return this._isAlive; };
