@@ -245,7 +245,12 @@ app.main = {
         // resize screen
         this.resize();
 
-        //set player
+        //set Musik
+        
+        var backmusic = new Audio('sound/FeedMe!.mp3');
+        backmusic.loop=true;
+        backmusic.play();
+        
         //Create our game countries, machines, etc
 
         this.createGame();
