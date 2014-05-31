@@ -34,9 +34,22 @@ app.title = {
 		this.ready = true;
 	},
 	
+	/*
+	 * Creates the assets necessary in the title menu
+	 *
+	 * @return  none
+	 */
 	createAssets : function()
 	{
+		var gameButton_properties = {
+			center : {
+				x : 100,
+				y : 200
+			},
+			callbacks : {onClick : function(){app.main.changeState(app.GAME_STATE.GAME)} }
+		};
 		
+		this.gameButton = new Core2D.Button(gameButton_properties);
 	},
 	
 	update : function()
@@ -45,9 +58,16 @@ app.title = {
 	
 	render : function()
 	{
-		console.log("title render");
+		//console.log("title render");
 		// save before draws
 		app.ctx.save();
+		
+		// background
+		app.ctx.fillStyle = "#FFC972";
+		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+		
+		// buttons
+		this.gameButton.render(app.ctx);
 		
 		// restore at end
 		app.ctx.restore();
