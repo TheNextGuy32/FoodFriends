@@ -60,6 +60,7 @@ app.main = {
     countryFatPointsDeathValue: 10,
 
     foodSize: 50,
+    fatPoints: 5,
 
     lanesOfFood: new Array,//The food on each lane, its an array of arrays
 
@@ -81,6 +82,13 @@ app.main = {
     image4: undefined, // images of 4th country
     image5: undefined, // images of 5th country
     image6: undefined, // images of 6th country
+    /*
+    americaImages: [],
+    franceImages: [],
+    germanyImages: [],
+    italyImages: [],
+    mexicoImages: [],
+    */
     activeCountryArray: undefined,
     notActiveCountryArray: undefined,
 
@@ -154,21 +162,49 @@ app.main = {
         this.background = new Image();
         this.background.src = "images/Background.png";
 
+        /*
+        // load every country
+        for (var i = 0; i < 5; i++) {
+            for (var j = 1; j < 5; j++) {
+                var image = new Image();
+                if (i == 0) {
+                    image.src = "images/FatGuys_America_" + j + ".png";
+                    this.americaImages.push(image);
+                }
+                else if (i == 1) {
+                    image.src = "images/FatGuys_France_" + j + ".png";
+                    this.franceImages.push(image);
+                }
+                else if (i == 2) {
+                    image.src = "images/FatGuys_Germany_" + j + ".png";
+                    this.germanyImages.push(image);
+                }
+                else if (i == 3) {
+                    image.src = "images/FatGuys_Italy_" + j + ".png";
+                    this.italyImages.push(image);
+                }
+                else if (i == 4) {
+                    image.src = "images/FatGuys_Mexico_" + j + ".png";
+                    this.mexicoImages.push(image);
+                }
+            }
+        }*/
+
         this.image1 = new Image();
-        this.image1.src = "sprites/FatGuy_American.png";
+        this.image1.src = "images/FatGuys_America_1.png";
 
         this.image2 = new Image();
-        this.image2.src = "sprites/FatGuy_France.png";
+        this.image2.src = "images/FatGuys_France_1.png";
 
         this.image3 = new Image();
-        this.image3.src = "sprites/FatGuy_German.png";
+        this.image3.src = "images/FatGuys_Germany_1.png";
 
         this.image4 = new Image();
-        this.image4.src = "sprites/FatGuy_Italy.png";
+        this.image4.src = "images/FatGuys_Italy_1.png";
 
         this.image5 = new Image();
 
-        this.image5.src = "sprites/FatGuy_Mexico.png";
+        this.image5.src = "images/FatGuys_Mexico_1.png";
 
         this.machineSprite = new Image();
         this.machineSprite.src = "images/machine-07.png";
@@ -239,9 +275,10 @@ app.main = {
                                      new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage, picoDGImage)));
 
         // Initializes countries
-        this.activeCountryArray = new Array(new Country(1, "USA", this.image1), new Country(1, "Germany", this.image3), new Country(1, "France", this.image2));
-        this.notActiveCountryArray = new Array(new Array("Mexico", this.image5), new Array("Italy", this.image4));
-
+        //this.activeCountryArray = new Array(new Country(1, "USA", this.image1), new Country(1, "Germany", this.image3), new Country(1, "France", this.image2));
+        //this.notActiveCountryArray = new Array(new Array("Mexico", this.image5), new Array("Italy", this.image4));
+        this.activeCountryArray = new Array(new Country(this.fatPoints, "USA", this.image1), new Country(this.fatPoints, "Germany", this.image2), new Country(this.fatPoints, "France", this.image3));
+        this.notActiveCountryArray = new Array(new Array("Mexico", this.image4), new Array("Italy", this.image5));
 
         this.countryChangeTimer = this.counrtyChangeTimerReset;
 
@@ -250,7 +287,7 @@ app.main = {
 
         //set Musik
 
-        var backmusic = new Audio('sound/FeedMe!.mp3');
+        var backmusic = new Audio('sound/BladeandValor.mp3');
         backmusic.loop = true;
         backmusic.play();
 
@@ -450,6 +487,31 @@ app.main = {
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
+                            /*
+                            var tempCountry = this.activeCountryArray[c].getCountryName();
+                            var index = this.activeCountryArray[c].getImageIndex();
+                            var nextIndex = index + 1;
+                            this.activeCountryArray[c].setImageIndex(nextIndex);
+                            console.log(this.activeCountryArray[c]);
+                            console.log(tempCountry);
+                            if (tempCountry == "USA" && nextIndex < 4) {
+                                    console.log("hello");
+                                    this.activeCountryArray[c].setImage = this.americaImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "Germany" && nextIndex < 4) {
+                                    console.log("hello");
+                                    this.activeCountryArray[c].setImage = this.germanyImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "France" && nextIndex < 4) {
+                                console.log("hello");
+                                    this.activeCountryArray[c].setImage = this.franceImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "Italy" && nextIndex < 4) {
+                                    this.activeCountryArray[c].setImage = this.italyImages[this.activeCountryArray[c].imageIndex];
+                            }
+                            if (tempCountry == "Mexico" && nextIndex < 4) {
+                                    this.activeCountryArray[c].setImage = this.mexicoImages[this.activeCountryArray[c].imageIndex];
+                            }*/
 
                             if (this.activeCountryArray[c].getFatPoint() == 0) {
                                 //YOU HAVE DIED! spawn emitter
