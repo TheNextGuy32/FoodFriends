@@ -154,9 +154,21 @@ app.main = {
 	update : function()
 	{
 		//console.log("main update!");
-		if(this.currentGameState == app.GAME_STATE.TITLE && app.title.isReady)
+		if(this.currentGameState == app.GAME_STATE.TITLE && app.title.ready)
 		{
 			app.title.update();
+		}
+		
+		switch(this.currentGameState)
+		{
+		case app.GAME_STATE.TITLE:
+			if(app.title.ready)
+				app.title.update();
+			
+			break;
+		
+		case app.GAME_STATE.GAME:
+			break;
 		}
 	},
 	
@@ -171,11 +183,11 @@ app.main = {
 		app.ctx.clearRect(0, 0, this.DEFAULT_WIDTH, this.DEFAULT_HEIGHT);
 		
 		// background color
-		app.ctx.fillStyle = "#FFC94";
+		app.ctx.fillStyle = "#FFCC94";
 		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 	
 		//console.log("main render");
-		if(this.currentState == app.GAME_STATE && app.title.isReady)
-			app.render.update();
+		if(this.currentState == app.GAME_STATE.TITLE && app.title.ready)
+			app.title.render();
 	}
 };
