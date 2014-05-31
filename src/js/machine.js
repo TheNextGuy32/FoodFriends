@@ -3,9 +3,10 @@
 
 "use strict"
 
-var Machine = function(image, xPos, yPos, width, height)
+var Machine = function(machineImage, conveyorImage, xPos, yPos, width, height)
 {
-	this.image = image;
+	this.machineImage = machineImage;
+	this.conveyorImage = conveyorImage;
 	this.x = xPos;
 	this.y = yPos;
 	this.width = width;
@@ -16,19 +17,20 @@ Machine.prototype.drawBottom = function(ctx)
 {
 	ctx.save();
 	
-	///ctx.fillStyle = ???
-	///ctx.fillRect(xPos + offset, yPos + offset, ??, ??);
+	ctx.fillStyle = "rgb(233, 234, 235)";
+	ctx.fillRect(this.x - 26, this.y + 18, 53, 13);
+	
+	ctx.drawImage(this.conveyorImage, this.x - this.width / 2, this.y + this.height / 2 - 2, this.width, 355);
 	
 	ctx.restore();
 }
 
 Machine.prototype.draw = function(ctx)
 {
-	//ctx.drawImage(this.image, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+	
 	ctx.save();
 	
-	ctx.fillStyle = "#888888";
-	ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+	ctx.drawImage(this.machineImage, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 
 	ctx.restore();
 };

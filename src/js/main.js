@@ -63,6 +63,7 @@ app.main = {
 
     machines: [],
     machineSprite: undefined,
+	conveyorSprite: undefined,
 
     planeSprites: new Array(),
 
@@ -112,7 +113,7 @@ app.main = {
 
 
         for (var i = 0; i < 3; i++) {
-            this.machines[i] = new Machine(this.machineSprite, this.lanePositions[i], 10, 55, 40);
+            this.machines[i] = new Machine(this.machineSprite, this.conveyorSprite, this.lanePositions[i], 10, 80, 64);
         }
 
         for (var i = 0; i < 3; i++) {
@@ -161,7 +162,10 @@ app.main = {
         this.image5.src = "sprites/FatGuy_Mexico.png";
 
         this.machineSprite = new Image();
-        //this.machinesprite.src = "images/machine.jpg
+        this.machineSprite.src = "images/machine-07.png";
+		
+		this.conveyorSprite = new Image();
+		this.conveyorSprite.src = "images/convetorBelt-06.png";
 
         //load flaggs
         var americanImage = new Image();
