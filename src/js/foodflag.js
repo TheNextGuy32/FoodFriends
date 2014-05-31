@@ -9,5 +9,9 @@ var FoodFlag = function(machine, image)
 	this.y = machine.y;
 	
 	this.image = image;
-}
+};
 
+FoodFlag.prototype.setFlag = function(country)
+{
+	//
+};
