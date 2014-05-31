@@ -59,8 +59,6 @@ app.main = {
 
     foodSprites: new Array(),
 
-
-    
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
     image3: undefined, // images of 3rd country
@@ -140,13 +138,17 @@ app.main = {
         //Loading all the food graphics
         //USA
         var peanutbutterImage = new Image();
-        peanutbutterImage.src = "sprites/peanutbutter.png";
+        peanutbutterImage.src = "images/hamburger.png";
+		
         var pancakesImage = new Image();
-        pancakesImage.src = "sprites/pancakes_final_00-04.png";
+        pancakesImage.src = "images/pancakes.png";
+		
+		var friesImage = new Image();
+		friesImage.src = "images/fries.png";
 
         //Germany
         var schnitzelImage = new Image();
-        schnitzelImage.src = "sprites/schnitzel.png";
+        schnitzelImage.src = "images/beer.png";
         var brautwurstImage = new Image();
         brautwurstImage.src = "sprites/brautwurst.png";
 
@@ -158,20 +160,22 @@ app.main = {
 
         //France
         var baguetteImage = new Image();
-        baguetteImage.src = "sprites/baguette.png";
+        baguetteImage.src = "images/baguette.png";
         var snailImage = new Image();
-        snailImage.src = "sprites/snail.png";
+        snailImage.src = "images/snail.png";
 
         //Mexico
         var burritoImage = new Image();
-        burritoImage.src = "sprites/burrito.png";
+        burritoImage.src = "images/burrito.png";
         var guacImage = new Image();
-        guacImage.src = "sprites/guac.png";
+        guacImage.src = "images/guacamole.png";
+		var picoDGImage = new Image();
+		picoDGImage.src = "images/picoDeGallo.png";
 
         //Creating the dictionary of sprites
         this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(schnitzelImage, brautwurstImage)), new SpriteKeyPair("USA", new Array(peanutbutterImage, pancakesImage)),
                                      new SpriteKeyPair("Italy", new Array(pizzaImage, spaghettiImage)), new SpriteKeyPair("France", new Array(baguetteImage, snailImage)),
-                                     new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage)));
+                                     new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage, picoDGImage)));
 
         // Initializes countries
         this.activeCountryArray = new Array(new Country(10, "USA", this.image1), new Country(10, "Germany", this.image2), new Country(10, "France", this.image3));
