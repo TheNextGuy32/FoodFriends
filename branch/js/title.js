@@ -90,7 +90,7 @@ app.title = {
 	 */
 	checkCollisions : function(mouseX, mouseY)
 	{
-		console.log("test");
+		//console.log("test");
 		
 		// check collision against our button
 		var collision = pointInRect({x: mouseX, y: mouseY}, 
@@ -120,7 +120,7 @@ app.title = {
 		// text
 		app.ctx.fillStyle = "#000000";
 		app.ctx.font = "20px Helvetica";
-		app.ctx.fillText("Press enter to begin!", app.main.DEFAULT_WIDTH/5, 50);
+		app.ctx.fillText("Food Friends", app.main.DEFAULT_WIDTH/5, 50);
 		
 		// buttons
 		this.gameButton.render(app.ctx);

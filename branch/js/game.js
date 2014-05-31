@@ -438,13 +438,21 @@ app.game = {
             //Add and sort the storage
             for (var i = 0; i < this.numberScoresStored; i++) {
 
-                if (localStorage[i] == undefined) {
+				// first value undefined
+                if (localStorage[i] == undefined) 
+				{
 
                     localStorage.setItem(i, app.player.getScore());
                     i = 3;
+					
+					break;
                 }
-                else {
-                    if (app.player.getScore() > localStorage[i]) {
+				
+				// check against other values
+                else 
+				{
+                    if (app.player.getScore() > localStorage[i]) 
+					{
                         for (var q = this.numberScoresStored - 1; q > i; q--) {
                             if (localStorage[q - 1] != undefined) {
 
@@ -452,6 +460,8 @@ app.game = {
                             }
                         }
                         localStorage.setItem(i, app.player.getScore());
+						
+						break;
                     }
                 }
             }
