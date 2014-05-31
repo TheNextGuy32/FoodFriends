@@ -77,7 +77,7 @@ app.main = {
         this.ios = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
 		
 		// asset creation
-		app.ResourceManager.loadAndCreateAssets();
+		//app.resources.loadImages();
 		
 		// ready to resize
 		this.resize();
@@ -130,7 +130,10 @@ app.main = {
 			
 		case app.GAME_STATE.GAME:
 			if(!app.game.ready)
+			{
+				//app.resources.createResources();
 				app.game.init();
+			}
 				
 			break;
 			

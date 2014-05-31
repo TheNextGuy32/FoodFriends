@@ -1,29 +1,12 @@
-/*
- * food.js
- *
- * Represents a food item that will be falling down the screen
- */
+// "classes"
 "use strict";
 
-// namespace
-var app = app || {};
-
-app.food = function(lane, x, y, image)
+var Food = function(country, lane, x, y,image)
 {
-	this._lane  = lane;
-	this._x     = x;
-	this._y     = y;
-	this._image = image;
+	// variables
+	this.country = country;
+	this.lane = lane;
+	this.x = x;
+	this.y = y;
+	this.image = image;
 };
-
-app.food.prototype.Lane = function()
-{ return this._lane };
-
-app.food.prototype.X = function()
-{ return this._x; };
-
-app.food.prototype.Y = function()
-{ return this._y; };
-
-app.food.prototype.Image = function()
-{ return this._image; };

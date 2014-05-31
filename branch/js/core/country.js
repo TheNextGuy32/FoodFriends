@@ -1,41 +1,48 @@
-/*
- * country.js
- * 
- *
- * Represents one of the countries that will be on the playing field
- */
 "use strict";
 
-// namespace
-var app = app || {};
-
-app.country = function(image)
+var Country = function(fatPoint, countryName, image)
 {
-	this._fatPoint  = 0;
-	this._image     = image;
-	this._isAlive   = true;
+	// variables
+	this.fatPoint = fatPoint;
+	this.countryName = countryName;
+	this.image = image;
+	this.isAlive = true;
 };
 
-/*
- * Adds fat to the country when it consumes food from its own country
- *
- * @return  none
- */
-app.country.prototype.addFat = function()
+
+
+Country.prototype.DecFatPoint = function()
 {
-	this._fatPoint += 1;
+	this.fatPoint--;
+};
 	
-	// check if country still alive
-	if(this.fatPoint >= 10)
-		this._isAlive = false;
-	
-	// TODO: Decrease score of player
+Country.prototype.getFatPoint = function()
+{
+	return this.fatPoint;
 };
 
-/*
- * Returns whether or not the country is still alive
- *
- * @return  none
- */
-app.country.prototype.IsAlive = function()
-{ return this._isAlive; };
+Country.prototype.checkifalive = function()
+{
+	if(this.fatPoint>4)isAlive=false;
+};	
+	
+Country.prototype.setCountryName = function(countryName)
+{
+	this.countryName = countryName;
+};
+	
+Country.prototype.getCountryName = function()
+{
+	return this.countryName;
+};
+
+
+Country.prototype.setImage = function(image)
+{
+	this.image = image;
+};
+	
+Country.prototype.getImage = function()
+{
+	return this.image;
+};
