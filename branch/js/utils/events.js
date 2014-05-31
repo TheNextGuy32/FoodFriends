@@ -27,7 +27,7 @@ window.addEventListener('click', function(e){
 	var x = (e.clientX - app.offset.left) / app.dimensions.scale;
 	var y = (e.clientY - app.offset.top) / app.dimensions.scale;
 	
-	console.log("clicked on screen @ " + x + ", " + y);
+	//console.log("clicked on screen @ " + x + ", " + y);
 	
 	// actions based on game state
 	switch(app.main.currentGameState)

@@ -29,6 +29,9 @@ app.game = {
 
     totalGameTime: 0,
 
+    crunchSound0: undefined,
+    crunchSound1: undefined,
+
     numberScoresStored: 5,
 
     foodSpawnTimerMaximumSeconds: 7,
@@ -50,7 +53,7 @@ app.game = {
 
     machines: [],
     machineSprite: undefined,
-	conveyorSprite: undefined,
+    conveyorSprite: undefined,
 
     planeSprites: new Array(),
 
@@ -74,6 +77,10 @@ app.game = {
 	init : function()
 	{
 		console.log("game init called!");
+		
+		// load sound
+		this.crunchSound0 = new Audio("sound/crunch0.wav");
+        this.crunchSound1 = new Audio("sound/crunch1.wav");
 		
 		//load images
         this.background = new Image();
@@ -169,6 +176,12 @@ app.game = {
 
 
         this.countryChangeTimer = this.counrtyChangeTimerReset;
+		
+		//set Musik
+        
+        var backmusic = new Audio('sound/FeedMe!.mp3');
+        backmusic.loop=true;
+        backmusic.play();
 		
 		// make the game
         this.createGame();
@@ -289,122 +302,135 @@ app.game = {
                 }
 
                 var choosePlane = Math.floor((Math.random() * 2));
-                if (choosePlane == 0 && (chosenCountryString == this.notActiveCountryArray[0][0] || chosenCountryString == this.notActiveCountryArray[1][0])) {
-                    var plane = new Plane(chosenCountryString,
-											t,
-											this.lanePositions[t],
-											10,
-											this.planeSprites[countryID].getSprites()[0]);
-                    this.lanesOfFood[t].push(plane);
-                }
-                else {
-                    //Choosing food
-                    var chosenFood = Math.floor((Math.random() * 2));
-                    var chosenFoodImage = undefined;
-
-                    chosenFoodImage = this.foodSprites[countryID].getSprites()[chosenFood];
-
-                    //Create food
-                    var food = new Food(chosenCountryString,
-											 t,
-											 this.lanePositions[t],
-											 20,
-											 chosenFoodImage);
-                    this.lanesOfFood[t].push(food);
-                }
-            }
-        }
-
-        //Calculate wave speed
-        var currentFoodSpeed = this.foodSpeed + (this.totalGameTime / 10);
-        if (currentFoodSpeed > this.foodSpeedMax) {
-            currentFoodSpeed = this.foodSpeedMax;
-        }
-
-        var numberDeadPeople = 0;
-
-        //Check collisions
-        for (var c = 0; c < 3; c++) {
-
-            //Every food in the lane
-            for (var f = 0; f < this.lanesOfFood[c].length; f++) {
-                //Move the food down
-                this.lanesOfFood[c][f].y = this.lanesOfFood[c][f].y + (currentFoodSpeed * (dtSeconds));
-
-                //If it goes off screen delete it
-                if (this.lanesOfFood[c][f].y + (this.foodSize / 2) > app.main.DEFAULT_HEIGHT) {
-                    this.lanesOfFood[c].splice(f, 1);
-                }
-
-                //If its across teh food eat line
-                if (this.activeCountryArray[c].getFatPoint() > 0) {
-
-                    if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
-
-                        if (this.lanesOfFood[c][f] instanceof Plane) {
-
-                            var positionInNotActive = undefined;
-                            if (this.notActiveCountryArray[0][0] == this.lanesOfFood[c][f].country) {
-                                this.changeCountry(c, 0);
-                            }
-                            if (this.notActiveCountryArray[1][0] == this.lanesOfFood[c][f].country) {
-                                this.changeCountry(c, 1);
-                            }
-                        }
-                        else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
-
-                            //You ate food from your country! ur getting fat!
-                            this.activeCountryArray[c].DecFatPoint();
-                            if (this.activeCountryArray[c].getFatPoint() == 0)
-                            {
-                                //YOU HAVE DIED! spawn emitter
-                            }
-
-                        }
-                        else {
-
-                            //You ate food from another country, get points!
-                            app.player.inkScore();
-
-                        }
-                        //We remove it once weve eaten it
-                        this.lanesOfFood[c].splice(f, 1);
+                if (choosePlane == 0) {
+                    if (chosenCountryString == this.notActiveCountryArray[0].countryName || chosenCountryString == this.notActiveCountryArray[1].countryName) {
+                        var plane = new Plane(chosenCountryString,
+                                                t,
+                                                this.lanePositions[t],
+                                                10,
+                                                this.planeSprites[countryID].getSprites()[0]);
+                        this.lanesOfFood[t].push(plane);
                     }
                 }
-                else {
-                    numberDeadPeople++;
-                }
+            
+            else {
+                //Choosing food
+                var chosenFood = Math.floor((Math.random() * 2));
+                var chosenFoodImage = undefined;
+
+                chosenFoodImage = this.foodSprites[countryID].getSprites()[chosenFood];
+
+                //Create food
+                var food = new Food(chosenCountryString,
+                                         t,
+                                         this.lanePositions[t],
+                                         20,
+                                         chosenFoodImage);
+                this.lanesOfFood[t].push(food);
             }
         }
+    }
+
+		//Calculate wave speed
+			var currentFoodSpeed = this.foodSpeed + (this.totalGameTime / 10);
+	if (currentFoodSpeed > this.foodSpeedMax) {
+		currentFoodSpeed = this.foodSpeedMax;
+	}
+
+	var numberDeadPeople = 0;
+
+	//Check collisions
+	for (var c = 0; c < 3; c++) {
+
+		//Every food in the lane
+		for (var f = 0; f < this.lanesOfFood[c].length; f++) {
+			//Move the food down
+			this.lanesOfFood[c][f].y = this.lanesOfFood[c][f].y + (currentFoodSpeed * (dtSeconds));
+
+			//If it goes off screen delete it
+			if (this.lanesOfFood[c][f].y + (this.foodSize / 2) > app.main.DEFAULT_HEIGHT) {
+				this.lanesOfFood[c].splice(f, 1);
+			}
+
+			//If its across teh food eat line
+			if (this.activeCountryArray[c].getFatPoint() > 0) {
+
+				//Cross the collisionline
+				if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
+
+					//Playing sounds
+					var randomSound = Math.floor(Math.random() * 2);
+					if (randomSound == 0) {
+						this.crunchSound0.play();
+					}
+					else {
+						this.crunchSound1.play();
+					}
+
+					//Spawning planes
+					if (this.lanesOfFood[c][f] instanceof Plane) {
+
+						var positionInNotActive = undefined;
+						if (this.notActiveCountryArray[0][0] == this.lanesOfFood[c][f].country) {
+							this.changeCountry(c, 0);
+						}
+						if (this.notActiveCountryArray[1][0] == this.lanesOfFood[c][f].country) {
+							this.changeCountry(c, 1);
+						}
+					}
+					else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
+
+						//You ate food from your country! ur getting fat!
+						this.activeCountryArray[c].DecFatPoint();
+						if (this.activeCountryArray[c].getFatPoint() == 0) {
+							//YOU HAVE DIED! spawn emitter
+						}
+
+					}
+					else {
+
+						//You ate food from another country, get points!
+						app.player.inkScore();
+
+					}
+					//We remove it once weve eaten it
+					this.lanesOfFood[c].splice(f, 1);
+				}
+			}
+			else {
+				numberDeadPeople++;
+			}
+		}
+	}
 
 
-        //WE'VE LOST
-        if (numberDeadPeople >= 3) {
+	//WE'VE LOST
+	if (numberDeadPeople >= 3) {
 
-            //Add and sort the storage
-            for (var i = 0; i < this.numberScoresStored; i++) {
+		//Add and sort the storage
+		for (var i = 0; i < this.numberScoresStored; i++) {
 
-                if (localStorage[i] == undefined) {
+			if (localStorage[i] == undefined) {
 
-                    localStorage.setItem(i, app.player.getScore());
-                    i = 3;
-                }
-                else {
-                    if (app.player.getScore() > localStorage[i]) {
-                        for (var q = this.numberScoresStored - 1; q > i; q--) {
-                            if (localStorage[q - 1] != undefined) {
+				localStorage.setItem(i, app.player.getScore());
+				i = 3;
+			}
+			else {
+				if (app.player.getScore() > localStorage[i]) {
+					for (var q = this.numberScoresStored - 1; q > i; q--) {
+						if (localStorage[q - 1] != undefined) {
 
-                                localStorage[q] = localStorage[q - 1];
-                            }
-                        }
-                        localStorage.setItem(i, app.player.getScore());
-                    }
-                }
-            }
-        }
+							localStorage[q] = localStorage[q - 1];
+						}
+					}
+					localStorage.setItem(i, app.player.getScore());
+				}
+			}
+		}
+	}
 
-        this.lastUpdate = Date.now();
-	},
+	this.lastUpdate = Date.now();
+},
 	
 	/*
 	 * Renders the objects onto the game screen
@@ -415,82 +441,77 @@ app.game = {
 	{
 		app.ctx.save();
 		
-		app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+		app.ctx.fillStyle = "#FFC972";
+		app.ctx.drawImage(this.background, 0, 0, 540, 480);
 
-        // background 
+		this.countryChangeTimer -= 1;
+		if (this.countryChangeTimer <= 0) {
+			this.countryChangeTimer = this.counrtyChangeTimerReset;
+			var active = Math.floor(Math.random() * 3);
+			var notActive = Math.floor(Math.random() * 2);
 
+			this.changeCountry(active, notActive);
+		}
 
-        app.ctx.fillStyle = "#FFC972";
-        app.ctx.drawImage(this.background, 0, 0, 540, 480);
+		//Draw countries
+		for (var c = 0; c < 3; c++) {
+			//Are they alive?
+			if (this.activeCountryArray[c].getFatPoint() > 0) {
+				app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c] - (50 / 2), this.collisionYCoordinate, 50, 80);
+			}
+		}
 
-        this.countryChangeTimer -= 1;
-        if (this.countryChangeTimer <= 0) {
-            this.countryChangeTimer = this.counrtyChangeTimerReset;
-            var active = Math.floor(Math.random() * 3);
-            var notActive = Math.floor(Math.random() * 2);
+		//Draw machine bottoms
+		for (var i = 0; i < this.machines.length; i++) {
+			this.machines[i].drawBottom(app.ctx);
+		}
 
-            this.changeCountry(active, notActive);
-        }
+		//Draw all the food
+		for (var c = 0; c < 3; c++) {
 
-        //Draw countries
-        for (var c = 0; c < 3; c++) {
-            //Are they alive?
-            if (this.activeCountryArray[c].getFatPoint() > 0) {
-                app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c]- (50/2), this.collisionYCoordinate, 50, 80);
-            }
-        }
+			//Every food in the lane
+			for (var f = 0; f < this.lanesOfFood[c].length; f++) {
+				app.ctx.drawImage(this.lanesOfFood[c][f].image, this.lanesOfFood[c][f].x - (this.foodSize / 2), this.lanesOfFood[c][f].y - (this.foodSize / 2), this.foodSize, this.foodSize);
 
-        //Draw machine bottoms
-        for (var i = 0; i < this.machines.length; i++) {
-            this.machines[i].drawBottom(app.ctx);
-        }
+			}
+		}
 
-        //Draw all the food
-        for (var c = 0; c < 3; c++) {
+		//Draw machines
+		for (var i = 0; i < this.machines.length; i++) {
+			this.machines[i].draw(app.ctx);
+		}
 
-            //Every food in the lane
-            for (var f = 0; f < this.lanesOfFood[c].length; f++) {
-                app.ctx.drawImage(this.lanesOfFood[c][f].image, this.lanesOfFood[c][f].x - (this.foodSize / 2), this.lanesOfFood[c][f].y - (this.foodSize / 2), this.foodSize, this.foodSize);
+		this.showScore();
 
-            }
-        }
+		//Highscore
+		//app.ctx.fillText("HIGHSCORES", 110, 40);
 
-        //Draw machines
-        for (var i = 0; i < this.machines.length; i++) {
-            this.machines[i].draw(app.ctx);
-        }
-
-        this.showScore();
-
-        //Highscore
-        //app.ctx.fillText("HIGHSCORES", 110, 40);
-
-        //for (var i = 0; i < this.numberScoresStored; i++) {
-        //    if (localStorage[i] != undefined) {
-        //        app.ctx.fillText(localStorage[i], 110, 50 + (i * 10));
-        //    }
-        //    else
-        //    {
-        //        app.ctx.fillText("-No Score-", 110, 50 + (i * 10));
-        //    }
-        //}
+		//for (var i = 0; i < this.numberScoresStored; i++) {
+		//    if (localStorage[i] != undefined) {
+		//        app.ctx.fillText(localStorage[i], 110, 50 + (i * 10));
+		//    }
+		//    else
+		//    {
+		//        app.ctx.fillText("-No Score-", 110, 50 + (i * 10));
+		//    }
+		//}
+			
+			// restore at end
+			app.ctx.restore();
+		},
 		
-		// restore at end
-		app.ctx.restore();
-	},
-	
 	showScore: function () {
-        // calculate size of font based on screen dimension
-        app.ctx.fillStyle = "#000000";
-        app.ctx.font = "10px Helvetica";
+		// calculate size of font based on screen dimension
+		app.ctx.fillStyle = "#000000";
+		app.ctx.font = "10px Helvetica";
 
-        app.ctx.textAlign = "center";
-        app.ctx.textBaseline = "top";
+		app.ctx.textAlign = "center";
+		app.ctx.textBaseline = "top";
 
-        //app.ctx.textBaseline = 'bottom';
-        //app.ctx.lineWidth = 1;
+		//app.ctx.textBaseline = 'bottom';
+		//app.ctx.lineWidth = 1;
 
-        app.ctx.fillText("Score: " + app.player.getScore(), 160, 50);
+		app.ctx.fillText("Score: " + app.player.getScore(), 160, 50);
 
     },
 
