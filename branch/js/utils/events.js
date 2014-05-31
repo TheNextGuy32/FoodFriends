@@ -10,9 +10,6 @@
 // namespace
 var app = app || {};
 
-// sparse array of the keys currently being pressed
-app.keydown = [];
-
 /*
  * Callback for resizing the screen
  */

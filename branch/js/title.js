@@ -57,27 +57,23 @@ app.title = {
 			}
 		};
 		
-		this.gameButton = new Core2D.Button(gameButton_properties);
-		this.testLabel  = new Core2D.Label(testLabel_properties);
+		//this.gameButton = new Core2D.Button(gameButton_properties);
+		//this.testLabel  = new Core2D.Label(testLabel_properties);
 	},
 	
 	update : function()
 	{
-		// inefficient!
-		// have to modify button properties each frame
-		/*var modifyGameButton_p = {
-			center: {
-				x : app.main.DEFAULT_WIDTH/2,
-				y : app.main.DEFAULT_HEIGHT/2
-			},
-			
-			size : {
-				width: app.main.DEFAULT_WIDTH/5,
-				height: app.main.DEFAULT_HEIGHT/8
-			},
-		};*/
-		
-		//this.gameButton.modify(modifyGameButton_p);
+		this.pollKeyboard();
+	},
+	
+	/*
+	 * polls the keyboard to check if certain keys are being pres
+	 *
+	 */
+	pollKeyboard : function()
+	{
+		if(app.keydown[app.keys.ENTER])
+			app.main.changeState(app.GAME_STATE.GAME);
 	},
 	
 	render : function()
@@ -92,13 +88,12 @@ app.title = {
 		
 		// test
 		app.ctx.fillStyle = "red";
-		app.ctx.fillRect(app.main.DEFAULT_WIDTH/6 /* app.dimensions.scale*/, app.main.DEFAULT_HEIGHT/10 /** app.dimensions.scale*/, 10, 10);
-		
+		app.ctx.fillRect(app.main.DEFAULT_WIDTH/4, app.main.DEFAULT_HEIGHT/3, app.main.DEFAULT_WIDTH/10, app.main.DEFAULT_HEIGHT/10);
 		
 		
 		// buttons
-		this.gameButton.render(app.ctx);
-		this.testLabel.render(app.ctx);
+		//this.gameButton.render(app.ctx);
+		//this.testLabel.render(app.ctx);
 		
 		// restore at end
 		app.ctx.restore();

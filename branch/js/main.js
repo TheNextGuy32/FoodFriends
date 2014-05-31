@@ -34,6 +34,18 @@ app.offset = {
 	left : 5
 };                      // offsets for the canvas object
 
+// keys that we care about in the application
+app.keys = {
+	ENTER : 13,
+	LEFT  : 37,
+	UP    : 38,
+	RIGHT : 39,
+	DOWN  : 40
+};
+
+// sparse array of the keys currently being pressed
+app.keydown = [];
+
 app.main = {
 	// Constants ----------------------------------------------------
 	DEFAULT_WIDTH  : 320, // starting width for game
@@ -86,19 +98,19 @@ app.main = {
 		if(newState === undefined)
 		{
 			var tempState = this.currentState;
-			this.currentState = this.previousState;
-			this.previousState = tempState;
+			this.currentGameState = this.previousGameState;
+			this.previousGameState = tempState;
 		}
 		
 		// state provided
 		else
 		{
-			this.previousState = this.currentState;
-			this.currentState = newState;
+			this.previousGameState = this.currentGameState;
+			this.currentGameState = newState;
 		}
 		
 		// begin loading of a state if necessary
-		switch(this.currentState)
+		switch(this.currentGameState)
 		{
 		case app.GAME_STATE.TITLE:
 			if(!app.title.ready)

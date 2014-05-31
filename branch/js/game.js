@@ -27,7 +27,7 @@ app.game = {
 		console.log("game init called!");
 	
 		// ready to be drawn to
-		ready = true;
+		this.ready = true;
 	},
 	
 	/*
@@ -37,6 +37,7 @@ app.game = {
 	 */
 	update : function()
 	{
+		console.log("game update");
 	},
 	
 	/*
@@ -46,5 +47,22 @@ app.game = {
 	 */
 	render : function()
 	{
+		app.ctx.save();
+		
+		// background
+		app.ctx.fillStyle = "red";
+		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+		
+		// test
+		app.ctx.fillStyle = "red";
+		app.ctx.fillRect(app.main.DEFAULT_WIDTH/4, app.main.DEFAULT_HEIGHT/3, app.main.DEFAULT_WIDTH/10, app.main.DEFAULT_HEIGHT/10);
+		
+		
+		// buttons
+		//this.gameButton.render(app.ctx);
+		//this.testLabel.render(app.ctx);
+		
+		// restore at end
+		app.ctx.restore();
 	}
 };
