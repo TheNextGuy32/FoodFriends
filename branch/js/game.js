@@ -242,7 +242,12 @@ app.game = {
 	 *
 	 * @return  none
 	 */
-	update: function () {
+	update: function () 
+	{
+		// check keyboard input
+		if(app.keydown[app.keys.ENTER])
+			app.main.changeState(app.GAME_STATE.HIGH_SCORE);
+	
         var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
         this.totalGameTime += dtSeconds;
