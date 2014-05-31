@@ -31,6 +31,7 @@ app.game = {
 
     crunchSound0: undefined,
     crunchSound1: undefined,
+	flybySound  : undefined,
 
     numberScoresStored: 5,
 
@@ -82,6 +83,7 @@ app.game = {
 		// load sound
 		this.crunchSound0 = new Audio("sound/crunch0.wav");
         this.crunchSound1 = new Audio("sound/crunch1.wav");
+		this.flybySound = new Audio("sound/flyby.wav");
 		
 		//load images
         this.background = new Image();
@@ -103,7 +105,7 @@ app.game = {
 
         this.image5.src = "images/FatGuy_Mexico.png";
 
-         this.machineSprite = new Image();
+        this.machineSprite = new Image();
         this.machineSprite.src = "images/machine-07.png";
 
         this.conveyorSprite = new Image();
@@ -111,19 +113,19 @@ app.game = {
 
         //load flaggs
         var americanImage = new Image();
-        americanImage.src = "images/flag_american_final.png";
+        americanImage.src = "images/plane_america.png";
 
         var frenchImage = new Image();
-        frenchImage.src = "images/flag_french_final.png";
+        frenchImage.src = "images/plane_france.png";
 
         var germanImage = new Image();
-        germanImage.src = "images/flag_german_final.png";
+        germanImage.src = "images/plane_german.png";
 
         var italyImage = new Image();
-        italyImage.src = "images/flag_italy_final.png";
+        italyImage.src = "images/plane_italy.png";
 
         var mexcioImage = new Image();
-        mexcioImage.src = "images/flag_mexico_final.png";
+        mexcioImage.src = "images/plane_mexico.png";
 
         this.planeSprites = new Array(new SpriteKeyPair("Germany", new Array(germanImage)), new SpriteKeyPair("USA", new Array(americanImage)),
                                      new SpriteKeyPair("Italy", new Array(italyImage)), new SpriteKeyPair("France", new Array(frenchImage)),
@@ -183,8 +185,9 @@ app.game = {
         var backmusic = new Audio('sound/FeedMe!.mp3');
         backmusic.loop = true;
         backmusic.play();
-		
-		// make the game
+
+        //Create our game countries, machines, etc
+
         this.createGame();
 	},
 	
@@ -239,9 +242,8 @@ app.game = {
 	 *
 	 * @return  none
 	 */
-	update : function()
-	{
-		var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
+	update: function () {
+        var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
         this.totalGameTime += dtSeconds;
 
@@ -329,12 +331,6 @@ app.game = {
             }
         }
 
-        //Calculate wave speed
-        var currentFoodSpeed = this.foodSpeed + (this.totalGameTime / 10);
-        if (currentFoodSpeed > this.foodSpeedMax) {
-            currentFoodSpeed = this.foodSpeedMax;
-        }
-
         var numberDeadPeople = 0;
 
         //Check collisions
@@ -342,7 +338,12 @@ app.game = {
 
             //Every food in the lane
             for (var f = 0; f < this.lanesOfFood[c].length; f++) {
+
                 //Move the food down
+                var currentFoodSpeed = this.foodSpeed + (this.totalGameTime*2);
+                if (currentFoodSpeed > this.foodSpeedMax) {
+                    currentFoodSpeed = this.foodSpeedMax;
+                }
                 this.lanesOfFood[c][f].y = this.lanesOfFood[c][f].y + (currentFoodSpeed * (dtSeconds));
 
                 //If it goes off screen delete it
@@ -356,18 +357,10 @@ app.game = {
                     //Cross the collisionline
                     if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
 
-                        //Playing sounds
-                        var randomSound = Math.floor(Math.random() * 2);
-                        if (randomSound == 0) {
-                            this.crunchSound0.play();
-                        }
-                        else {
-                            this.crunchSound1.play();
-                        }
-
-
                         //Spawning planes
                         if (this.lanesOfFood[c][f] instanceof Plane) {
+
+                            this.flybySound.play();
 
                             var positionInNotActive = undefined;
                             if (this.notActiveCountryArray[0][0] == this.lanesOfFood[c][f].country) {
@@ -378,6 +371,15 @@ app.game = {
                             }
                         }
                         else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
+
+                            //Playing crunch sounds
+                            var randomSound = Math.floor(Math.random() * 2);
+                            if (randomSound == 0) {
+                                this.crunchSound0.play();
+                            }
+                            else {
+                                this.crunchSound1.play();
+                            }
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
@@ -394,6 +396,14 @@ app.game = {
                         else {
 
                             //You ate food from another country, get points!
+                            //Playing crunch sounds
+                            var randomSound = Math.floor(Math.random() * 2);
+                            if (randomSound == 0) {
+                                this.crunchSound0.play();
+                            }
+                            else {
+                                this.crunchSound1.play();
+                            }
                             app.player.inkScore();
 
                         }
@@ -441,22 +451,16 @@ app.game = {
                 }
             }
 			
+			// change state!
 			app.main.changeState(app.GAME_STATE.HIGH_SCORE);
         }
 
         this.lastUpdate = Date.now();
-	},
-	
-	/*
-	 * Renders the objects onto the game screen
-	 *
-	 * @return  none
-	 */
-	render : function()
-	{
-		app.ctx.save();
-		
-		app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+    },
+
+    render: function () {
+
+        app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 
         // background 
 
@@ -521,13 +525,13 @@ app.game = {
         //        app.ctx.fillText("-No Score-", 110, 50 + (i * 10));
         //    }
         //}
-			
-			// restore at end
-			app.ctx.restore();
-	},
-		
-	showScore: function () {
-		// calculate size of font based on screen dimension
+
+
+
+    },
+
+    showScore: function () {
+        // calculate size of font based on screen dimension
         app.ctx.fillStyle = "#000000";
         app.ctx.font = "10px Helvetica";
 
@@ -563,4 +567,5 @@ app.game = {
         this.notActiveCountryArray[notActive][0] = tmpCountryName;
         this.notActiveCountryArray[notActive][1] = tmpCountryImg;
     },
+
 };
