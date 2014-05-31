@@ -1,11 +1,6 @@
 //emitter.js
-<<<<<<< HEAD
 //Dependencies: particle.js, vector.js?
 //Elvis Pérez
-=======
-//Dependencies: particle.js, vector.js, utilities.js
-//Elvis Perez
->>>>>>> FETCH_HEAD
 
 "use strict"
 
@@ -52,10 +47,7 @@ Emitter.prototype.emit = function()
 	
 	///Begin Disgusting
 	var arr = this.color.split(",");
-<<<<<<< HEAD
 	var differential = Math.random() * (this.colorRange * 2 + 1) - this.colorRange; 
-=======
->>>>>>> FETCH_HEAD
 	
 	arr[0] = arr[0].substr(5); //Get rid of "rgba("
 	
