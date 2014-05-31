@@ -343,10 +343,11 @@ app.main = {
                         if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].fatPoints++;
+                            app.player.decScore();
                         }
                         else {
                             //You ate food from another country, get points!
-                            app.player.setScore(app.player.getScore() + 10);
+                            app.player.inkScore();
                         }
                         //We remove it once weve eaten it
                         this.lanesOfFood[c].splice(f, 1);
@@ -445,10 +446,5 @@ app.main = {
         this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
         this.notActiveCountryArray[notActive] = tmpCountry;
     },
-    checkfood: function (food, country) {
-
-        if (food.country == country && food.y > (4 / 5) * app.dimensions.height)
-            app.player.inkScore();
-
-    }
+   
 };
