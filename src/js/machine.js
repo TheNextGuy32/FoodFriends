@@ -24,11 +24,11 @@ Machine.prototype.drawBottom = function(ctx)
 
 Machine.prototype.draw = function(ctx)
 {
-	//ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+	//ctx.drawImage(this.image, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 	ctx.save();
 	
 	ctx.fillStyle = "#888888";
-	ctx.fillRect(this.x, this.y, this.width, this.height);
+	ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 
 	ctx.restore();
 };
