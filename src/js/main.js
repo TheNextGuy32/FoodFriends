@@ -303,11 +303,10 @@ app.main = {
 
             this.changeCountry(active, notActive);
         }
-        
-        this.showScore();
 
         //draw countries
-		
+		var Fort_Worth_TX = 0.76422;
+        var sizeOfCountry = app.dimensions.width / 10;
         //app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.dimensions.width / 4 - sizeOfCountry / 2, app.dimensions.height / 10, sizeOfCountry, sizeOfCountry * Fort_Worth_TX);
 		app.ctx.drawImage(this.activeCountryArray[0].getImage(), app.main.DEFAULT_WIDTH / 6, 100, 32, 32);
 		app.ctx.drawImage(this.activeCountryArray[1].getImage(), app.main.DEFAULT_WIDTH / 6 * 3, 100, 32, 32);
@@ -324,9 +323,9 @@ app.main = {
                               this.foodSize * app.dimensions.scale, this.foodSize * app.dimensions.scale);*/
 			app.ctx.drawImage(this.foods[f].image, this.foods[f].x, this.foods[f].y, this.foodSize, this.foodSize);
             
-            this.checkfood(this.foods[f], this.activeCountryArray[0]);
             
             
+            this.showScore();
         }
     },
 
@@ -337,13 +336,15 @@ app.main = {
       **/
     showScore: function () {
         // calculate size of font based on screen dimension
+        var size;
        
         this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
         app.ctx.font = this.font;
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
-        app.ctx.fillText("Score: " + app.player.getScore(), 10,10);
+        app.ctx.fillText("Score: " + app.player.getScore() +
+                " " + app.player.getName(), 20,40);
     },
 
     switchLane: function (button) {
@@ -365,13 +366,10 @@ app.main = {
         this.activeCountryArray[active] = this.notActiveCountryArray[notActive];
         this.notActiveCountryArray[notActive] = tmpCountry;
     },
-  
     checkfood:function(food,country){
     	
-    	if(food.country !== country.countryName && food.y>100 && food.y<102)
-    		{app.player.inkScore();}
-    	if(food.country == country.countryName && food.y>100 && food.y<102)
-    		{app.player.decScore();
-    		console.log("DECREASE");}
+    	if(food.country == country && food.y>(4/5)*app.dimensions.height)
+    		app.player.inkScore();
+    	
     }
 };
