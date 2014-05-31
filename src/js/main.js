@@ -54,7 +54,7 @@ app.main = {
     foodSpawnCurrentTimeSeconds: new Array(),
 
     foodSpeed: 100,//How fast food moves towards player
-    foodSpeedMax: 100,
+    foodSpeedMax: 500,
 
     countryFatPointsDeathValue: 10,
 
@@ -396,12 +396,6 @@ app.main = {
             }
         }
 
-        //Calculate wave speed
-        var currentFoodSpeed = this.foodSpeed + (this.totalGameTime / 10);
-        if (currentFoodSpeed > this.foodSpeedMax) {
-            currentFoodSpeed = this.foodSpeedMax;
-        }
-
         var numberDeadPeople = 0;
 
         //Check collisions
@@ -409,7 +403,12 @@ app.main = {
 
             //Every food in the lane
             for (var f = 0; f < this.lanesOfFood[c].length; f++) {
+
                 //Move the food down
+                var currentFoodSpeed = this.foodSpeed + (this.totalGameTime*2);
+                if (currentFoodSpeed > this.foodSpeedMax) {
+                    currentFoodSpeed = this.foodSpeedMax;
+                }
                 this.lanesOfFood[c][f].y = this.lanesOfFood[c][f].y + (currentFoodSpeed * (dtSeconds));
 
                 //If it goes off screen delete it
