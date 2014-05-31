@@ -9,6 +9,7 @@ app.highScore = {
 	{
 		console.log("high score init");
 		
+		// ready to begin
 		this.ready = true;
 	},
 	

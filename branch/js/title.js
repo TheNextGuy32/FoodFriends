@@ -53,6 +53,10 @@ app.title = {
 				height: 20
 			},
 			
+			text : {
+				string: "Game"
+			},
+			
 			callbacks : {
 				click : function(){app.main.changeState(app.GAME_STATE.GAME)} 
 			}
