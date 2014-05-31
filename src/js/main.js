@@ -146,7 +146,7 @@ app.main = {
 
         this.crunchSound0 = new Audio("sound/crunch0.wav");
         this.crunchSound1 = new Audio("sound/crunch1.wav");
-
+        
         //load images
         this.background = new Image();
         this.background.src = "images/Background.png";
@@ -249,6 +249,7 @@ app.main = {
         
         var backmusic = new Audio('sound/FeedMe!.mp3');
         backmusic.loop=true;
+        backmusic.volume=0.6;
         backmusic.play();
         
         //Create our game countries, machines, etc
