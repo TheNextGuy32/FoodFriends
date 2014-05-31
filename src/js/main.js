@@ -467,9 +467,12 @@ app.main = {
       **/
     showScore: function () {
         // calculate size of font based on screen dimension
-        this.font = '10px sans-serif';
         app.ctx.fillStyle = "#000000";
-        app.ctx.font = this.font;
+        app.ctx.font = "10px Helvetica";
+        
+    	app.ctx.textAlign = "left";
+    	app.ctx.textBaseline = "top";
+        
         //app.ctx.textBaseline = 'bottom';
         //app.ctx.lineWidth = 1;
 
