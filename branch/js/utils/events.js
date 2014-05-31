@@ -42,7 +42,7 @@ window.addEventListener('click', function(e){
 		break;
 		
 	case app.GAME_STATE.GAME:
-	
+		app.game.checkMouse(x, y);
 		break;
 		
 	}

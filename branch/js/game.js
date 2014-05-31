@@ -174,6 +174,14 @@ app.game = {
         this.createGame();
 	},
 	
+	checkMouse : function(x, y)
+	{
+		if(x < app.main.DEFAULT_WIDTH/2) 
+			app.game.switchLane(1);
+		else 
+			app.game.switchLane(2);
+	},
+	
 	createGame : function()
 	{
 		this.lanePositions[0] = this.sideBufferX + ((app.main.DEFAULT_WIDTH-(this.sideBufferX*2)) /4 *1);
@@ -220,7 +228,7 @@ app.game = {
 	 */
 	update : function()
 	{
-		console.log("game update");
+		//console.log("game update");
 		
 		var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
