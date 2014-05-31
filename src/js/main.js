@@ -112,7 +112,7 @@ app.main = {
 
 
         for (var i = 0; i < 3; i++) {
-            this.machines[i] = new Machine(this.machineSprite, this.lanePositions[i]-(27.5), 10, 55, 40);
+            this.machines[i] = new Machine(this.machineSprite, this.lanePositions[i], 10, 55, 40);
         }
 
         for (var i = 0; i < 3; i++) {
@@ -198,13 +198,13 @@ app.main = {
         var schnitzelImage = new Image();
         schnitzelImage.src = "images/beer.png";
         var brautwurstImage = new Image();
-        brautwurstImage.src = "sprites/brautwurst.png";
+        brautwurstImage.src = "images/sausage.png";
 
         //Italy
         var pizzaImage = new Image();
-        pizzaImage.src = "sprites/pizza.png";
+        pizzaImage.src = "images/pizza.png";
         var spaghettiImage = new Image();
-        spaghettiImage.src = "sprites/spaghetti.png";
+        spaghettiImage.src = "images/spaghetti.png";
 
         //France
         var baguetteImage = new Image();
