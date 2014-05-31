@@ -70,8 +70,9 @@ app.main = {
 
     planeSprites: new Array(),
 
-    foodFlags: [],
-
+    //foodFlags: [],
+	emitters: [],
+	
     background: undefined,
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
@@ -119,9 +120,9 @@ app.main = {
             this.machines[i] = new Machine(this.machineSprite, this.conveyorSprite, this.lanePositions[i], 10, 80, 64);
         }
 
-        for (var i = 0; i < 3; i++) {
+        /*for (var i = 0; i < 3; i++) {
             this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
-        }
+        }*/
 
     },
 
@@ -422,6 +423,18 @@ for (var c = 0; c < 3; c++) {
             //Cross the collisionline
             if (this.lanesOfFood[c][f].y > this.collisionYCoordinate) {
 
+
+                            //You ate food from your country! ur getting fat!
+                            this.activeCountryArray[c].DecFatPoint();
+                            if (this.activeCountryArray[c].getFatPoint() == 0)
+                            {
+                                //YOU HAVE DIED! spawn emitter
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 1.5, 2, 0, 0, 45, 60, 2, 5, "red", 32, true, 60));
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 1, 1.5, 0, 0, 30, 60, 2, 5, "orange", 32, true, 60));
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 0.5, 1, 0, 0, 15, 45, 2, 5, "yellow", 32, false, 60));
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 0, 0.5, 0, 0, 0, 15, 2, 5, "white", 0, false, 60));
+                            }
+
                 //Playing sounds
                 var randomSound = Math.floor(Math.random() * 2);
                 if (randomSound == 0) {
@@ -430,6 +443,7 @@ for (var c = 0; c < 3; c++) {
                 else {
                     this.crunchSound1.play();
                 }
+
 
                 //Spawning planes
                 if (this.lanesOfFood[c][f] instanceof Plane) {
@@ -489,9 +503,21 @@ if (numberDeadPeople >= 3) {
                 }
                 localStorage.setItem(i, app.player.getScore());
             }
-        }
+        }		
+		//Update emitters
+		for(var i = 0; i < this.emitters.length; i++)
+		{
+			this.emitters[i].update();
+		}
+		
+		//Remove inactive emitters
+		this.emitters = this.emitters.filter(function(emitter){
+				return emitter.active;
+			});
+
     }
 }
+
 
 this.lastUpdate = Date.now();
 },
@@ -511,7 +537,6 @@ render: function () {
         this.countryChangeTimer = this.counrtyChangeTimerReset;
         var active = Math.floor(Math.random() * 3);
         var notActive = Math.floor(Math.random() * 2);
-
         this.changeCountry(active, notActive);
     }
 
@@ -520,13 +545,21 @@ render: function () {
         //Are they alive?
         if (this.activeCountryArray[c].getFatPoint() > 0) {
             app.ctx.drawImage(this.activeCountryArray[c].getImage(), this.lanePositions[c] - (50 / 2), this.collisionYCoordinate, 50, 80);
+
         }
     }
 
-    //Draw machine bottoms
-    for (var i = 0; i < this.machines.length; i++) {
-        this.machines[i].drawBottom(app.ctx);
-    }
+        //Draw machine bottoms
+        for (var i = 0; i < this.machines.length; i++) {
+            this.machines[i].drawBottom(app.ctx);
+        }
+		
+		//Draw emitters
+		for(var i = 0; i < this.emitters.length; i++)
+		{
+			this.emitters[i].draw(app.ctx);
+		}
+
 
     //Draw all the food
     for (var c = 0; c < 3; c++) {
