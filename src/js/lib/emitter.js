@@ -5,7 +5,7 @@
 "use strict"
 
 //position, color, speed, maxAge, [shape]
-var Emitter = function(pos, minVel, maxVel, minAccel, maxAccel, minLife, maxLife, minSize, maxSize, colorPalette, colorPaletteRange, toFade)
+var Emitter = function(pos, minVel, maxVel, minAccel, maxAccel, minLife, maxLife, minSize, maxSize, colorPalette, colorPaletteRange, toFade, time)
 {
 	this.debug = false;
 
@@ -35,6 +35,11 @@ var Emitter = function(pos, minVel, maxVel, minAccel, maxAccel, minLife, maxLife
 	
 	//Sets if particles fade linearly over time
 	this.fade = toFade;
+	
+	//Sets how long the emitter remains active
+	this.time = time;
+	
+	this.active = true;
 };
 
 Emitter.prototype.emit = function()
@@ -64,23 +69,40 @@ Emitter.prototype.emit = function()
 	
 	this.particles.push(new Particle(new Vector(this.position.x, this.position.y), Vector.fromAngle(arc, velocity), Vector.fromAngle(arc, acceleration), age, radius, color, this.fade));
 };
+
+Emitter.prototype.decay = function()
+{
+	this.time--;
+	
+	if(this.time <= 0)
+	{
+		this.time = 0;
+		this.active = false;
+	}
+}
+
 //Update emitter and its particles
 Emitter.prototype.update = function()
 {
-	//Update particles
-	for(var i = 0; i < this.particles.length; i++)
+	if(this.time > 0)
 	{
-		this.particles[i].update();
+		//Update particles
+		for(var i = 0; i < this.particles.length; i++)
+		{
+			this.particles[i].update();
+		}
+			
+		//Remove inactive particles
+		this.particles = this.particles.filter(function(particle){
+				return particle.active;
+			});
+			
+		//Emit new particle
+		///As is this emits a particle every frame
+		this.emit();
+		
+		this.decay();
 	}
-		
-	//Remove inactive particles
-	this.particles = this.particles.filter(function(particle){
-			return particle.active;
-		});
-		
-	//Emit new particle
-	///As is this emits a particle every frame
-	this.emit();
 };
 
 //Draw emitter's particles

@@ -67,8 +67,9 @@ app.main = {
 
     planeSprites: new Array(),
 
-    foodFlags: [],
-
+    //foodFlags: [],
+	emitters: [],
+	
     background: undefined,
     image1: undefined, // images of 1st country
     image2: undefined, // images of 2nd country
@@ -116,9 +117,9 @@ app.main = {
             this.machines[i] = new Machine(this.machineSprite, this.conveyorSprite, this.lanePositions[i], 10, 80, 64);
         }
 
-        for (var i = 0; i < 3; i++) {
+        /*for (var i = 0; i < 3; i++) {
             this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
-        }
+        }*/
 
     },
 
@@ -424,6 +425,10 @@ app.main = {
                             if (this.activeCountryArray[c].getFatPoint() == 0)
                             {
                                 //YOU HAVE DIED! spawn emitter
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 1.5, 2, 0, 0, 45, 60, 2, 5, "red", 32, true, 60));
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 1, 1.5, 0, 0, 30, 60, 2, 5, "orange", 32, true, 60));
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 0.5, 1, 0, 0, 15, 45, 2, 5, "yellow", 32, false, 60));
+								this.emitters.push(new Emitter(new Vector(this.lanePositions[c], this.collisionYCoordinate + 15), 0, 0.5, 0, 0, 0, 15, 2, 5, "white", 0, false, 60));
                             }
 
                         }
@@ -468,6 +473,17 @@ app.main = {
                 }
             }
         }
+		
+		//Update emitters
+		for(var i = 0; i < this.emitters.length; i++)
+		{
+			this.emitters[i].update();
+		}
+		
+		//Remove inactive emitters
+		this.emitters = this.emitters.filter(function(emitter){
+				return emitter.active;
+			});
 
         this.lastUpdate = Date.now();
     },
@@ -490,7 +506,7 @@ app.main = {
 
             this.changeCountry(active, notActive);
         }
-
+		
         //Draw countries
         for (var c = 0; c < 3; c++) {
             //Are they alive?
@@ -503,6 +519,12 @@ app.main = {
         for (var i = 0; i < this.machines.length; i++) {
             this.machines[i].drawBottom(app.ctx);
         }
+		
+		//Draw emitters
+		for(var i = 0; i < this.emitters.length; i++)
+		{
+			this.emitters[i].draw(app.ctx);
+		}
 
         //Draw all the food
         for (var c = 0; c < 3; c++) {
