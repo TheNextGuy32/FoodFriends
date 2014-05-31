@@ -1,7 +1,7 @@
 // "classes"
 "use strict";
 
-var Food = function(country, lane, x, y,image)
+var Plane = function(country, lane, x, y,image)
 {
 	// variables
 	this.country = country;
