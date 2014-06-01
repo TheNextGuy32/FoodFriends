@@ -6,6 +6,7 @@ var Country = function(fatPoint, countryName, image)
 	this.fatPoint = fatPoint;
 	this.countryName = countryName;
 	this.image = image;
+	this.imageIndex = 0;
 	this.isAlive = true;
 };
 
@@ -45,4 +46,12 @@ Country.prototype.setImage = function(image)
 Country.prototype.getImage = function()
 {
 	return this.image;
+};
+
+Country.prototype.setImageIndex = function (imageIndex) {
+    this.imageIndex = imageIndex;
+};
+
+Country.prototype.getImageIndex = function () {
+    return this.imageIndex;
 };

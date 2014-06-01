@@ -137,6 +137,12 @@ app.main = {
 				
 			break;
 			
+		case app.GAME_STATE.HIGH_SCORE:
+			if(!app.highScore.ready)
+				app.highScore.init();
+		
+			break;
+			
 		case app.GAME_STATE.PAUSED:
 			// nothing here atm
 			
@@ -230,6 +236,16 @@ app.main = {
 			if(app.game.ready)
 				app.game.update();
 			break;
+			
+		case app.GAME_STATE.HIGH_SCORE:
+			if(app.highScore.ready)
+				app.highScore.update();
+				
+			break;
+			
+		default:
+		
+			break;
 		}
 	},
 	
@@ -260,6 +276,12 @@ app.main = {
 		case app.GAME_STATE.GAME:
 			if(app.game.ready)
 				app.game.render();
+				
+			break;
+			
+		case app.GAME_STATE.HIGH_SCORE:
+			if(app.highScore.ready)
+				app.highScore.render();
 				
 			break;
 		}
