@@ -27,6 +27,9 @@ app.game = {
     lanePositions: new Array(),//The position of each lane
     collisionYCoordinate: 400,
 
+    swapLeftButton: undefined,
+    swapRightButton: undefined,
+
     totalGameTime: 0,
     numberDeadPeople: 0,
 
@@ -193,10 +196,26 @@ app.game = {
         this.createGame();
     },
 
-    checkMouse: function (x, y) {
-        if (x < app.main.DEFAULT_WIDTH / 2)
+    checkMouse: function (mouseX, mouseY) {
+        var collisionLeft = pointInRect({ x: mouseX, y: mouseY },
+		{
+		    x: this.swapLeftButton.center.x - this.swapLeftButton.size.width / 2,
+		    y: this.swapLeftButton.center.y - this.swapLeftButton.size.height / 2,
+		    width: this.swapLeftButton.size.width,
+		    height: this.swapLeftButton.size.height
+		});
+
+        var collisionRight = pointInRect({ x: mouseX, y: mouseY },
+		{
+		    x: this.swapRightButton.center.x - this.swapRightButton.size.width / 2,
+		    y: this.swapRightButton.center.y - this.swapRightButton.size.height / 2,
+		    width: this.swapRightButton.size.width,
+		    height: this.swapRightButton.size.height
+		});
+
+        if (collisionLeft)
             app.game.switchLane(1);
-        else
+        else if(collisionRight)
             app.game.switchLane(2);
     },
 
@@ -233,6 +252,48 @@ app.game = {
         /*for (var i = 0; i < 3; i++) {
             this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
         }*/
+
+        var gameButtonLeft_properties = {
+            center: {
+                x: 125,
+                y: 425
+            },
+
+            size: {
+                width: 30,
+                height: 50
+            },
+
+            text: {
+                string: ""
+            },
+
+            callbacks: {
+                click: function () { app.main.changeState(app.GAME_STATE.GAME) }
+            }
+        };
+        var gameButtonRight_properties = {
+            center: {
+                x: 200,
+                y: 425
+            },
+
+            size: {
+                width: 30,
+                height: 50
+            },
+
+            text: {
+                string: ""
+            },
+
+            callbacks: {
+                click: function () { app.main.changeState(app.GAME_STATE.GAME) }
+            }
+        };
+
+        this.swapLeftButton = new Core2D.Button(gameButtonLeft_properties);
+        this.swapRightButton = new Core2D.Button(gameButtonRight_properties);
 
         this.ready = true;
     },
@@ -517,6 +578,10 @@ app.game = {
             this.changeCountry(active, notActive);
         }
 
+        //Draw Buttons
+        this.swapLeftButton.render(app.ctx);
+        this.swapRightButton.render(app.ctx);
+
         //Draw countries
         for (var c = 0; c < 3; c++) {
             //Are they alive?
@@ -551,6 +616,8 @@ app.game = {
         for (var i = 0; i < this.machines.length; i++) {
             this.machines[i].draw(app.ctx);
         }
+
+       
 
         this.showScore();
 
