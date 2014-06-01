@@ -11,12 +11,12 @@
 var app = app || {};
 
 app.game = {
-	// Constants ----------------------------------------------------
-	
-	
-	// Variables ----------------------------------------------------
-	ready                   : false,
-	lastUpdate: Date.now(),
+    // Constants ----------------------------------------------------
+
+
+    // Variables ----------------------------------------------------
+    ready: false,
+    lastUpdate: Date.now(),
     counrtyChangeTimerReset: 10000,
     countryChangeTimer: undefined,
 
@@ -28,16 +28,17 @@ app.game = {
     collisionYCoordinate: 400,
 
     totalGameTime: 0,
+    numberDeadPeople: 0,
 
     crunchSound0: undefined,
     crunchSound1: undefined,
-	flybySound  : undefined,
+    flybySound: undefined,
 
     numberScoresStored: 5,
 
-    foodSpawnTimerMaximumSeconds: 7,
+    foodSpawnTimerMaximumSeconds: 5,
     foodSpawnTimerMinimumSeconds: 0.5,
-    foodSpawnTimerStartingSeconds: 5,
+    foodSpawnTimerStartingSeconds: 3,
     foodSpawnTimerMaxSeconds: new Array(),
     foodSpawnCurrentTimeSeconds: new Array(),
 
@@ -70,24 +71,23 @@ app.game = {
     image6: undefined, // images of 6th country
     activeCountryArray: undefined,
     notActiveCountryArray: undefined,
-	
-	/*
+
+    /*
 	 * Initialization for the game
 	 *
 	 * @param   none
 	 */
-	init : function()
-	{
-		console.log("game init called!");
-		
-		// load sound
-		this.crunchSound0 = new Audio("sound/crunch0.wav");
+    init: function () {
+        console.log("game init called!");
+
+        // load sound
+        this.crunchSound0 = new Audio("sound/crunch0.wav");
         this.crunchSound1 = new Audio("sound/crunch1.wav");
-		this.flybySound = new Audio("sound/flyby.wav");
-		
-		this.flybySound.volume = 1;
-		
-		//load images
+        this.flybySound = new Audio("sound/flyby.wav");
+
+        this.flybySound.volume = 1;
+
+        //load images
         this.background = new Image();
         this.background.src = "images/Background.png";
 
@@ -191,19 +191,17 @@ app.game = {
         //Create our game countries, machines, etc
 
         this.createGame();
-	},
-	
-	checkMouse : function(x, y)
-	{
-		if(x < app.main.DEFAULT_WIDTH/2) 
-			app.game.switchLane(1);
-		else 
-			app.game.switchLane(2);
-	},
-	
-	createGame : function()
-	{
-		this.lanePositions[0] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 1);
+    },
+
+    checkMouse: function (x, y) {
+        if (x < app.main.DEFAULT_WIDTH / 2)
+            app.game.switchLane(1);
+        else
+            app.game.switchLane(2);
+    },
+
+    createGame: function () {
+        this.lanePositions[0] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 1);
         this.lanePositions[1] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 2);
         this.lanePositions[2] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 3);
 
@@ -235,21 +233,56 @@ app.game = {
         /*for (var i = 0; i < 3; i++) {
             this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
         }*/
-		
-		this.ready = true;
-	},
-	
-	/*
+
+        this.ready = true;
+    },
+
+    /*
 	 * Updates the objects in the game screen
 	 *
 	 * @return  none
 	 */
-	update: function () 
-	{
-		// check keyboard input
-		if(app.keydown[app.keys.ENTER])
-			app.main.changeState(app.GAME_STATE.HIGH_SCORE);
-	
+    update: function () {
+        //WE'VE LOST
+        console.log(this.numberDeadPeople);
+        if (this.numberDeadPeople >= 3) {
+
+            //Add and sort the storage
+            for (var i = 0; i < this.numberScoresStored; i++) {
+
+                // first value undefined
+                if (localStorage[i] == undefined) {
+
+                    localStorage.setItem(i, app.player.getScore());
+                    i = 3;
+
+                    break;
+                }
+
+                    // check against other values
+                else {
+                    if (app.player.getScore() > localStorage[i]) {
+                        for (var q = this.numberScoresStored - 1; q > i; q--) {
+                            if (localStorage[q - 1] != undefined) {
+
+                                localStorage[q] = localStorage[q - 1];
+                            }
+                        }
+                        localStorage.setItem(i, app.player.getScore());
+
+                        break;
+                    }
+                }
+            }
+
+            // change state!
+            app.main.changeState(app.GAME_STATE.HIGH_SCORE);
+        }
+
+        // check keyboard input
+        if (app.keydown[app.keys.ENTER])
+            app.main.changeState(app.GAME_STATE.HIGH_SCORE);
+
         var dtSeconds = (Date.now() - this.lastUpdate) / 1000;
 
         this.totalGameTime += dtSeconds;
@@ -277,7 +310,7 @@ app.game = {
                 }
 
                 //Chosing country
-                var chosenCountry = Math.floor((Math.random() * 6));
+                var chosenCountry = Math.floor((Math.random() * 7));
                 var chosenCountryString = undefined;
                 switch (chosenCountry) {
                     case 0:
@@ -295,11 +328,10 @@ app.game = {
                     case 4:
                         chosenCountryString = "Mexico";
                         break;
-                    case 5:
+                    default:
                         //Its the country in the lane
                         chosenCountryString = this.activeCountryArray[t].countryName;
                         break;
-                    default:
                 }
                 var countryID = 0;
                 for (var q = 0; q < this.foodSprites.length; q++) {
@@ -308,7 +340,7 @@ app.game = {
                     }
                 }
 
-                var choosePlane = Math.floor((Math.random() * 2));
+                var choosePlane = Math.floor((Math.random() * 5));
                 if (choosePlane == 0) {
                     if (chosenCountryString == this.notActiveCountryArray[0][0] || chosenCountryString == this.notActiveCountryArray[1][0]) {
                         var plane = new Plane(chosenCountryString,
@@ -338,16 +370,22 @@ app.game = {
             }
         }
 
-        var numberDeadPeople = 0;
+        this.numberDeadPeople = 0;
 
         //Check collisions
         for (var c = 0; c < 3; c++) {
+
+
+            if (this.activeCountryArray[c].getFatPoint() <= 0)
+            {
+                this.numberDeadPeople++;
+            }
 
             //Every food in the lane
             for (var f = 0; f < this.lanesOfFood[c].length; f++) {
 
                 //Move the food down
-                var currentFoodSpeed = this.foodSpeed + (this.totalGameTime*2);
+                var currentFoodSpeed = this.foodSpeed + (this.totalGameTime * 2);
                 if (currentFoodSpeed > this.foodSpeedMax) {
                     currentFoodSpeed = this.foodSpeedMax;
                 }
@@ -377,6 +415,7 @@ app.game = {
                                 this.changeCountry(c, 1);
                             }
                         }
+                            //Spawn foods
                         else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
 
                             //Playing crunch sounds
@@ -390,6 +429,7 @@ app.game = {
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
+
                             /*
                             var tempCountry = this.activeCountryArray[c].getCountryName();
                             var index = this.activeCountryArray[c].getImageIndex();
@@ -443,9 +483,6 @@ app.game = {
                         this.lanesOfFood[c].splice(f, 1);
                     }
                 }
-                else {
-                    numberDeadPeople++;
-                }
             }
         }
 
@@ -458,44 +495,6 @@ app.game = {
         this.emitters = this.emitters.filter(function (emitter) {
             return emitter.active;
         });
-
-        //WE'VE LOST
-        if (numberDeadPeople >= 3) {
-
-            //Add and sort the storage
-            for (var i = 0; i < this.numberScoresStored; i++) {
-
-				// first value undefined
-                if (localStorage[i] == undefined) 
-				{
-
-                    localStorage.setItem(i, app.player.getScore());
-                    i = 3;
-					
-					break;
-                }
-				
-				// check against other values
-                else 
-				{
-                    if (app.player.getScore() > localStorage[i]) 
-					{
-                        for (var q = this.numberScoresStored - 1; q > i; q--) {
-                            if (localStorage[q - 1] != undefined) {
-
-                                localStorage[q] = localStorage[q - 1];
-                            }
-                        }
-                        localStorage.setItem(i, app.player.getScore());
-						
-						break;
-                    }
-                }
-            }
-			
-			// change state!
-			app.main.changeState(app.GAME_STATE.HIGH_SCORE);
-        }
 
         this.lastUpdate = Date.now();
     },
