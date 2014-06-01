@@ -3,10 +3,14 @@
 var app = app || {};
 
 app.highScore = {
+    background:undefined,
 	ready : false,
 	
 	init : function()
 	{
+	    this.background = new Image();
+	    this.background.src = "images/Background.png";
+
 		console.log("high score init");
 		
 		// ready to begin
@@ -20,8 +24,7 @@ app.highScore = {
 	render : function()
 	{
 		// background
-		app.ctx.fillStyle = "#3dC972";
-		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+	    app.ctx.drawImage(this.background, 0, 0, 540, 480);
 		
 		// main text
 		app.ctx.fillStyle = "#000000";

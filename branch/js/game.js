@@ -215,7 +215,7 @@ app.game = {
 
         if (collisionLeft)
             app.game.switchLane(1);
-        else if(collisionRight)
+        else if (collisionRight)
             app.game.switchLane(2);
     },
 
@@ -304,6 +304,7 @@ app.game = {
 	 * @return  none
 	 */
     update: function () {
+
         //WE'VE LOST
         console.log(this.numberDeadPeople);
         if (this.numberDeadPeople >= 3) {
@@ -324,6 +325,7 @@ app.game = {
                 else {
                     if (app.player.getScore() > localStorage[i]) {
                         for (var q = this.numberScoresStored - 1; q > i; q--) {
+
                             if (localStorage[q - 1] != undefined) {
 
                                 localStorage[q] = localStorage[q - 1];
@@ -436,9 +438,7 @@ app.game = {
         //Check collisions
         for (var c = 0; c < 3; c++) {
 
-
-            if (this.activeCountryArray[c].getFatPoint() <= 0)
-            {
+            if (this.activeCountryArray[c].getFatPoint() <= 0) {
                 this.numberDeadPeople++;
             }
 
@@ -476,7 +476,7 @@ app.game = {
                                 this.changeCountry(c, 1);
                             }
                         }
-                            //Spawn foods
+                        //Spawn foods
                         else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
 
                             //Playing crunch sounds
@@ -578,10 +578,6 @@ app.game = {
             this.changeCountry(active, notActive);
         }
 
-        //Draw Buttons
-        this.swapLeftButton.render(app.ctx);
-        this.swapRightButton.render(app.ctx);
-
         //Draw countries
         for (var c = 0; c < 3; c++) {
             //Are they alive?
@@ -617,7 +613,9 @@ app.game = {
             this.machines[i].draw(app.ctx);
         }
 
-       
+        //Draw Buttons
+        this.swapLeftButton.render(app.ctx);
+        this.swapRightButton.render(app.ctx);
 
         this.showScore();
 
