@@ -243,6 +243,24 @@ app.game = {
 		    app.game.switchLane(1);
     },
 
+    resetGame: function () {
+        this.lanesOfFood[0] = new Array();
+        this.lanesOfFood[1] = new Array();
+        this.lanesOfFood[2] = new Array();      
+
+        this.activeCountryArray = new Array(new Country(this.fatPoints, "USA", this.americaImages[0]), new Country(this.fatPoints, "Germany", this.germanyImages[0]), new Country(this.fatPoints, "France", this.franceImages[0]));
+        this.notActiveCountryArray = new Array("Mexico", "Italy");
+        
+        console.log(this.activeCountryArray[0].getFatPoint());
+
+        this.numberDeadPeople = 0;
+
+        this.emitters = [];
+
+        app.player.setScore(0);
+        this.totalGameTime = 0;
+    },
+
     createGame: function () {
         this.lanePositions[0] = this.sideBufferX + (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
         this.lanePositions[1] = this.sideBufferX + (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);

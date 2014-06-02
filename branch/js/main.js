@@ -12,154 +12,148 @@ var app = app || {};
 app.animationID = undefined;
 
 app.GAME_STATE = {
-	TITLE        : 0,
-	INSTRUCTIONS : 1,
-	GAME         : 2,
-	HIGH_SCORE   : 3,
-	PAUSED       : 4
+    TITLE: 0,
+    INSTRUCTIONS: 1,
+    GAME: 2,
+    HIGH_SCORE: 3,
+    PAUSED: 4
 };                      // available states for the game
 
 app.canvas = undefined; // canvas element (which will be resized)
-app.ctx    = undefined; // rendering context
+app.ctx = undefined; // rendering context
 
 app.dimensions = {
-	width  : undefined,
-	height : undefined,
-	ratio  : undefined,
-	scale : 1
+    width: undefined,
+    height: undefined,
+    ratio: undefined,
+    scale: 1
 };                      // available dimension properties for the game
 
 app.offset = {
-	top  : 5,
-	left : 5
+    top: 5,
+    left: 5
 };                      // offsets for the canvas object
 
 // keys that we care about in the application
 app.keys = {
-	ENTER : 13,
-	LEFT  : 37,
-	UP    : 38,
-	RIGHT : 39,
-	DOWN  : 40
+    ENTER: 13,
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40
 };
 
 // sparse array of the keys currently being pressed
 app.keydown = [];
 
 app.main = {
-	// Constants ----------------------------------------------------
-	DEFAULT_WIDTH  : 320, // starting width for game
-	DEFAULT_HEIGHT : 480, // starting height for game
+    // Constants ----------------------------------------------------
+    DEFAULT_WIDTH: 320, // starting width for game
+    DEFAULT_HEIGHT: 480, // starting height for game
 
-	currentGameState  : app.GAME_STATE.TITLE, // current state
-	previousGameState : app.GAME_STATE.TITLE, // previous state
-	
-	init : function()
-	{
-		console.log("main init!");
-		
-		// canvas variables ----------------------------------------
-		app.canvas = document.querySelector("#canvas");
-		
-		app.canvas.width = this.DEFAULT_WIDTH;
-		app.canvas.height = this.DEFAULT_HEIGHT;
-		
-		app.ctx = canvas.getContext("2d");
-		
-		// dimensions ----------------------------------------------
-		app.dimensions.ratio  = this.DEFAULT_WIDTH / this.DEFAULT_HEIGHT;
-		app.dimensions.width  = this.DEFAULT_WIDTH;
-		app.dimensions.height = this.DEFAULT_HEIGHT;
-		
-		// tracking mobile browser agents (useful when resizing)
+    currentGameState: app.GAME_STATE.TITLE, // current state
+    previousGameState: app.GAME_STATE.TITLE, // previous state
+
+    init: function () {
+        console.log("main init!");
+
+        // canvas variables ----------------------------------------
+        app.canvas = document.querySelector("#canvas");
+
+        app.canvas.width = this.DEFAULT_WIDTH;
+        app.canvas.height = this.DEFAULT_HEIGHT;
+
+        app.ctx = canvas.getContext("2d");
+
+        // dimensions ----------------------------------------------
+        app.dimensions.ratio = this.DEFAULT_WIDTH / this.DEFAULT_HEIGHT;
+        app.dimensions.width = this.DEFAULT_WIDTH;
+        app.dimensions.height = this.DEFAULT_HEIGHT;
+
+        // tracking mobile browser agents (useful when resizing)
         this.ua = navigator.userAgent.toLowerCase();
         this.android = this.ua.indexOf('android') > -1 ? true : false;
         this.ios = (this.ua.indexOf('iphone') > -1 || this.ua.indexOf('ipad') > -1 || this.ua.indexOf('ipod') > -1) ? true : false;
-		
-		// asset creation
-		//app.resources.loadImages();
-		
-		// ready to resize
-		this.resize();
-		
-		// "change" into title
-		this.changeState(app.GAME_STATE.TITLE);
-		
-		// begin main loop
-		this.loop();
-	},
-	
-	/*
+
+        // asset creation
+        //app.resources.loadImages();
+
+        // ready to resize
+        this.resize();
+
+        // "change" into title
+        this.changeState(app.GAME_STATE.TITLE);
+
+        // begin main loop
+        this.loop();
+    },
+
+    /*
 	 * Changes the state of the game
 	 *
 	 * @param   {String} newState   the state to switch to.
 	 *
 	 * @return  none
 	 */
-	changeState : function(newState)
-	{
-		// if no state is provided, assume we will go back to previous state
-		if(newState === undefined)
-		{
-			var tempState = this.currentState;
-			this.currentGameState = this.previousGameState;
-			this.previousGameState = tempState;
-		}
-		
-		// state provided
-		else
-		{
-			this.previousGameState = this.currentGameState;
-			this.currentGameState = newState;
-		}
-		
-		// begin loading of a state if necessary
-		switch(this.currentGameState)
-		{
-		case app.GAME_STATE.TITLE:
-			if(!app.title.ready)
-				app.title.init();
-			
-			break;
-			
-		case app.GAME_STATE.INSTRUCTIONS:
-			if(!app.instructions.ready)
-				app.instructions.init();
-				
-			break;
-			
-		case app.GAME_STATE.GAME:
-			if(!app.game.ready)
-			{
-				//app.resources.createResources();
-				app.game.init();
-			}
-				
-			break;
-			
-		case app.GAME_STATE.HIGH_SCORE:
-			if(!app.highScore.ready)
-				app.highScore.init();
-		
-			break;
-			
-		case app.GAME_STATE.PAUSED:
-			// nothing here atm
-			
-			break;
-		}
-	},
-	
-	/*
+    changeState: function (newState) {
+        // if no state is provided, assume we will go back to previous state
+        if (newState === undefined) {
+            var tempState = this.currentState;
+            this.currentGameState = this.previousGameState;
+            this.previousGameState = tempState;
+        }
+
+            // state provided
+        else {
+            this.previousGameState = this.currentGameState;
+            this.currentGameState = newState;
+        }
+
+        // begin loading of a state if necessary
+        switch (this.currentGameState) {
+            case app.GAME_STATE.TITLE:
+                if (!app.title.ready)
+                    app.title.init();
+
+                break;
+
+            case app.GAME_STATE.INSTRUCTIONS:
+                if (!app.instructions.ready)
+                    app.instructions.init();
+
+                break;
+
+            case app.GAME_STATE.GAME:
+                if (!app.game.ready) {
+                    //app.resources.createResources();
+                    app.game.init();
+                    app.game.resetGame();
+                }
+
+                break;
+
+            case app.GAME_STATE.HIGH_SCORE:
+                app.game.ready = false;
+                app.highScore.init();
+
+                break;
+
+            case app.GAME_STATE.PAUSED:
+                // nothing here atm
+
+                break;
+        }
+    },
+
+    /*
 	 * resizes the canvas element, and re-assigns any necessary values
 	 *
 	 * @return  none
 	 */
-	resize : function()
-	{
-		console.log("main resize!");
-		
-		// resize height; width resizing is based on height & ratio
+    resize: function () {
+        console.log("main resize!");
+
+        // resize height; width resizing is based on height & ratio
         app.dimensions.height = window.innerHeight;
         app.dimensions.width = app.dimensions.height * app.dimensions.ratio;
 
@@ -187,99 +181,94 @@ app.main = {
         window.setTimeout(function () {
             window.scrollTo(0, 1);
         }, 1);
-	},
-	
-	/*
+    },
+
+    /*
 	 * the main loop of the application.
 	 *
 	 * @return  none
 	 */
-	loop : function()
-	{
-		this.update();
-		this.render();
-		
-		// ToDo: gamestate logic here
-		
-		// bind to prevent scope-loss
-		app.animationID = requestAnimationFrame(this.loop.bind(this));
-	},
-	
-	/*
+    loop: function () {
+        this.update();
+        this.render();
+
+        // ToDo: gamestate logic here
+
+        // bind to prevent scope-loss
+        app.animationID = requestAnimationFrame(this.loop.bind(this));
+    },
+
+    /*
 	 * updates the objects in the game 
 	 *
 	 * @return  none
 	 */
-	update : function()
-	{
-		//console.log("main update!");
-		
-		switch(this.currentGameState)
-		{
-		case app.GAME_STATE.TITLE:
-			if(app.title.ready)
-				app.title.update();
-			
-			break;
-			
-		case app.GAME_STATE.INSTRUCTIONS:
-			if(app.instructions.ready)
-				app.instructions.update();
-		
-			break;
-		
-		case app.GAME_STATE.GAME:
-			if(app.game.ready)
-				app.game.update();
-			break;
-			
-		case app.GAME_STATE.HIGH_SCORE:
-			if(app.highScore.ready)
-				app.highScore.update();
-				
-			break;
-			
-		default:
-		
-			break;
-		}
-	},
-	
-	/*
+    update: function () {
+        //console.log("main update!");
+
+        switch (this.currentGameState) {
+            case app.GAME_STATE.TITLE:
+                if (app.title.ready)
+                    app.title.update();
+
+                break;
+
+            case app.GAME_STATE.INSTRUCTIONS:
+                if (app.instructions.ready)
+                    app.instructions.update();
+
+                break;
+
+            case app.GAME_STATE.GAME:
+                if (app.game.ready)
+                    app.game.update();
+                break;
+
+            case app.GAME_STATE.HIGH_SCORE:
+                if (app.highScore.ready)
+                    app.highScore.update();
+
+                break;
+
+            default:
+
+                break;
+        }
+    },
+
+    /*
 	 * renders the objects to the screen
 	 *
 	 * @return  none
 	 */
-	render : function()
-	{
-		// clear screen
-		app.ctx.clearRect(0, 0, this.DEFAULT_WIDTH, this.DEFAULT_HEIGHT);
-			
-		switch(this.currentGameState)
-		{
-		case app.GAME_STATE.TITLE:
-			if(app.title.ready)
-				app.title.render();
-				
-			break;
-				
-		case app.GAME_STATE.INSTRUCTIONS:
-			if(app.instructions.ready)
-				app.instructions.render();
-		
-			break;
-			
-		case app.GAME_STATE.GAME:
-			if(app.game.ready)
-				app.game.render();
-				
-			break;
-			
-		case app.GAME_STATE.HIGH_SCORE:
-			if(app.highScore.ready)
-				app.highScore.render();
-				
-			break;
-		}
-	}
+    render: function () {
+        // clear screen
+        app.ctx.clearRect(0, 0, this.DEFAULT_WIDTH, this.DEFAULT_HEIGHT);
+
+        switch (this.currentGameState) {
+            case app.GAME_STATE.TITLE:
+                if (app.title.ready)
+                    app.title.render();
+
+                break;
+
+            case app.GAME_STATE.INSTRUCTIONS:
+                if (app.instructions.ready)
+                    app.instructions.render();
+
+                break;
+
+            case app.GAME_STATE.GAME:
+                if (app.game.ready)
+                    app.game.render();
+
+                break;
+
+            case app.GAME_STATE.HIGH_SCORE:
+                if (app.highScore.ready)
+                    app.highScore.render();
+
+                break;
+        }
+    }
 };
