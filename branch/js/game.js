@@ -14,7 +14,7 @@ app.game = {
 
     // Variables ----------------------------------------------------
     ready: false,
-    lastUpdate: Date.now(),
+    lastUpdate: undefined,
     counrtyChangeTimerReset: 10000,
     countryChangeTimer: undefined,
 
@@ -326,6 +326,7 @@ app.game = {
         this.swapLeftButton = new Core2D.Button(gameButtonLeft_properties);
         this.swapRightButton = new Core2D.Button(gameButtonRight_properties);
 
+		this.lastUpdate = Date.now();
         this.ready = true;
     },
 
@@ -335,7 +336,8 @@ app.game = {
 	 * @return  none
 	 */
     update: function () {
-
+		console.log("game update");
+	
         //WE'VE LOST
         //console.log(this.numberDeadPeople);
         if (this.numberDeadPeople >= 3) {

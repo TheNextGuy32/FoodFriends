@@ -23,7 +23,7 @@ app.instructions = {
 	
 	createAssets : function()
 	{
-	    
+	    this.ready = true;
 	},
 	
 	update : function()
@@ -32,5 +32,6 @@ app.instructions = {
 	
 	render : function()
 	{
+		
 	}
 };

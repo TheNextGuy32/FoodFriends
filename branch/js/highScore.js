@@ -24,11 +24,12 @@ app.highScore = {
 	render : function()
 	{
 		// background
-	    app.ctx.drawImage(this.background, 0, 0, 540, 480);
+	    app.ctx.drawImage(this.background, 0, 0, 320, 480);
 		
 		// main text
 		app.ctx.fillStyle = "#000000";
 		app.ctx.font = "24px Helvetica";
+		app.ctx.textAlign = "center";
 		app.ctx.fillText("High Scores!", app.main.DEFAULT_WIDTH/2, 50);
 		
 		// scores
@@ -38,6 +39,7 @@ app.highScore = {
 			{
 				// draw it!
 				app.ctx.fillText("Score: " + localStorage[i], app.main.DEFAULT_WIDTH/2, 30 * i + 200);
+				console.log(app.main.DEFAULT_WIDTH/2);
 			}
 			else if(localStorage[i] == "0")
 			{

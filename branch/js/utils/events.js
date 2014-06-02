@@ -74,6 +74,7 @@ window.addEventListener('blur', function(){
 window.addEventListener('focus', function(){
 	console.log("page focus");
 	
+	app.game.lastUpdate = Date.now();
 	app.main.changeState();
 	
 	// start animation again
