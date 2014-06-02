@@ -21,7 +21,7 @@ app.game = {
     DEFAULT_WIDTH: 320, // starting width for game
     DEFAULT_HEIGHT: 480, // starting height for game
 
-    sideBufferX: 10,//The amount of space on the left and right of the lanes
+    sideBufferX: -25,//The amount of space on the left and right of the lanes
     lanePositions: new Array(),//The position of each lane
     collisionYCoordinate: 400,
 
@@ -244,9 +244,9 @@ app.game = {
     },
 
     createGame: function () {
-        this.lanePositions[0] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 1);
-        this.lanePositions[1] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 2);
-        this.lanePositions[2] = this.sideBufferX + ((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4 * 3);
+        this.lanePositions[0] = this.sideBufferX + (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 1);
+        this.lanePositions[1] = this.sideBufferX + (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 2);
+        this.lanePositions[2] = this.sideBufferX + (((app.main.DEFAULT_WIDTH - (this.sideBufferX * 2)) / 4) * 3);
 
         this.foodSpawnCurrentTimeSeconds[0] = 0;
         this.foodSpawnCurrentTimeSeconds[1] = 0;
@@ -282,12 +282,12 @@ app.game = {
 
         var gameButtonLeft_properties = {
             center: {
-                x: 125,
-                y: 452
+                x: 115,
+                y: 425
             },
 
             size: {
-                width: 25,
+                width: 40,
                 height: 25
             },
 
@@ -303,12 +303,12 @@ app.game = {
         };
         var gameButtonRight_properties = {
             center: {
-                x: 200,
-                y: 452
+                x: 207,
+                y: 425
             },
 
             size: {
-                width: 25,
+                width: 40,
                 height: 25
             },
 			
