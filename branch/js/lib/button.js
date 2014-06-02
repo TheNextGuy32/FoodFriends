@@ -222,23 +222,24 @@ Core2D.Button = (function()
 				    this.center.y - this.size.height/2, this.size.width, this.size.height);
 			}
 			
-			// standard color drawing
+			// standard color / text drawing
 			else
 			{
+				// background
 			    ctx.fillRect(this.center.x - this.size.width/2, 
 			        this.center.y - this.size.height/2, this.size.width, this.size.height);
 			    ctx.strokeRect(this.center.x - this.size.width/2,
 			        this.center.y - this.size.height/2, this.size.width, this.size.height);
-			}
-		
-			// text settings
-			ctx.font      = this.text.size + "px " + this.text.font;
-			ctx.fillStyle = this.text.color;
-			ctx.textAlign = this.text.alignment;
+					
+				// text settings
+			    ctx.font      = this.text.size + "px " + this.text.font;
+			    ctx.fillStyle = this.text.color;
+			    ctx.textAlign = this.text.alignment;
 			
-			// draw text centered on the button
-			// TODO: Base drawing on size of text relative to size of button!
-			ctx.fillText(this.text.string, this.center.x, this.center.y + this.size.height/8);
+			    // draw text centered on the button
+			    // TODO: Base drawing on size of text relative to size of button!
+			    ctx.fillText(this.text.string, this.center.x, this.center.y + this.size.height/8);
+			}
 		
 		// revert changes - post text
 		ctx.restore();

@@ -15,12 +15,12 @@ app.title = {
 	// Constants -----------------------------------------------------
 	
 	// Variables -----------------------------------------------------
-	ready              : false,     // if the screen is ready to be used
-	instructionsButton : undefined, // button leading to instruction screen
-	gameButton         : undefined, // button leading to game screen
-	titleImage         : undefined,
-	foodImages         : [],
-	foodEmitter        : [],
+	ready                   : false,     // if the screen is ready to be used
+	instructionsButton      : undefined, // button leading to instruction screen
+	titleImage              : undefined,
+	foodImages              : [],
+	foodEmitter             : [],
+	buttons                 : new Array(),
 	
 	/*
 	 * Initializes the title screen with any necessary values
@@ -44,13 +44,23 @@ app.title = {
 	 */
 	createAssets : function()
 	{
+		// title stuff
 		this.titleImage = new Image();
 		this.titleImage.src = "images/title.png";
+		
+		var gameButtonImage = new Image();
+		gameButtonImage.src = "images/startButton.png";
+		
+		var instructionsButtonImage = new Image();
+		instructionsButtonImage.src = "images/instructionsButton.png";
+		
+		var highScoreButtonImage = new Image();
+		highScoreButtonImage.src = "images/highScoreButton.png";
 	
 		var gameButton_properties = {
 			center : {
-				x : 150,
-				y : 400
+				x : 160,
+				y : 460
 			},
 			
 			size : {
@@ -58,17 +68,57 @@ app.title = {
 				height: 20
 			},
 			
-			text : {
-				string: "Start"
-			},
+			image : gameButtonImage,
 			
 			callbacks : {
 				click : function(){app.main.changeState(app.GAME_STATE.GAME)} 
 			}
 		};
 		
-		this.gameButton = new Core2D.Button(gameButton_properties);
-		//this.testLabel  = new Core2D.Label(testLabel_properties);
+		var instructionsButton_properties = {
+			center: {
+			    x: 160,
+				y: 400
+			},
+			
+			size : {
+			    width : 80,
+				height: 20
+			},
+			
+			image : instructionsButtonImage,
+			
+			callbacks : {
+				click : function(){app.main.changeState(app.GAME_STATE.INSTRUCTIONS)}
+			}
+		};
+		
+		var highScoreButton_properties = {
+			center: {
+			    x: 160,
+				y: 430
+			},
+			
+			size: {
+			    width : 80,
+				height: 20
+			},
+			
+			image : highScoreButtonImage,
+			
+			callbacks: {
+			    click : function(){app.main.changeState(app.GAME_STATE.HIGH_SCORE)}
+			}
+		};
+		
+		// creating buttons
+		this.buttons.push(new Core2D.Button(gameButton_properties));
+		this.buttons.push(new Core2D.Button(instructionsButton_properties));
+		this.buttons.push(new Core2D.Button(highScoreButton_properties));
+		
+		//this.gameButton = new Core2D.Button(gameButton_properties);
+		//this.instructionsButton = new Core2D.Button(instructionsButton_properties);
+		//this.highScoreButton = new Core2D.Button(highScoreButton_properties);
 		
 		//Loading all the food graphics
         //USA
@@ -145,20 +195,17 @@ app.title = {
 	 */
 	checkCollisions : function(mouseX, mouseY)
 	{
-		//console.log("test");
-		
-		// check collision against our button
-		var collision = pointInRect({x: mouseX, y: mouseY}, 
-		{x: this.gameButton.center.x - this.gameButton.size.width/2,
-		 y: this.gameButton.center.y - this.gameButton.size.height/2,
-		 width: this.gameButton.size.width,
-		 height: this.gameButton.size.height});
-		 
-		console.log(collision);
-		
-		if(collision)
+		// check collisions
+		for(var i = 0; i < this.buttons.length; i++)
 		{
-			this.gameButton.changeState(Core2D.BUTTON_STATE.CLICK);
+		    var collision = pointInRect({x: mouseX, y: mouseY},
+			{x: this.buttons[i].center.x - this.buttons[i].size.width/2,
+			 y: this.buttons[i].center.y - this.buttons[i].size.height/2,
+			 width: this.buttons[i].size.width,
+			 height: this.buttons[i].size.height});
+			 
+			if(collision)
+				this.buttons[i].changeState(Core2D.BUTTON_STATE.CLICK);
 		}
 	},
 	
@@ -184,8 +231,12 @@ app.title = {
 		//app.ctx.fillText("Food Friends", app.main.DEFAULT_WIDTH/5, 50);
 		
 		// buttons
-		this.gameButton.render(app.ctx);
+		//this.gameButton.render(app.ctx);
 		
+		//this.highScoreButton.render(app.ctx);
+		for(var i = 0; i < this.buttons.length; i++)
+			this.buttons[i].render(app.ctx);
+			
 		// restore at end
 		app.ctx.restore();
 	}
