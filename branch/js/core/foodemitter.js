@@ -28,7 +28,7 @@ FoodEmitter.prototype.emit = function()
 	var imageNum = Math.floor(this.images.length * Math.random());
 	var image = this.images[imageNum];
 	
-	if(Math.random() * this.fps < 60)
+	if(Math.random() * 60 < this.fps)
 	{
 		this.particles.push(new FoodParticle(image, x, y, velocity, size));
 	}
