@@ -13,9 +13,17 @@ var app = app || {};
 app.instructions = {
 	ready : false,
 	
+	
 	init : function()
 	{
-		console.log("instructions init");
+		//console.log("instructions init");
+		
+		this.createAssets();
+	},
+	
+	createAssets : function()
+	{
+	    
 	},
 	
 	update : function()

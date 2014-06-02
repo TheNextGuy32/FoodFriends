@@ -213,10 +213,6 @@ app.main = {
 	update : function()
 	{
 		//console.log("main update!");
-		if(this.currentGameState == app.GAME_STATE.TITLE && app.title.ready)
-		{
-			app.title.update();
-		}
 		
 		switch(this.currentGameState)
 		{

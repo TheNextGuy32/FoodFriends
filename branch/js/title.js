@@ -116,49 +116,70 @@ app.title = {
         //USA
         var peanutbutterImage = new Image();
         peanutbutterImage.src = "images/hamburger.png";
-		this.foodImages.push(peanutbutterImage);
+		//this.foodImages.push(peanutbutterImage);
+		app.resources.addImage("hamburger", peanutbutterImage);
 
         var friesImage = new Image();
         friesImage.src = "images/fries.png";
-		this.foodImages.push(friesImage);
+		//this.foodImages.push(friesImage);
+		app.resources.addImage("fries", friesImage);
 
         //Germany
         var schnitzelImage = new Image();
         schnitzelImage.src = "images/beer.png";
-		this.foodImages.push(schnitzelImage);
+		//this.foodImages.push(schnitzelImage);
+		app.resources.addImage("schnitzel", schnitzelImage);
 		
         var brautwurstImage = new Image();
         brautwurstImage.src = "images/sausage.png"
-		this.foodImages.push(brautwurstImage);
+		//this.foodImages.push(brautwurstImage);
+		app.resources.addImage("brautwurst", brautwurstImage);
 
         //Italy
         var pizzaImage = new Image();
         pizzaImage.src = "images/pizza.png";
-		this.foodImages.push(pizzaImage);
+		//this.foodImages.push(pizzaImage);
+		app.resources.addImage("pizza", pizzaImage);
 		
         var spaghettiImage = new Image();
         spaghettiImage.src = "images/spaghetti.png";
-		this.foodImages.push(spaghettiImage);
+		//this.foodImages.push(spaghettiImage);
+		app.resources.addImage("spaghetti", spaghettiImage);
 
         //France
         var baguetteImage = new Image();
         baguetteImage.src = "images/baguette.png";
-		this.foodImages.push(baguetteImage);
+		//this.foodImages.push(baguetteImage);
+		app.resources.addImage("baguette", baguetteImage);
 		
         var snailImage = new Image();
         snailImage.src = "images/snail.png";
-		this.foodImages.push(snailImage);
+		//this.foodImages.push(snailImage);
+		app.resources.addImage("snail", snailImage);
 
         //Mexico
         var burritoImage = new Image();
         burritoImage.src = "images/burrito.png";
-		this.foodImages.push(burritoImage);
+		//this.foodImages.push(burritoImage);
+		app.resources.addImage("burrito", burritoImage);
 		
         var guacImage = new Image();
         guacImage.src = "images/guacamole.png";
-		this.foodImages.push(guacImage);
+		//this.foodImages.push(guacImage);
+		app.resources.addImage("guacamole", guacImage);
 		
-		this.foodEmitter = new FoodEmitter(this.foodImages, 1, 2, 20, 40, 1);
+		this.foodEmitter = new FoodEmitter(
+		  [app.resources.getImage("hamburger"),
+		   app.resources.getImage("fries"),
+		   app.resources.getImage("schnitzel"),
+		   app.resources.getImage("brautwurst"),
+		   app.resources.getImage("pizza"),
+		   app.resources.getImage("spaghetti"),
+		   app.resources.getImage("baguette"),
+		   app.resources.getImage("snail"),
+		   app.resources.getImage("burrito"),
+		   app.resources.getImage("guacamole")], 
+		  1, 2, 20, 40, 5);
 		
 		// ready to begin
 		this.ready = true;

@@ -1,8 +1,6 @@
 /*
  * game.js
  *
- * @author  Freddy Garcia
- *
  * Handles the functionality for the gameplay aspect of Food Friends
  */
 "use strict";
