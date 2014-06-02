@@ -16,7 +16,6 @@ app.title = {
 	
 	// Variables -----------------------------------------------------
 	ready                   : false,     // if the screen is ready to be used
-	instructionsButton      : undefined, // button leading to instruction screen
 	titleImage              : undefined,
 	foodImages              : [],
 	foodEmitter             : [],
@@ -32,9 +31,6 @@ app.title = {
 		console.log("title init!");
 		
 		this.createAssets();
-		
-		// ready to begin
-		this.ready = true;
 	},
 	
 	/*
@@ -49,23 +45,23 @@ app.title = {
 		this.titleImage.src = "images/title.png";
 		
 		var gameButtonImage = new Image();
-		gameButtonImage.src = "images/startButton.png";
+		gameButtonImage.src = "images/button_play.png";
 		
 		var instructionsButtonImage = new Image();
-		instructionsButtonImage.src = "images/instructionsButton.png";
+		instructionsButtonImage.src = "images/button_instructions.png";
 		
 		var highScoreButtonImage = new Image();
-		highScoreButtonImage.src = "images/highScoreButton.png";
+		highScoreButtonImage.src = "images/button_highScore.png";
 	
 		var gameButton_properties = {
 			center : {
 				x : 160,
-				y : 460
+				y : 440
 			},
 			
 			size : {
-				width: 80,
-				height: 20
+				width: 100,
+				height: 30
 			},
 			
 			image : gameButtonImage,
@@ -78,12 +74,12 @@ app.title = {
 		var instructionsButton_properties = {
 			center: {
 			    x: 160,
-				y: 400
+				y: 340
 			},
 			
 			size : {
-			    width : 80,
-				height: 20
+			    width : 100,
+				height: 30
 			},
 			
 			image : instructionsButtonImage,
@@ -96,12 +92,12 @@ app.title = {
 		var highScoreButton_properties = {
 			center: {
 			    x: 160,
-				y: 430
+				y: 390
 			},
 			
 			size: {
-			    width : 80,
-				height: 20
+			    width : 100,
+				height: 30
 			},
 			
 			image : highScoreButtonImage,
@@ -115,10 +111,6 @@ app.title = {
 		this.buttons.push(new Core2D.Button(gameButton_properties));
 		this.buttons.push(new Core2D.Button(instructionsButton_properties));
 		this.buttons.push(new Core2D.Button(highScoreButton_properties));
-		
-		//this.gameButton = new Core2D.Button(gameButton_properties);
-		//this.instructionsButton = new Core2D.Button(instructionsButton_properties);
-		//this.highScoreButton = new Core2D.Button(highScoreButton_properties);
 		
 		//Loading all the food graphics
         //USA
@@ -166,7 +158,10 @@ app.title = {
         guacImage.src = "images/guacamole.png";
 		this.foodImages.push(guacImage);
 		
-		this.foodEmitter = new FoodEmitter(this.foodImages, 1, 2, 20, 40, 10);
+		this.foodEmitter = new FoodEmitter(this.foodImages, 1, 2, 20, 40, 1);
+		
+		// ready to begin
+		this.ready = true;
 	},
 	
 	update : function()
@@ -223,17 +218,9 @@ app.title = {
 		this.foodEmitter.draw(app.ctx);
 		
 		// draw logo
-		app.ctx.drawImage(this.titleImage, 0, 50, app.main.DEFAULT_WIDTH, 100);
-		
-		// text
-		//app.ctx.fillStyle = "#000000";
-		//app.ctx.font = "20px Helvetica";
-		//app.ctx.fillText("Food Friends", app.main.DEFAULT_WIDTH/5, 50);
+		app.ctx.drawImage(this.titleImage, app.main.DEFAULT_WIDTH/2 - app.main.DEFAULT_WIDTH/4, 30, app.main.DEFAULT_WIDTH/2, 100);
 		
 		// buttons
-		//this.gameButton.render(app.ctx);
-		
-		//this.highScoreButton.render(app.ctx);
 		for(var i = 0; i < this.buttons.length; i++)
 			this.buttons[i].render(app.ctx);
 			
