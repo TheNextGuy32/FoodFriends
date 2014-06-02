@@ -336,7 +336,7 @@ app.game = {
 	 * @return  none
 	 */
     update: function () {
-		console.log("game update");
+		//sconsole.log("game update");
 	
         //WE'VE LOST
         //console.log(this.numberDeadPeople);

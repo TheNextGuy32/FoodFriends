@@ -38,6 +38,7 @@ window.addEventListener('click', function(e){
 		break;
 		
 	case app.GAME_STATE.INSTRUCTIONS:
+	    app.instructions.checkMouse(x, y);
 	
 		break;
 		
