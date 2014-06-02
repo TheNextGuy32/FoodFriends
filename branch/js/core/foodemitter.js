@@ -20,12 +20,13 @@ FoodEmitter.prototype.emit = function()
 	var velocity = (this.maxVelocity - this.minVelocity) * Math.random() + this.minVelocity;
 	var size = (this.maxSize - this.minSize) * Math.random() + this.minSize;
 	
-	this.x = app.dimensions.width * Math.random();
-	this.y = -this.size / 2;
+	var x = (app.dimensions.width - size / 2) * Math.random() + size / 2;
+	var y = -size / 2;
 	
-	this.image = this.images[this.images.length * Math.random()];
+	var imageNum = Math.floor(this.images.length * Math.random());
+	var image = this.images[imageNum];
 	
-	this.particles.push(new Partcile(image, x, y, velocity, size));
+	this.particles.push(new FoodParticle(image, x, y, velocity, size));
 };
 
 FoodEmitter.prototype.update = function(dt)
