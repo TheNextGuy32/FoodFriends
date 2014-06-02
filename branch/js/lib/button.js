@@ -97,7 +97,6 @@ Core2D.Button = (function()
 		properties.hover     = properties.hover     || {};
 		properties.text      = properties.text      || {};
 		properties.callbacks = properties.callbacks || {};
-		properties.image     = properties.image     || {};
 	
 		this.center = {
 		    x : properties.center.x === undefined ? window.innerWidth / 2 
@@ -202,7 +201,7 @@ Core2D.Button = (function()
 				break;
 				
 			default:
-				if(properties.image)
+				if(this.image)
 				{
 				    // no need to set styles
 				}
