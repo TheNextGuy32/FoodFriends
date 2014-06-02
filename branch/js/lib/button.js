@@ -114,22 +114,29 @@ Core2D.Button = (function()
 			    : properties.size.stroke
 		};
 		
-		this.color  = {
-			fill   : properties.color.fill   === undefined ? "#4C6B88"
-			    : properties.color.fill,
-			stroke : properties.color.stroke === undefined ? "#4C6B88"
-			    : properties.color.stroke
-		};
+		// image or color
+		if(properties.image)
+			this.image = properties.image; // requires image to already be loaded!
 		
-		this.hover  = {
-			fill   : properties.hover.fill   === undefined ? this.color.fill
-			    : properties.hover.fill,
-			stroke : properties.hover.stroke === undefined ? this.color.stroke
-			    : properties.hover.stroke
-		};
+		else
+		{
+			this.color  = {
+				fill   : properties.color.fill   === undefined ? "#4C6B88"
+					: properties.color.fill,
+				stroke : properties.color.stroke === undefined ? "#4C6B88"
+					: properties.color.stroke
+			};
+			
+			this.hover  = {
+				fill   : properties.hover.fill   === undefined ? this.color.fill
+					: properties.hover.fill,
+				stroke : properties.hover.stroke === undefined ? this.color.stroke
+					: properties.hover.stroke
+			};
+		}
 		
 		this.text   = {
-			string    : properties.text.string === undefined ? "Default"
+			string    : properties.text.string === undefined ? ""
 			    : properties.text.string,
 			color     : properties.text.color  === undefined ? "#EFECDE"
 			    : properties.text.color,
@@ -166,36 +173,65 @@ Core2D.Button = (function()
 			switch(this.currentState)
 			{
 			case Core2D.BUTTON_STATE.MAIN:
-				ctx.fillStyle   = this.color.fill;
-				ctx.strokeStyle = this.color.stroke;
+				if(this.image)
+				{
+				    // no need to set styles
+				}
+				
+				else
+				{
+				    ctx.fillStyle   = this.color.fill;
+				    ctx.strokeStyle = this.color.stroke;
+				}
 				
 				break;
 				
 			case Core2D.BUTTON_STATE.HOVER:
-				ctx.fillStyle   = this.color.fill;
-				ctx.StrokeStyle = this.color.stroke;
+				if(this.image)
+				{
+				    // no need to set styles
+				}
+				
+				else
+				{
+				    ctx.fillStyle   = this.color.fill;
+				    ctx.StrokeStyle = this.color.stroke;
+				}
 				
 				break;
 				
 			default:
-				ctx.fillStyle   = this.color.fill;
-				ctx.strokeStyle = this.color.stroke;
+				if(this.image)
+				{
+				    // no need to set styles
+				}
+				
+				else
+				{
+				    ctx.fillStyle   = this.color.fill;
+				    ctx.strokeStyle = this.color.stroke;
+				}
 				
 				break;
 			}
 			
-			// draw
-			ctx.fillRect(this.center.x - this.size.width/2, this.center.y - this.size.height/2, this.size.width, this.size.height);
-			ctx.strokeRect(this.center.x - this.size.width/2, this.center.y - this.size.height/2, this.size.width, this.size.height);
-		
-		// revert changes - post rectangle
-		//ctx.restore();
-		
-		// restore point - pre text
-		//ctx.save();
+			// image drawing
+			if(this.image)
+			{
+			    ctx.drawImage(this.image, this.center.x - this.size.width/2,
+				    this.center.y - this.size.height/2, this.size.width, this.size.height);
+			}
+			
+			// standard color drawing
+			else
+			{
+			    ctx.fillRect(this.center.x - this.size.width/2, 
+			        this.center.y - this.size.height/2, this.size.width, this.size.height);
+			    ctx.strokeRect(this.center.x - this.size.width/2,
+			        this.center.y - this.size.height/2, this.size.width, this.size.height);
+			}
 		
 			// text settings
-			//ctx.font = "12px Arial";
 			ctx.font      = this.text.size + "px " + this.text.font;
 			ctx.fillStyle = this.text.color;
 			ctx.textAlign = this.text.alignment;

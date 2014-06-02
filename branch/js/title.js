@@ -19,6 +19,8 @@ app.title = {
 	instructionsButton : undefined, // button leading to instruction screen
 	gameButton         : undefined, // button leading to game screen
 	titleImage         : undefined,
+	foodImages         : [],
+	foodEmitter        : [],
 	
 	/*
 	 * Initializes the title screen with any necessary values
@@ -67,12 +69,62 @@ app.title = {
 		
 		this.gameButton = new Core2D.Button(gameButton_properties);
 		//this.testLabel  = new Core2D.Label(testLabel_properties);
+		
+		//Loading all the food graphics
+        //USA
+        var peanutbutterImage = new Image();
+        peanutbutterImage.src = "images/hamburger.png";
+		this.foodImages.push(peanutbutterImage);
+
+        var friesImage = new Image();
+        friesImage.src = "images/fries.png";
+		this.foodImages.push(friesImage);
+
+        //Germany
+        var schnitzelImage = new Image();
+        schnitzelImage.src = "images/beer.png";
+		this.foodImages.push(schnitzelImage);
+		
+        var brautwurstImage = new Image();
+        brautwurstImage.src = "images/sausage.png"
+		this.foodImages.push(brautwurstImage);
+
+        //Italy
+        var pizzaImage = new Image();
+        pizzaImage.src = "images/pizza.png";
+		this.foodImages.push(pizzaImage);
+		
+        var spaghettiImage = new Image();
+        spaghettiImage.src = "images/spaghetti.png";
+		this.foodImages.push(spaghettiImage);
+
+        //France
+        var baguetteImage = new Image();
+        baguetteImage.src = "images/baguette.png";
+		this.foodImages.push(baguetteImage);
+		
+        var snailImage = new Image();
+        snailImage.src = "images/snail.png";
+		this.foodImages.push(snailImage);
+
+        //Mexico
+        var burritoImage = new Image();
+        burritoImage.src = "images/burrito.png";
+		this.foodImages.push(burritoImage);
+		
+        var guacImage = new Image();
+        guacImage.src = "images/guacamole.png";
+		this.foodImages.push(guacImage);
+		
+		this.foodEmitter = new FoodEmitter(this.foodImages, 1, 2, 20, 40, 10);
 	},
 	
 	update : function()
 	{
 		this.pollKeyboard();
 		//this.checkCollisions();
+		
+		this.foodEmitter.update();
 	},
 	
 	/*
@@ -120,6 +172,10 @@ app.title = {
 		app.ctx.fillStyle = "#FFC972";
 		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 		
+		// draw falling food
+		this.foodEmitter.draw(app.ctx);
+		
+		// draw logo
 		app.ctx.drawImage(this.titleImage, 0, 50, app.main.DEFAULT_WIDTH, 100);
 		
 		// text
