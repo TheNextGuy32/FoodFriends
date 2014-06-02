@@ -1,12 +1,13 @@
 "use strict";
 
-var Country = function(fatPoint, countryName, image)
+var Country = function(fatPoint, countryName, image, active)
 {
 	// variables
 	this.fatPoint = fatPoint;
 	this.countryName = countryName;
 	this.image = image;
 	this.imageIndex = 0;
+	this.active = active;
 	this.isAlive = true;
 };
 
@@ -37,6 +38,9 @@ Country.prototype.getCountryName = function()
 	return this.countryName;
 };
 
+Country.prototype.switchActive = function() {
+	this.active = !this.active;
+};
 
 Country.prototype.setImage = function(image)
 {
