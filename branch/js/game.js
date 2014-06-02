@@ -147,45 +147,47 @@ app.game = {
 
         //Loading all the food graphics
         //USA
-        var peanutbutterImage = new Image();
-        peanutbutterImage.src = "images/hamburger.png";
+       // var peanutbutterImage = new Image();
+       // peanutbutterImage.src = "images/hamburger.png";
 
         var pancakesImage = new Image();
         pancakesImage.src = "images/pancakes.png";
 
-        var friesImage = new Image();
-        friesImage.src = "images/fries.png";
+       // var friesImage = new Image();
+       // friesImage.src = "images/fries.png";
 
         //Germany
-        var schnitzelImage = new Image();
-        schnitzelImage.src = "images/beer.png";
-        var brautwurstImage = new Image();
-        brautwurstImage.src = "images/sausage.png";
+		//var schnitzelImage = new Image();
+        //schnitzelImage.src = "images/beer.png";
+        //var brautwurstImage = new Image();
+        //brautwurstImage.src = "images/sausage.png";
 
         //Italy
-        var pizzaImage = new Image();
-        pizzaImage.src = "images/pizza.png";
-        var spaghettiImage = new Image();
-        spaghettiImage.src = "images/spaghetti.png";
+        //var pizzaImage = new Image();
+       // pizzaImage.src = "images/pizza.png";
+       // var spaghettiImage = new Image();
+        //spaghettiImage.src = "images/spaghetti.png";
 
         //France
-        var baguetteImage = new Image();
-        baguetteImage.src = "images/baguette.png";
-        var snailImage = new Image();
-        snailImage.src = "images/snail.png";
+        //var baguetteImage = new Image();
+       // baguetteImage.src = "images/baguette.png";
+        //var snailImage = new Image();
+        //snailImage.src = "images/snail.png";
 
         //Mexico
-        var burritoImage = new Image();
-        burritoImage.src = "images/burrito.png";
-        var guacImage = new Image();
-        guacImage.src = "images/guacamole.png";
+       // var burritoImage = new Image();
+        //burritoImage.src = "images/burrito.png";
+        //var guacImage = new Image();
+       // guacImage.src = "images/guacamole.png";
         var picoDGImage = new Image();
         picoDGImage.src = "images/picoDeGallo.png";
 
         //Creating the dictionary of sprites
-        this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(schnitzelImage, brautwurstImage)), new SpriteKeyPair("USA", new Array(peanutbutterImage, pancakesImage)),
-                                     new SpriteKeyPair("Italy", new Array(pizzaImage, spaghettiImage)), new SpriteKeyPair("France", new Array(baguetteImage, snailImage)),
-                                     new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage, picoDGImage)));
+        this.foodSprites = new Array(new SpriteKeyPair("Germany", new Array(app.resources.getImage("schnitzel"), app.resources.getImage("brautwurst"))), 
+			new SpriteKeyPair("USA", new Array(app.resources.getImage("hamburger"), pancakesImage)),
+            new SpriteKeyPair("Italy", new Array(app.resources.getImage("pizza"), app.resources.getImage("spaghetti"))),
+			new SpriteKeyPair("France", new Array(app.resources.getImage("baguette"), app.resources.getImage("snail"))),
+            new SpriteKeyPair("Mexico", new Array(app.resources.getImage("burrito"), app.resources.getImage("guacamole"), picoDGImage)));
 
         // Initializes countries
 		this.activeCountryArray = new Array(new Country(this.fatPoints, "USA", this.americaImages[0]), new Country(this.fatPoints, "Germany", this.germanyImages[0]), new Country(this.fatPoints, "France", this.franceImages[0]));
@@ -214,7 +216,7 @@ app.game = {
 
     checkMouse: function (mouseX, mouseY) {
 
-        var collisionLeft = pointInRect({ x: mouseX, y: mouseY },
+       /* var collisionLeft = pointInRect({ x: mouseX, y: mouseY },
 		{
 		    x: this.swapLeftButton.center.x - this.swapLeftButton.size.width / 2,
 		    y: this.swapLeftButton.center.y - this.swapLeftButton.size.height / 2,
@@ -233,7 +235,12 @@ app.game = {
         if (collisionLeft)
             app.game.switchLane(1);
         else if (collisionRight)
-            app.game.switchLane(2);
+            app.game.switchLane(2);*/
+			
+		if(mouseX >= app.main.DEFAULT_WIDTH/2)
+		    app.game.switchLane(2);
+		else
+		    app.game.switchLane(1);
     },
 
     createGame: function () {
@@ -269,21 +276,26 @@ app.game = {
         /*for (var i = 0; i < 3; i++) {
             this.foodFlags[i] = new FoodFlag(this.machines[i], undefined, 4, 4);
         }*/
+		
+		var buttonImg = new Image();
+		buttonImg.src = "images/button_arrows.png"
 
         var gameButtonLeft_properties = {
             center: {
                 x: 125,
-                y: 425
+                y: 452
             },
 
             size: {
-                width: 30,
-                height: 50
+                width: 25,
+                height: 25
             },
 
             text: {
                 string: ""
             },
+			
+			image : buttonImg,
 
             callbacks: {
                 click: function () { app.main.changeState(app.GAME_STATE.GAME) }
@@ -292,13 +304,15 @@ app.game = {
         var gameButtonRight_properties = {
             center: {
                 x: 200,
-                y: 425
+                y: 452
             },
 
             size: {
-                width: 30,
-                height: 50
+                width: 25,
+                height: 25
             },
+			
+			image : buttonImg,
 
             text: {
                 string: ""
@@ -323,7 +337,7 @@ app.game = {
     update: function () {
 
         //WE'VE LOST
-        console.log(this.numberDeadPeople);
+        //console.log(this.numberDeadPeople);
         if (this.numberDeadPeople >= 3) {
 
             //Add and sort the storage

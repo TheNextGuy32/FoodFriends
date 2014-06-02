@@ -17,7 +17,6 @@ app.title = {
 	// Variables -----------------------------------------------------
 	ready                   : false,     // if the screen is ready to be used
 	titleImage              : undefined,
-	foodImages              : [],
 	foodEmitter             : [],
 	buttons                 : new Array(),
 	
@@ -56,12 +55,12 @@ app.title = {
 		var gameButton_properties = {
 			center : {
 				x : 160,
-				y : 440
+				y : 310
 			},
 			
 			size : {
-				width: 100,
-				height: 30
+				width: 150,
+				height: 40
 			},
 			
 			image : gameButtonImage,
@@ -74,12 +73,12 @@ app.title = {
 		var instructionsButton_properties = {
 			center: {
 			    x: 160,
-				y: 340
+				y: 410
 			},
 			
 			size : {
-			    width : 100,
-				height: 30
+			    width : 150,
+				height: 40
 			},
 			
 			image : instructionsButtonImage,
@@ -92,12 +91,12 @@ app.title = {
 		var highScoreButton_properties = {
 			center: {
 			    x: 160,
-				y: 390
+				y: 360
 			},
 			
 			size: {
-			    width : 100,
-				height: 30
+			    width : 150,
+				height: 40
 			},
 			
 			image : highScoreButtonImage,
@@ -115,59 +114,52 @@ app.title = {
 		//Loading all the food graphics
         //USA
         var peanutbutterImage = new Image();
-        peanutbutterImage.src = "images/hamburger.png";
-		//this.foodImages.push(peanutbutterImage);
-		app.resources.addImage("hamburger", peanutbutterImage);
+        peanutbutterImage.src = "images/hamburger.png";		
 
         var friesImage = new Image();
         friesImage.src = "images/fries.png";
-		//this.foodImages.push(friesImage);
-		app.resources.addImage("fries", friesImage);
 
         //Germany
         var schnitzelImage = new Image();
         schnitzelImage.src = "images/beer.png";
-		//this.foodImages.push(schnitzelImage);
-		app.resources.addImage("schnitzel", schnitzelImage);
 		
         var brautwurstImage = new Image();
         brautwurstImage.src = "images/sausage.png"
-		//this.foodImages.push(brautwurstImage);
-		app.resources.addImage("brautwurst", brautwurstImage);
 
         //Italy
         var pizzaImage = new Image();
         pizzaImage.src = "images/pizza.png";
-		//this.foodImages.push(pizzaImage);
-		app.resources.addImage("pizza", pizzaImage);
 		
         var spaghettiImage = new Image();
         spaghettiImage.src = "images/spaghetti.png";
-		//this.foodImages.push(spaghettiImage);
-		app.resources.addImage("spaghetti", spaghettiImage);
 
         //France
         var baguetteImage = new Image();
         baguetteImage.src = "images/baguette.png";
-		//this.foodImages.push(baguetteImage);
-		app.resources.addImage("baguette", baguetteImage);
 		
         var snailImage = new Image();
         snailImage.src = "images/snail.png";
-		//this.foodImages.push(snailImage);
-		app.resources.addImage("snail", snailImage);
 
         //Mexico
         var burritoImage = new Image();
         burritoImage.src = "images/burrito.png";
-		//this.foodImages.push(burritoImage);
-		app.resources.addImage("burrito", burritoImage);
 		
         var guacImage = new Image();
         guacImage.src = "images/guacamole.png";
-		//this.foodImages.push(guacImage);
+		
+		// adding to resources
+		app.resources.addImage("hamburger", peanutbutterImage);
+		app.resources.addImage("fries", friesImage);
+		app.resources.addImage("schnitzel", schnitzelImage);
+		app.resources.addImage("brautwurst", brautwurstImage);
+		app.resources.addImage("pizza", pizzaImage);
+		app.resources.addImage("spaghetti", spaghettiImage);
+		app.resources.addImage("baguette", baguetteImage);
+		app.resources.addImage("snail", snailImage);
+		app.resources.addImage("burrito", burritoImage);
 		app.resources.addImage("guacamole", guacImage);
 		
+		// ugly
 		this.foodEmitter = new FoodEmitter(
 		  [app.resources.getImage("hamburger"),
 		   app.resources.getImage("fries"),
@@ -179,7 +171,11 @@ app.title = {
 		   app.resources.getImage("snail"),
 		   app.resources.getImage("burrito"),
 		   app.resources.getImage("guacamole")], 
-		  1, 2, 20, 40, 5);
+		  1,
+		  2,
+		  20,
+		  40,
+		  5);
 		
 		// ready to begin
 		this.ready = true;
@@ -225,6 +221,11 @@ app.title = {
 		}
 	},
 	
+	/*
+	 * Renders the objects to the context
+	 *
+	 * @return  none
+	 */
 	render : function()
 	{
 		//console.log("title render");
@@ -239,7 +240,7 @@ app.title = {
 		this.foodEmitter.draw(app.ctx);
 		
 		// draw logo
-		app.ctx.drawImage(this.titleImage, app.main.DEFAULT_WIDTH/2 - app.main.DEFAULT_WIDTH/4, 30, app.main.DEFAULT_WIDTH/2, 100);
+		app.ctx.drawImage(this.titleImage, app.main.DEFAULT_WIDTH/2 - app.main.DEFAULT_WIDTH/2.4, 50, app.main.DEFAULT_WIDTH/1.2, 180);
 		
 		// buttons
 		for(var i = 0; i < this.buttons.length; i++)
