@@ -193,10 +193,19 @@ app.game = {
 
         //Create our game countries, machines, etc
 
+        //Scores
+        for (var i = 0; i < this.numberScoresStored; i++) {
+            if (localStorage[i] == undefined) {
+                localStorage.setItem(i, "0");
+            }
+
+        }
+
         this.createGame();
     },
 
     checkMouse: function (mouseX, mouseY) {
+
         var collisionLeft = pointInRect({ x: mouseX, y: mouseY },
 		{
 		    x: this.swapLeftButton.center.x - this.swapLeftButton.size.width / 2,
@@ -312,29 +321,20 @@ app.game = {
             //Add and sort the storage
             for (var i = 0; i < this.numberScoresStored; i++) {
 
-                // first value undefined
-                if (localStorage[i] == undefined) {
+                // check against other values
+                if (app.player.getScore() > localStorage[i]) {
+                    for (var q = this.numberScoresStored - 1; q > i; q--) {
 
+                        if (localStorage[q - 1] != undefined) {
+
+                            localStorage[q] = localStorage[q - 1];
+                        }
+                    }
                     localStorage.setItem(i, app.player.getScore());
-                    i = 3;
+                    console.log("We logged a score!");
 
                     break;
-                }
 
-                    // check against other values
-                else {
-                    if (app.player.getScore() > localStorage[i]) {
-                        for (var q = this.numberScoresStored - 1; q > i; q--) {
-
-                            if (localStorage[q - 1] != undefined) {
-
-                                localStorage[q] = localStorage[q - 1];
-                            }
-                        }
-                        localStorage.setItem(i, app.player.getScore());
-
-                        break;
-                    }
                 }
             }
 
@@ -476,7 +476,7 @@ app.game = {
                                 this.changeCountry(c, 1);
                             }
                         }
-                        //Spawn foods
+                            //Spawn foods
                         else if (this.lanesOfFood[c][f].country == this.activeCountryArray[c].countryName) {
 
                             //Playing crunch sounds

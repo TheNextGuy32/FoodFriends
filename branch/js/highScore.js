@@ -39,7 +39,10 @@ app.highScore = {
 				// draw it!
 				app.ctx.fillText("Score: " + localStorage[i], app.main.DEFAULT_WIDTH/2, 30 * i + 200);
 			}
-			
+			else if(localStorage[i] == "0")
+			{
+			    app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 200);
+			}
 			else
 			{
 				app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 200);
