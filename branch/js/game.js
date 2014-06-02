@@ -67,12 +67,6 @@ app.game = {
     emitters: [],
 
     background: undefined,
-    image1: undefined, // images of 1st country
-    image2: undefined, // images of 2nd country
-    image3: undefined, // images of 3rd country
-    image4: undefined, // images of 4th country
-    image5: undefined, // images of 5th country
-    image6: undefined, // images of 6th country
     americaImages: [],
     franceImages: [],
     germanyImages: [],
@@ -126,22 +120,6 @@ app.game = {
                 }
             }
         }
-
-        this.image1 = new Image();
-        this.image1.src = "images/FatGuy_American.png";
-
-        this.image2 = new Image();
-        this.image2.src = "images/FatGuy_France.png";
-
-        this.image3 = new Image();
-        this.image3.src = "images/FatGuy_German.png";
-
-        this.image4 = new Image();
-        this.image4.src = "images/FatGuy_Italy.png";
-
-        this.image5 = new Image();
-
-        this.image5.src = "images/FatGuy_Mexico.png";
 
         this.machineSprite = new Image();
         this.machineSprite.src = "images/machine-07.png";
@@ -212,8 +190,6 @@ app.game = {
                                      new SpriteKeyPair("Mexico", new Array(burritoImage, guacImage, picoDGImage)));
 
         // Initializes countries
-        //this.activeCountryArray = new Array(new Country(1, "USA", this.image1), new Country(1, "Germany", this.image3), new Country(1, "France", this.image2));
-        //this.notActiveCountryArray = new Array(new Array("Mexico", this.image5), new Array("Italy", this.image4));
 		this.activeCountryArray = new Array(new Country(this.fatPoints, "USA", this.americaImages[0]), new Country(this.fatPoints, "Germany", this.germanyImages[0]), new Country(this.fatPoints, "France", this.franceImages[0]));
 		this.notActiveCountryArray = new Array("Mexico", "Italy");
 
