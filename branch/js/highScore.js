@@ -69,6 +69,8 @@ app.highScore = {
 	
 	render : function()
 	{
+		app.ctx.save();
+	
 		// background
 	    app.ctx.drawImage(this.background, 0, 0, 320, 480);
 		
@@ -98,5 +100,7 @@ app.highScore = {
 		}
 		
 		this.menuButton.render(app.ctx);
+		
+		app.ctx.restore();
 	}
 };

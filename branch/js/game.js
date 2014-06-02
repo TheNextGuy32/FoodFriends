@@ -590,12 +590,11 @@ app.game = {
         this.lastUpdate = Date.now();
     },
 
-    render: function () {
-
+    render: function () 
+	{
+		app.ctx.save();
+	
         app.ctx.clearRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
-
-        // background 
-
 
         app.ctx.fillStyle = "#FFC972";
         app.ctx.drawImage(this.background, 0, 0, 540, 480);
@@ -662,7 +661,7 @@ app.game = {
         //    }
         //}
 
-
+		app.ctx.restore();
 
     },
 

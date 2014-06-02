@@ -74,9 +74,12 @@ app.instructions = {
 	render : function()
 	{
 		app.ctx.save();
+	
 		app.ctx.fillStyle = "#FFFFFF";
 		app.ctx.fillText("nice words :)", 50, 50);
 		
 		this.mainMenuButton.render(app.ctx);
+		
+		app.ctx.restore();
 	}
 };
