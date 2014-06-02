@@ -116,7 +116,7 @@ app.title = {
         guacImage.src = "images/guacamole.png";
 		this.foodImages.push(guacImage);
 		
-		this.foodEmitter = new FoodEmitter(this.foodImages, 1, 2, 20, 40);
+		this.foodEmitter = new FoodEmitter(this.foodImages, 1, 2, 20, 40, 1);
 	},
 	
 	update : function()

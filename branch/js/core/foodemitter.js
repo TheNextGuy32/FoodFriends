@@ -3,7 +3,7 @@
 
 "use strict"
 
-var FoodEmitter = function(images, minVelocity, maxVelocity, minSize, maxSize)
+var FoodEmitter = function(images, minVelocity, maxVelocity, minSize, maxSize, fps)
 {
 	this.particles = [];
 	
@@ -13,6 +13,8 @@ var FoodEmitter = function(images, minVelocity, maxVelocity, minSize, maxSize)
 	this.maxVelocity = maxVelocity;
 	this.minSize = minSize;
 	this.maxSize = maxSize;
+	
+	this.fps = fps; //food per second Kappa
 };
 
 FoodEmitter.prototype.emit = function()
@@ -26,7 +28,10 @@ FoodEmitter.prototype.emit = function()
 	var imageNum = Math.floor(this.images.length * Math.random());
 	var image = this.images[imageNum];
 	
-	this.particles.push(new FoodParticle(image, x, y, velocity, size));
+	if(Math.random() * this.fps < 60)
+	{
+		this.particles.push(new FoodParticle(image, x, y, velocity, size));
+	}
 };
 
 FoodEmitter.prototype.update = function(dt)
