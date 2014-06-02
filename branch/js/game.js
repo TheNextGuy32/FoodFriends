@@ -536,7 +536,7 @@ app.game = {
 
                             //You ate food from your country! ur getting fat!
                             this.activeCountryArray[c].DecFatPoint();
-
+                            
                             var tempCountry = this.activeCountryArray[c].getCountryName();
                             var index = this.activeCountryArray[c].getImageIndex();
                             var nextIndex = index + 1;
