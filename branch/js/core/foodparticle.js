@@ -17,7 +17,7 @@ var FoodParticle = function(image, x, y, velocity, size)
 
 FoodParticle.prototype.move = function(dt)
 {
-	this.y -= this.velocity;
+	this.y += this.velocity;
 	
 	if(this.y - this.size / 2 > app.dimensions.height)
 	{
@@ -35,5 +35,9 @@ FoodParticle.prototype.update = function(dt)
 
 FoodParticle.prototype.draw = function(ctx)
 {
-	ctx.drawImage(this.image, this.x - this.size / 2, this.y - this.size / 2, size, size);
+	ctx.save();
+	
+	ctx.drawImage(this.image, this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+	
+	ctx.restore();
 }
