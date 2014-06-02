@@ -45,6 +45,9 @@ window.addEventListener('click', function(e){
 	    app.game.checkMouse(x, y);
 		break;
 		
+	case app.GAME_STATE.HIGH_SCORE:
+	    app.highScore.checkMouse(x, y);
+		break;
 	}
 	
 }, false);

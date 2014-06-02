@@ -32,6 +32,8 @@ app.instructions = {
 	
 	render : function()
 	{
-		
+		app.ctx.save();
+		app.ctx.fillStyle = "#FFFFFF";
+		app.ctx.fillText("penis :)", 50, 50);
 	}
 };
