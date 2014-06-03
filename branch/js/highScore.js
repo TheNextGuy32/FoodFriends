@@ -12,7 +12,7 @@ app.highScore = {
 	init : function()
 	{
 	    this.background = new Image();
-	    this.background.src = "images/Background.png";
+	    this.background.src = "images/background.png";
 
 		console.log("high score init");
 		

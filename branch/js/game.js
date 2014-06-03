@@ -90,7 +90,7 @@ app.game = {
 
         //load images
         this.background = new Image();
-        this.background.src = "images/Background.png";
+        this.background.src = "images/background.png";
 
 		// load every country
         for (var i = 0; i < 5; i++) {
