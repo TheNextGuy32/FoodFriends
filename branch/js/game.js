@@ -120,10 +120,10 @@ app.game = {
         }
 
         this.machineSprite = new Image();
-        this.machineSprite.src = "images/machine-07.png";
+        this.machineSprite.src = "images/machine.png";
 
         this.conveyorSprite = new Image();
-        this.conveyorSprite.src = "images/convetorBelt-06.png";
+        this.conveyorSprite.src = "images/conveyorBelt.png";
 
         //load flaggs
         var americanImage = new Image();
