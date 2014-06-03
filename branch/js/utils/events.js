@@ -96,7 +96,7 @@ window.addEventListener('keyup', function(event){
 });
 
 // touch!
-window.addEventListener('touchstart' function(event){
+window.addEventListener('touchstart', function(event){
 	event.preventDefault();
 });
 
