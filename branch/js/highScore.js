@@ -84,7 +84,7 @@ app.highScore = {
 	    app.ctx.drawImage(this.background, 0, 0, 320, 480);
 		
 		// box
-		app.ctx.drawImage(this.mainBoxIMG, 35, 175, 250, 200);
+		app.ctx.drawImage(this.mainBoxIMG, 35, 175, 250,175);
 		
 		// main text
 		app.ctx.fillStyle = "#000000";
@@ -99,16 +99,16 @@ app.highScore = {
 			if(localStorage[i] != undefined)
 			{
 				// draw it!
-				app.ctx.fillText("Score: " + localStorage[i], app.main.DEFAULT_WIDTH/2, 30 * i + 220);
+				app.ctx.fillText("Score: " + localStorage[i], app.main.DEFAULT_WIDTH/2, 30 * i + 205);
 				console.log(app.main.DEFAULT_WIDTH/2);
 			}
 			else if(localStorage[i] == "0")
 			{
-			    app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 220);
+			    app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 205);
 			}
 			else
 			{
-				app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 220);
+				app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 205);
 			}
 		}
 		
