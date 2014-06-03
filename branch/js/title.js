@@ -15,10 +15,11 @@ app.title = {
 	// Constants -----------------------------------------------------
 	
 	// Variables -----------------------------------------------------
-	ready                   : false,     // if the screen is ready to be used
-	titleImage              : undefined,
-	foodEmitter             : [],
-	buttons                 : new Array(),
+	ready        : false,     // if the screen is ready to be used
+	titleImage   : undefined,
+	foodEmitter  : [],
+	buttons      : new Array(),
+	background   : false,
 	
 	/*
 	 * Initializes the title screen with any necessary values
@@ -42,6 +43,9 @@ app.title = {
 		// title stuff
 		this.titleImage = new Image();
 		this.titleImage.src = "images/title.png";
+		
+		this.background = new Image();
+		this.background.src = "images/background.png";
 		
 		var gameButtonImage = new Image();
 		gameButtonImage.src = "images/button_play.png";
@@ -73,7 +77,7 @@ app.title = {
 		var instructionsButton_properties = {
 			center: {
 			    x: 160,
-				y: 410
+				y: 360
 			},
 			
 			size : {
@@ -91,7 +95,7 @@ app.title = {
 		var highScoreButton_properties = {
 			center: {
 			    x: 160,
-				y: 360
+				y: 410
 			},
 			
 			size: {
@@ -233,8 +237,9 @@ app.title = {
 		app.ctx.save();
 		
 		// background
-		app.ctx.fillStyle = "#FFC972";
-		app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+		//app.ctx.fillStyle = "#FFC972";
+		//app.ctx.fillRect(0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
+		app.ctx.drawImage(this.background, 0, 0, app.main.DEFAULT_WIDTH, app.main.DEFAULT_HEIGHT);
 		
 		// draw falling food
 		this.foodEmitter.draw(app.ctx);

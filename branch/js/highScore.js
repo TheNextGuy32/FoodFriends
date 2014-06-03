@@ -4,6 +4,8 @@ var app = app || {};
 
 app.highScore = {
     background : undefined,
+	mainLabelIMG: undefined,
+	mainBoxIMG    : undefined,
 	ready      : false,
 	menuButton : undefined,
 	
@@ -30,7 +32,7 @@ app.highScore = {
 		var mainMenuButton_properties = {
 		    center: {
 			    x: 160,
-				y: 380
+				y: 410
 			},
 			
 			size : {
@@ -44,6 +46,13 @@ app.highScore = {
 			    click: function(){app.main.changeState(app.GAME_STATE.TITLE)}
 			}
 		};
+		
+		// images
+		this.mainLabelIMG = new Image();
+		this.mainLabelIMG.src = "images/label_highScore.png";
+		
+		this.mainBoxIMG = new Image();
+		this.mainBoxIMG.src = "images/box.png";
 		
 		// create button
 		this.menuButton = new Core2D.Button(mainMenuButton_properties);
@@ -74,11 +83,15 @@ app.highScore = {
 		// background
 	    app.ctx.drawImage(this.background, 0, 0, 320, 480);
 		
+		// box
+		app.ctx.drawImage(this.mainBoxIMG, 35, 175, 250, 200);
+		
 		// main text
 		app.ctx.fillStyle = "#000000";
 		app.ctx.font = "24px Helvetica";
 		app.ctx.textAlign = "center";
-		app.ctx.fillText("High Scores!", app.main.DEFAULT_WIDTH/2, 90);
+		//app.ctx.fillText("High Scores!", app.main.DEFAULT_WIDTH/2, 90);
+		app.ctx.drawImage(this.mainLabelIMG, app.main.DEFAULT_WIDTH/2 - app.main.DEFAULT_WIDTH/2.31, 60);
 		
 		// scores
 		for(var i = 0; i < app.game.numberScoresStored; i++)
@@ -86,16 +99,16 @@ app.highScore = {
 			if(localStorage[i] != undefined)
 			{
 				// draw it!
-				app.ctx.fillText("Score: " + localStorage[i], app.main.DEFAULT_WIDTH/2, 30 * i + 160);
+				app.ctx.fillText("Score: " + localStorage[i], app.main.DEFAULT_WIDTH/2, 30 * i + 220);
 				console.log(app.main.DEFAULT_WIDTH/2);
 			}
 			else if(localStorage[i] == "0")
 			{
-			    app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 160);
+			    app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 220);
 			}
 			else
 			{
-				app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 160);
+				app.ctx.fillText("-No Score-", app.main.DEFAULT_WIDTH/2, 30 * i + 220);
 			}
 		}
 		

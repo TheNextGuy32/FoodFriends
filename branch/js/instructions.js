@@ -30,7 +30,7 @@ app.instructions = {
 		    // SIR!!!!!! *ahem* Madam!!!!!
 			center : {
 			    x: 160,
-				y: 380
+				y: 410
 			},
 			
 			size : {
