@@ -94,3 +94,43 @@ window.addEventListener('keyup', function(event){
 	app.keydown[event.keyCode] = false;
 	console.log(event.keyCode + " is no longer pressed");
 });
+
+// touch!
+window.addEventListener('touchstart' function(event){
+	event.preventDefault();
+});
+
+window.addEventListener('touchmove',function(event){
+	event.preventDefault();
+	
+	var touches = e.touches[0];
+	
+	var x = (touches.pageX - app.offset.left) / app.dimensions.scale;
+	var y = (touches.pageY - app.offset.top) / app.dimensions.scale;
+	
+	// actions based on game state
+	switch(app.main.currentGameState)
+	{
+	case app.GAME_STATE.TITLE:
+		app.title.checkCollisions(x, y);
+	
+		break;
+		
+	case app.GAME_STATE.INSTRUCTIONS:
+	    app.instructions.checkMouse(x, y);
+	
+		break;
+		
+	case app.GAME_STATE.GAME:
+	    app.game.checkMouse(x, y);
+		break;
+		
+	case app.GAME_STATE.HIGH_SCORE:
+	    app.highScore.checkMouse(x, y);
+		break;
+	}
+});
+
+window.addEventListener('touchend', function(event){
+	event.preventDefault();
+});
