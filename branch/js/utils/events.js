@@ -103,10 +103,10 @@ window.addEventListener('touchstart', function(event){
 window.addEventListener('touchmove',function(event){
 	event.preventDefault();
 	
-	var touches = e.touches[0];
+	var touches = event.touches[0];
 	
-	var x = (touches.pageX - app.offset.left) / app.dimensions.scale;
-	var y = (touches.pageY - app.offset.top) / app.dimensions.scale;
+	var x = (touches.clientX - app.offset.left) / app.dimensions.scale;
+	var y = (touches.clientY - app.offset.top) / app.dimensions.scale;
 	
 	// actions based on game state
 	switch(app.main.currentGameState)
