@@ -82,9 +82,9 @@ app.game = {
         console.log("game init called!");
 
         // load sound
-        this.crunchSound0 = new Audio("sound/crunch0.wav");
-        this.crunchSound1 = new Audio("sound/crunch1.wav");
-        this.flybySound = new Audio("sound/flyby.wav");
+        this.crunchSound0 = new Audio("sound/crunch0.ogg");
+        this.crunchSound1 = new Audio("sound/crunch1.ogg");
+        this.flybySound = new Audio("sound/flyby.ogg");
 
         this.flybySound.volume = 1;
 

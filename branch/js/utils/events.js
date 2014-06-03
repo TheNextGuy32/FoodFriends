@@ -98,10 +98,6 @@ window.addEventListener('keyup', function(event){
 // touch!
 window.addEventListener('touchstart', function(event){
 	event.preventDefault();
-});
-
-window.addEventListener('touchmove',function(event){
-	event.preventDefault();
 	
 	var touches = event.touches[0];
 	
@@ -112,23 +108,33 @@ window.addEventListener('touchmove',function(event){
 	switch(app.main.currentGameState)
 	{
 	case app.GAME_STATE.TITLE:
-		app.title.checkCollisions(x, y);
+		if(app.timer <= 10)
+			app.title.checkCollisions(x, y);
 	
 		break;
 		
 	case app.GAME_STATE.INSTRUCTIONS:
-	    app.instructions.checkMouse(x, y);
+		if(app.timer <= 10)
+			app.instructions.checkMouse(x, y);
 	
 		break;
 		
 	case app.GAME_STATE.GAME:
-	    app.game.checkMouse(x, y);
+		if(app.timer <= 10)
+			app.game.checkMouse(x, y);
+			
 		break;
 		
 	case app.GAME_STATE.HIGH_SCORE:
-	    app.highScore.checkMouse(x, y);
+		if(app.timer <= 10)
+			app.highScore.checkMouse(x, y);
+			
 		break;
 	}
+});
+
+window.addEventListener('touchmove',function(event){
+	event.preventDefault();
 });
 
 window.addEventListener('touchend', function(event){

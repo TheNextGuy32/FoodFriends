@@ -43,6 +43,8 @@ app.keys = {
     DOWN: 40
 };
 
+app.timer = 0;
+
 // sparse array of the keys currently being pressed
 app.keydown = [];
 
@@ -205,6 +207,12 @@ app.main = {
 	 */
     update: function () {
         //console.log("main update!");
+		app.timer -= 1;
+		
+		//console.log(app.timer);
+		
+		if(app.timer <= 0)
+			app.timer = 50;
 
         switch (this.currentGameState) {
             case app.GAME_STATE.TITLE:
