@@ -76,10 +76,6 @@ Core2D.Button = (function()
 	 */
 	Button.prototype.update = function()
 	{
-		//if(this.clicked /*&& "function" == typeof func*/)
-			//this.func();
-			
-		//this.clicked = false;*/
 	};
 	
 	/*
